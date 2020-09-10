@@ -136,10 +136,8 @@ if __name__ == "__main__":
 
 
     df_hydrophobic = df_all[[4,2,3,12,10,11]][(df_all[2].isin(hdc_aa)) & (df_all[10].isin(hdc_aa)) & 
-                                           (df_all[1].str.contains(pat = "C") & (df_all[1] != "CA")) & 
-                                           (df_all[9].str.contains(pat = "C") & (df_all[9] != "CA")) &
-                                           (df_all[16] <= 5.0) & (df_all[4] != df_all[12])]
-    df_hydrophobic = df_hydrophobic.drop_duplicates()
+                                           (df_all[1].str.contains("C[BGDE]")) & (df_all[9].str.contains("C[BGDE]")) &
+                                           (df_all[16] <= 5.0) & (df_all[4] != df_all[12])].drop_duplicates()
     header_hydrophobic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
     table_hydrophobic = tabulate(df_hydrophobic, headers = header_hydrophobic, showindex=False, tablefmt="rst")
     print(table_hydrophobic)
