@@ -80,6 +80,9 @@ def parse_pdb(pdb_file):
     with open(pdb_file, "r") as f_in:
         # Parsing through the file 
         for line in f_in:
+            #Take the first NMR structure
+            if line.startswith("TER"):
+                break
             # Sorting by ATOM
             if line.startswith("ATOM"):
                 # Extracting informations from the pdb
@@ -118,12 +121,10 @@ if __name__ == "__main__":
 
     for i in range(arr_coors.shape[0]):
         for j in range(i+1, arr_coors.shape[0]):
-            if dist_mat[i,j] < 10 and (rows[i][4] != rows[j][4]):
+            if dist_mat[i,j] < 10:
                 rows_all.append(rows[i]+rows[j]+[dist_mat[i,j]])
 
     df_all = pd.DataFrame(rows_all)
-
-    print(df_all)
 
 
     df_disulphide = df_all[[4,2,3,12,10,11,16]][(df_all[2] == "CYS") & (df_all[10] == "CYS") & (df_all[1] == "SG") & (df_all[9] == "SG") & (df_all[16] <= 2.2)]
