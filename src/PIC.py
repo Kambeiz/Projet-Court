@@ -35,6 +35,9 @@ from tabulate import tabulate
 ################################################################################
 
 
+# Variable declarations
+hdc_aa = ["ALA","VAL", "LEU","ILE", "MET","PHE", "TRP", "PRO", "TYR"]
+
 
 def args():
     """Parse the command-line arguments.
@@ -101,6 +104,13 @@ def parse_pdb(pdb_file):
     # Return the list and dataframe
     return arr_coors, rows
 
+def hydrophobic_interaction(df_all, hdc_aa):
+    # We first sort by all hydrophobic AA
+    df_hpc = df_all[[1,4,2,3,9,12,10,11,16]][(df_all[2].isin(hdc_aa)) & (df_all[10].isin(hdc_aa)) & 
+                                           (df_all[1].str.contains("C") & (df_all[1] != "CA")) & 
+                                           (df_all[9].str.contains("C") & (df_all[9] != "CA")) &
+                                           (df_all[16] <=5.0) & (df_all[4] != df_all[12])]
+    return df_hpc
 
 # Main program
 if __name__ == "__main__":
@@ -125,7 +135,8 @@ if __name__ == "__main__":
                 rows_all.append(rows[i]+rows[j]+[dist_mat[i,j]])
 
     df_all = pd.DataFrame(rows_all)
-
+    
+    print(hydrophobic_interaction(df_all, hdc_aa))
 
     df_disulphide = df_all[[4,2,3,12,10,11,16]][(df_all[2] == "CYS") & (df_all[10] == "CYS") & (df_all[1] == "SG") & (df_all[9] == "SG") & (df_all[16] <= 2.2)]
     header_disulphide = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "Distance"]
