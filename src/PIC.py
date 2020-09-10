@@ -1,17 +1,26 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-This script ...
+Created on Wed Sep 09 19:53:42 2020
+
+@author: Yann Vander Meersche - Debbah Nagi
+"""
+
+"""
+This script calculate intra-proteins interactions in a pdb file given
 
 Inputs:
 =======
+pdb file
 
 
 Output:
 ========
-
+interactions table
 
 Usage:
 ======
-    $ python PIC.py ...
+    $ python PIC.py -p pdb_file
 """
 
 ################################################################################
@@ -39,12 +48,12 @@ def args():
     pdb_file: string
     """
 
-    #Declaration of expexted arguments
+    # Declaration of expexted arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--pdb", help="Path to the PDB file.", type=str, required=True)
     args = parser.parse_args()
 
-    #Check if the PDB files directory is valid
+    # Check if the PDB files directory is valid
     pdb_file = args.pdb
     if not os.path.isfile(pdb_file):
         sys.exit(f"{pdb_file} does not exist.\n"
@@ -66,10 +75,14 @@ def parse_pdb(pdb_file):
     -------
     arr_coors (Numpy array): Coordinates of each atom of the PDB file. 
     """
+    # List of list containing information about atoms from the pdb file
     rows = []
     with open(pdb_file, "r") as f_in:
+        # Parsing through the file 
         for line in f_in:
+            # Sorting by ATOM
             if line.startswith("ATOM"):
+                # Extracting informations from the pdb
                 atom_num = int(line[6:11])
                 atom_name = line[12:16].strip()
                 res_name = line[17:20].strip()
@@ -78,22 +91,27 @@ def parse_pdb(pdb_file):
                 x = float(line[30:38])
                 y = float(line[38:46])
                 z = float(line[46:54])
-                
+                # Appending those informations into rows list
                 rows.append([atom_num, atom_name, res_name, chain_id, res_num, x, y, z])
+    # Create a numpy_array containing informations from rows
     arr_coors = pd.DataFrame(rows, columns=["atom_num", "atom_name", "res_name", "chain_id", "res_num", "x", "y", "z"])[["x", "y", "z"]].to_numpy()
+    # Return the list and dataframe
     return arr_coors, rows
 
 
-
-
+# Main program
 if __name__ == "__main__":
+    
+    # Taking the pdb_file
     pdb_file = args()
 
-
+    # Calling parse_pdb
     arr_coors, rows = parse_pdb(pdb_file)
 
+    # Creating a distance_matrix with the numpy_array
     dist_mat = distance_matrix(arr_coors, arr_coors)
 
+    # Printing the matrix
     print("Matrix shape", dist_mat.shape)
 
     rows_all = []
