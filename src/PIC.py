@@ -3,10 +3,8 @@
 """
 Created on Wed Sep 09 19:53:42 2020
 
-@author: Yann Vander Meersche - Debbah Nagi
-"""
+@authors: Yann Vander Meersche - Debbah Nagi
 
-"""
 This script calculate intra-proteins interactions in a pdb file given
 
 Inputs:
@@ -27,6 +25,7 @@ Usage:
 import os
 import sys
 import argparse
+import re
 
 import numpy as np
 import pandas as pd
@@ -104,13 +103,6 @@ def parse_pdb(pdb_file):
     # Return the list and dataframe
     return arr_coors, rows
 
-def hydrophobic_interaction(df_all, hdc_aa):
-    # We first sort by all hydrophobic AA
-    df_hpc = df_all[[1,4,2,3,9,12,10,11,16]][(df_all[2].isin(hdc_aa)) & (df_all[10].isin(hdc_aa)) & 
-                                           (df_all[1].str.contains("C") & (df_all[1] != "CA")) & 
-                                           (df_all[9].str.contains("C") & (df_all[9] != "CA")) &
-                                           (df_all[16] <=5.0) & (df_all[4] != df_all[12])]
-    return df_hpc
 
 # Main program
 if __name__ == "__main__":
@@ -136,9 +128,18 @@ if __name__ == "__main__":
 
     df_all = pd.DataFrame(rows_all)
     
-    print(hydrophobic_interaction(df_all, hdc_aa))
 
     df_disulphide = df_all[[4,2,3,12,10,11,16]][(df_all[2] == "CYS") & (df_all[10] == "CYS") & (df_all[1] == "SG") & (df_all[9] == "SG") & (df_all[16] <= 2.2)]
     header_disulphide = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "Distance"]
     table_disulphide = tabulate(df_disulphide, headers = header_disulphide, showindex=False, floatfmt=".2f", tablefmt="rst")
     print(table_disulphide)
+
+
+    df_hydrophobic = df_all[[4,2,3,12,10,11]][(df_all[2].isin(hdc_aa)) & (df_all[10].isin(hdc_aa)) & 
+                                           (df_all[1].str.contains(pat = "C") & (df_all[1] != "CA")) & 
+                                           (df_all[9].str.contains(pat = "C") & (df_all[9] != "CA")) &
+                                           (df_all[16] <= 5.0) & (df_all[4] != df_all[12])]
+    df_hydrophobic = df_hydrophobic.drop_duplicates()
+    header_hydrophobic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
+    table_hydrophobic = tabulate(df_hydrophobic, headers = header_hydrophobic, showindex=False, tablefmt="rst")
+    print(table_hydrophobic)
