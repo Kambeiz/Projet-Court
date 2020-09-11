@@ -143,7 +143,7 @@ if __name__ == "__main__":
     
     df_ionic = df_all[[4,2,3,12,10,11]][(df_all[2].isin(ion_aa)) & (df_all[10].isin(ion_aa)) & 
                                            (df_all[1].str.match("[NO][HEZ][^D]*")) & (df_all[9].str.match("[NO][HEZ][D^]*")) &
-                                           (df_all[16] < 6.1) & (df_all[4] != df_all[12]) & (df_all[1] != df_all[10])].drop_duplicates()
+                                           (df_all[16] < 6.1) & (df_all[4] != df_all[12])].drop_duplicates()
     header_ionic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
     table_ionic = tabulate(df_ionic, headers = header_ionic, showindex=False, tablefmt="rst")
     print(table_ionic)
