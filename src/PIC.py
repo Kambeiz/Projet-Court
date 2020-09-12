@@ -35,10 +35,10 @@ from tabulate import tabulate
 
 
 # Variable declarations
-hdc_aa = ["ALA","VAL", "LEU","ILE", "MET","PHE", "TRP", "PRO", "TYR"]
-ani_aa = ["ASP","GLU"]
-cat_aa = ["ARG","HIS","LYS"]
-ion_aa = ["ASP","GLU","ARG","HIS","LYS"]
+hdc_aa = ["ALA", "VAL", "LEU", "ILE", "MET", "PHE", "TRP", "PRO", "TYR"]
+ani_aa = ["ASP", "GLU"]
+cat_aa = ["ARG", "HIS", "LYS"]
+ion_aa = ["ASP", "GLU", "ARG", "HIS", "LYS"]
 
 def args():
     """Parse the command-line arguments.
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     rows_all = []
     for i in range(arr_coors.shape[0]):
         for j in range(i+1, arr_coors.shape[0]):
-            if dist_mat[i,j] < 7:
+            if dist_mat[i,j] < 10:
                 rows_all.append(rows[i]+rows[j]+[dist_mat[i,j]])
 
     df_all = pd.DataFrame(rows_all)
@@ -176,4 +176,58 @@ if __name__ == "__main__":
         print(table_ionic, "\n\n\n")
 
 
-    #Différence contain / match    6.1 ?
+
+
+
+    #Intraprotein Aromatic-Aromatic Interactions
+    print("Intraprotein Aromatic-Aromatic Interactions\n".center(74))
+    print("Aromatic-Aromatic Interactions within 4.5 and 7 Angstroms")
+
+
+
+
+
+
+    centroids_PHE = df_all[[4,5,6,7]][(df_all[2] == "PHE") &
+                             (df_all[1].str.contains("C[GDEZ]"))  &
+                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
+    centroids_TYR = df_all[[1,2,4,5,6,7]][(df_all[2] == "TYR") &
+                             (df_all[1].str.contains("C[GDEZ]"))  &
+                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
+    centroids_TRP = df_all[[1,2,4,5,6,7]][(df_all[2] == "TRP") &
+                             (df_all[1].str.contains("C[DEZH][23]"))  &
+                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
+
+    centroids_arro = pd.concat([centroids_PHE, centroids_TYR, centroids_TRP])
+    print(centroids_arro)
+
+
+    liste = list(centroids_arro.index)
+    print(liste)
+
+
+    arr_centro = centroids_arro.to_numpy()
+    dist_mat_centro = distance_matrix(arr_centro, arr_centro)
+    print(dist_mat)
+
+    for i in  range(len(liste)):
+        for j in range(i+1, len(liste)):
+            if (dist_mat_centro[i,j] < 7) & (dist_mat_centro[i,j] > 4.5):
+                print(liste[i], liste[j], dist_mat_centro[i,j])
+
+
+    """
+    centroids_coors = df_all[[1,2,4,5,6,7,9,10,12,13,14,15]][(df_all[2].isin(arom_aa)) & (df_all[10].isin(arom_aa)) &
+                             (df_all[1].str.contains("C[GDEZ]")) & (df_all[9].str.contains("C[GDEZ]")) &
+                             (df_all[4] != df_all[12])]
+    print(centroids_coors)
+    df_aromatic = df_all[[4,2,3,12,10,11]][(df_all[2].isin(arom_aa)) & (df_all[10].isin(arom_aa)) & 
+                                           (df_all[1].str.contains("C[GDE][12]")) & (df_all[9].str.contains("C[BGDE]")) &
+                                           (df_all[16] < 6) & (df_all[4] != df_all[12])].drop_duplicates()
+    if df_aromatic.empty:
+        print("")
+        print("NO INTRAPROTEIN AROMATIC-AROMATIC INTERACTIONS FOUND\n\n\n".center(74))
+    else:
+        header_ionic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(centroid-centroid)", "Dihedral Angle"]
+        print(df_aromatic)
+    """
