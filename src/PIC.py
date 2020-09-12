@@ -115,35 +115,65 @@ if __name__ == "__main__":
     # Creating a distance_matrix with the numpy_array
     dist_mat = distance_matrix(arr_coors, arr_coors)
 
-    # Printing the matrix
-    print("Matrix shape", dist_mat.shape)
-
     rows_all = []
-
     for i in range(arr_coors.shape[0]):
         for j in range(i+1, arr_coors.shape[0]):
-            if dist_mat[i,j] < 10:
+            if dist_mat[i,j] < 7:
                 rows_all.append(rows[i]+rows[j]+[dist_mat[i,j]])
 
     df_all = pd.DataFrame(rows_all)
     
 
-    df_disulphide = df_all[[4,2,3,12,10,11,16]][(df_all[2] == "CYS") & (df_all[10] == "CYS") & (df_all[1] == "SG") & (df_all[9] == "SG") & (df_all[16] <= 2.2)]
-    header_disulphide = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "Distance"]
-    table_disulphide = tabulate(df_disulphide, headers = header_disulphide, showindex=False, floatfmt=".2f", tablefmt="rst")
-    print(table_disulphide)
 
+    #Intraprotein Hydrophobic Interactions
+    print("Intraprotein Hydrophobic Interactions\n".center(74))
+    print("Hydrophobic Interactions within 5 Angstroms")
 
     df_hydrophobic = df_all[[4,2,3,12,10,11]][(df_all[2].isin(hdc_aa)) & (df_all[10].isin(hdc_aa)) & 
-                                           (df_all[1].str.contains("C[BGDE]")) & (df_all[9].str.contains("C[BGDE]")) &
-                                           (df_all[16] <= 5.0) & (df_all[4] != df_all[12])].drop_duplicates()
-    header_hydrophobic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
-    table_hydrophobic = tabulate(df_hydrophobic, headers = header_hydrophobic, showindex=False, tablefmt="rst")
-    print(table_hydrophobic)
-    
+                                              (df_all[1].str.contains("C[BGDE]")) & (df_all[9].str.contains("C[BGDE]")) &
+                                              (df_all[16] <= 5.0) & (df_all[4] != df_all[12])].drop_duplicates()
+    if df_hydrophobic.empty:
+        print("")
+        print("NO INTRAPROTEIN HYDROPHOBIC INTERACTIONS FOUND\n\n".center(74))
+    else:
+        header_hydrophobic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
+        table_hydrophobic = tabulate(df_hydrophobic, headers = header_hydrophobic, showindex=False, numalign="left", tablefmt="rst")
+        print(table_hydrophobic, "\n\n\n")
+
+
+
+    #Intraprotein Disulphide Bridges
+    print("Intraprotein Disulphide Bridges\n".center(74))
+    print("Disulphide bridges: Between sulphur atoms of cysteines within 2.2 Angstroms")
+
+    df_disulphide = df_all[[4,2,3,12,10,11,16]][(df_all[2] == "CYS") & (df_all[10] == "CYS") &
+                                                (df_all[1] == "SG") & (df_all[9] == "SG") &
+                                                (df_all[16] <= 2.2)]
+    if df_disulphide.empty:
+        print("")
+        print("NO INTRAPROTEIN DISULPHIDE BRIDGES FOUND\n\n\n".center(74))
+    else:
+        header_disulphide = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "Distance"]
+        table_disulphide = tabulate(df_disulphide, headers = header_disulphide, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
+        print(table_disulphide, "\n\n\n")
+
+
+
+    #Intraprotein Ionic Interactions
+    print("Intraprotein Ionic Interactions\n".center(74))
+    print("Ionic Interactions within 6 Angstroms")
+
+
     df_ionic = df_all[[4,2,3,12,10,11]][(df_all[2].isin(ion_aa)) & (df_all[10].isin(ion_aa)) & 
-                                           (df_all[1].str.match("[NO][HEZ][^D]*")) & (df_all[9].str.match("[NO][HEZ][D^]*")) &
-                                           (df_all[16] < 6.1) & (df_all[4] != df_all[12])].drop_duplicates()
-    header_ionic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
-    table_ionic = tabulate(df_ionic, headers = header_ionic, showindex=False, tablefmt="rst")
-    print(table_ionic)
+                                        (df_all[1].str.match("[NO][HEZ][^D]*")) & (df_all[9].str.match("[NO][HEZ][D^]*")) &
+                                        (df_all[16] < 6) & (df_all[4] != df_all[12])].drop_duplicates()
+    if df_disulphide.empty:
+        print("")
+        print("NO INTRAPROTEIN IONIC INTERACTIONS FOUND\n\n\n".center(74))
+    else:
+        header_ionic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
+        table_ionic = tabulate(df_ionic, headers = header_ionic, showindex=False, numalign="left", tablefmt="rst")
+        print(table_ionic, "\n\n\n")
+
+
+    #Différence contain / match    6.1 ?
