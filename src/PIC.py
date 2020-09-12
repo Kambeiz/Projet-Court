@@ -188,33 +188,37 @@ if __name__ == "__main__":
 
 
 
-    centroids_PHE = df_all[[4,5,6,7]][(df_all[2] == "PHE") &
-                             (df_all[1].str.contains("C[GDEZ]"))  &
-                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
-    centroids_TYR = df_all[[1,2,4,5,6,7]][(df_all[2] == "TYR") &
+    centroids_PHE_TYR = df_all[[4,5,6,7]][(df_all[2].isin(["PHE", "TYR"])) &
                              (df_all[1].str.contains("C[GDEZ]"))  &
                              (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
     centroids_TRP = df_all[[1,2,4,5,6,7]][(df_all[2] == "TRP") &
                              (df_all[1].str.contains("C[DEZH][23]"))  &
                              (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
 
-    centroids_arro = pd.concat([centroids_PHE, centroids_TYR, centroids_TRP])
+    centroids_arro = pd.concat([centroids_PHE_TYR, centroids_TRP])
     print(centroids_arro)
 
 
     liste = list(centroids_arro.index)
-    print(liste)
-
 
     arr_centro = centroids_arro.to_numpy()
     dist_mat_centro = distance_matrix(arr_centro, arr_centro)
-    print(dist_mat)
+
+    res_1 = []
+    res_2 = []
+    list_dist = []
 
     for i in  range(len(liste)):
         for j in range(i+1, len(liste)):
             if (dist_mat_centro[i,j] < 7) & (dist_mat_centro[i,j] > 4.5):
-                print(liste[i], liste[j], dist_mat_centro[i,j])
+                res_1.append(liste[i])
+                res_2.append(liste[j])
+                list_dist.append(dist_mat_centro[i,j])
+    print(res_1)
+    print(res_2)
 
+    df_aromatic = df_all[[4,2,3,12,10,11]][(df_all[4].isin(res_1)) & (df_all[12].isin(res_2)) | (df_all[4].isin(res_2)) & (df_all[12].isin(res_1))].drop_duplicates()
+    print(df_aromatic)
 
     """
     centroids_coors = df_all[[1,2,4,5,6,7,9,10,12,13,14,15]][(df_all[2].isin(arom_aa)) & (df_all[10].isin(arom_aa)) &
