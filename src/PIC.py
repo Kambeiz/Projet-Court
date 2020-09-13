@@ -405,45 +405,58 @@ Note that angles that are undefined are written as 999.99
         df_aromatic = df_aromatic.append(row)
 
 
-    #Insert the dist column
-    df_aromatic["D(centroid-centroid)"] = list_dist
+
+    if df_aromatic.empty:
+        print("")
+        print("NO INTRAPROTEIN AROMATIC-AROMATIC INTERACTIONS FOUND\n\n\n".center(106))
+    else:
+
+        #Insert the dist column
+        df_aromatic["D(centroid-centroid)"] = list_dist
+
+
+        #Calculate the dihedral angles NOT WORKING
+        res_1 = df_aromatic.iloc[:,0].to_numpy()
+        res_2 = df_aromatic.iloc[:,3].to_numpy()
+
+        dihedral_angle = []
+
+        for i in range(len(res_1)):
+            if df_aromatic.iloc[i,1] == "PHE" or df_aromatic.iloc[i,1] == "TYR":
+                C1 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CG"))].drop_duplicates().to_numpy().flatten()
+                C2 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
+            if df_aromatic.iloc[i,4] == "PHE" or df_aromatic.iloc[i,4] == "TYR":
+                C3 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
+                C4 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CG"))].drop_duplicates().to_numpy().flatten()
+            if df_aromatic.iloc[i,1] == "TRP":
+                C1 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
+                C2 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
+            if df_aromatic.iloc[i,4] == "TRP":
+                C3 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
+                C4 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
+
+            angle = get_dihedral(C1, C2, C3, C4)
+            dihedral_angle.append(angle)
+
+        #Insert the dihedral angle column
+        df_aromatic["Dihedral Angle"] = dihedral_angle
+
+        header_aromatic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(centroid-centroid)", "Dihedral Angle"]
+        table_aromatic = tabulate(df_aromatic, headers = header_aromatic, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
+        print(table_aromatic, "\n\n\n")
 
 
 
-    #Calculate the dihedral angles NOT WORKING
-    res_1 = df_aromatic.iloc[:,0].to_numpy()
-    res_2 = df_aromatic.iloc[:,3].to_numpy()
 
-    dihedral_angle = []
-
-    for i in range(len(res_1)):
-        if df_aromatic.iloc[i,1] == "PHE" or df_aromatic.iloc[i,1] == "TYR":
-            C1 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CG"))].drop_duplicates().to_numpy().flatten()
-            C2 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
-        if df_aromatic.iloc[i,4] == "PHE" or df_aromatic.iloc[i,4] == "TYR":
-            C3 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
-            C4 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CG"))].drop_duplicates().to_numpy().flatten()
-        if df_aromatic.iloc[i,1] == "TRP":
-            C1 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
-            C2 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
-        if df_aromatic.iloc[i,4] == "TRP":
-            C3 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
-            C4 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
-
-        angle = get_dihedral(C1, C2, C3, C4)
-        dihedral_angle.append(angle)
-
-    #Insert the dihedral angle column
-    df_aromatic["Dihedral Angle"] = dihedral_angle
-
-
-    print(df_aromatic)
 
 
 
 
 
     #Intraprotein Aromatic-Sulphur Interactions
+    print("Intraprotein Aromatic-Sulphur Interactions\n".center(106))
+    print("Aromatic-Sulphur Interactions within 5.3 Angstroms")
+
 
     centroids_PHE_TYR = df_all[[4,5,6,7]][(df_all[2].isin(["PHE", "TYR"])) &
                              (df_all[1].str.contains("C[GDEZ]"))  &
@@ -464,9 +477,7 @@ Note that angles that are undefined are written as 999.99
     index_s = list(df_coors_s.index)
     arr_coors_s = df_coors_s.to_numpy()
 
-
     dist_mat_centro_s = distance_matrix(arr_centro, arr_coors_s)
-
 
     res_1 = []
     res_2 = []
@@ -478,11 +489,23 @@ Note that angles that are undefined are written as 999.99
                 res_1.append(liste[i])
                 res_2.append(index_s[j])
                 list_dist.append(dist_mat_centro_s[i,j])
-                print(liste[i], index_s[j], dist_mat_centro_s[i,j])
 
-    df_aromatic = pd.DataFrame()
+    df_arom_s = pd.DataFrame()
     for i in range(len(res_1)):
         row = df_all[[4,2,3,12,10,11]][((df_all[4] == res_1[i]) & (df_all[12] == res_2[i])) | ((df_all[4] == res_2[i]) & (df_all[12] == res_1[i]))].drop_duplicates()
-        df_aromatic = df_aromatic.append(row)
+        df_arom_s = df_arom_s.append(row)
 
 
+
+    if df_arom_s.empty:
+        print("")
+        print("NO INTRAPROTEIN AROMATIC-SULPHUR INTERACTIONS FOUND\n\n\n".center(106))
+    else:
+
+
+        #Insert the dist column
+        df_arom_s["D(centroid-centroid)"] = list_dist
+
+        header_arom_s = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(centroid-centroid)", "Angle"]
+        table_arom_s = tabulate(df_arom_s, headers = header_arom_s, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
+        print(table_arom_s, "\n\n\n")
