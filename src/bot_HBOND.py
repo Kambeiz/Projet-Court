@@ -9,7 +9,7 @@ Created on Sat Sep 12 16:20:13 2020
 import os
 import pandas
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options  
+#from selenium.webdriver.chrome.options import Options  
 
 url = "http://pic.mbu.iisc.ernet.in/job.html"
 list_elems = ["hbond3", "hbond4", "hbond5", "Submit"]
@@ -17,10 +17,10 @@ list_elems = ["hbond3", "hbond4", "hbond5", "Submit"]
 
 def launching_HBONDS(url):
 
-    chrome_options = Options()  
-    chrome_options.add_argument("--headless")  
-    driver = webdriver.Chrome(options=chrome_options)
-    #driver = webdriver.Chrome()
+    firefox_options = webdriver.FirefoxOptions()  
+    firefox_options.add_argument("--headless")  
+    #driver = webdriver.Firefox(options=firefox_options)
+    driver = webdriver.Firefox()
     
     driver.get(url)
     
