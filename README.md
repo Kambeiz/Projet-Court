@@ -1,4 +1,10 @@
 # Projet-Court : PIC
+[![Geckodriver](https://img.shields.io/badge/snakemake-=0.26.0-brightgreen.svg)](https://github.com/mozilla/geckodriver/releases)
+[![Firefox](https://img.shields.io/badge/firefox-brightgreen.svg)](https://www.mozilla.org/en-US/)
+[![Pandas](https://img.shields.io/badge/firefox-brightgreen.svg)](https://pandas.pydata.org/)
+[![Selenium]((https://img.shields.io/badge/firefox-brightgreen.svg)](https://selenium-python.readthedocs.io/)
+
+
 
 Projet M2 BI for Université de Paris 
 
