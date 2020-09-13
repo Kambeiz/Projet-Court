@@ -7,6 +7,7 @@ Created on Sat Sep 12 16:20:13 2020
 """
 
 import os
+import pandas
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options  
 
@@ -72,6 +73,11 @@ def body_to_list(driver):
                 side_side=False
     return main_ch_main, main_ch_side, side_ch_side    
 
+def list_to_df(list_interactions):
+    df = pandas.DataFrame(list_interactions)
+    df = df[0].str.split(pat=" ", expand=True)
+    return df
+
 # Main program
 if __name__ == "__main__":
     file = "1BTA.pdb"
@@ -80,3 +86,4 @@ if __name__ == "__main__":
 
     page_results = find_and_click(list_elems,file, upload, page_hbonds)
     main_ch_main, main_ch_side, side_ch_side = body_to_list(page_results)
+    df_main_main, df_main_side, df_side_side = list_to_df(main_ch_main), list_to_df(main_ch_side), list_to_df(side_ch_side)
