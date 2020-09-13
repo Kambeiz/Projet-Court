@@ -43,6 +43,7 @@ hdc_aa = ["ALA", "VAL", "LEU", "ILE", "MET", "PHE", "TRP", "PRO", "TYR"]
 ani_aa = ["ASP", "GLU"]
 cat_aa = ["ARG", "LYS"]   #Hist pas dedans...
 ion_aa = ["ASP", "GLU", "ARG", "HIS", "LYS"]
+sulph_aa = ["CYS", "MET"]
 url = "http://pic.mbu.iisc.ernet.in/job.html"
 list_elems = ["hbond3", "hbond4", "hbond5", "Submit"]
 ################################################################################
@@ -461,7 +462,7 @@ Note that angles that are undefined are written as 999.99
     print("Aromatic-Sulphur Interactions within 5.3 Angstroms")
 
 
-    df_coors_s = df_all[[3,4,5,6,7]][(df_all[2] == "CYS") & (df_all[1] == "SG")].drop_duplicates().groupby([3, 4]).mean() #LES METHIONNINES CONNARD
+    df_coors_s = df_all[[3,4,5,6,7]][(df_all[2].isin(sulph_aa)) & (df_all[1].str.contains("S"))].drop_duplicates().groupby([3, 4]).mean()
 
     index_s = list(df_coors_s.index)
     arr_coors_s = df_coors_s.to_numpy()
