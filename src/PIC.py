@@ -360,6 +360,8 @@ Note that angles that are undefined are written as 999.99
     else:
         header_ionic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
         table_ionic = tabulate(df_ionic, headers = header_ionic,showindex=False, numalign="left", tablefmt="rst")
+        print(table_ionic)
+        print("\n")
 
     #Intraprotein Aromatic-Aromatic Interactions
     print("Intraprotein Aromatic-Aromatic Interactions\n".center(106))
