@@ -257,8 +257,6 @@ if __name__ == "__main__":
         table_hydrophobic = tabulate(df_hydrophobic, headers = header_hydrophobic, showindex=False, numalign="left", tablefmt="rst")
         print(table_hydrophobic, "\n\n\n")
 
-
-
     #Intraprotein Disulphide Bridges
     print("Intraprotein Disulphide Bridges\n".center(106))
     print("Disulphide bridges: Between sulphur atoms of cysteines within 2.2 Angstroms")
@@ -275,8 +273,6 @@ if __name__ == "__main__":
         print(table_disulphide, "\n\n\n")
 
 
-
-
     #Intraprotein Main Chain-Main Chain Hydrogen Bonds
 
     page_hbonds, upload = launching_HBONDS(url)
@@ -284,7 +280,6 @@ if __name__ == "__main__":
     page_results = find_and_click(list_elems,pdb_file, upload, page_hbonds)
     main_ch_main, main_ch_side, side_ch_side = body_to_list(page_results)
     df_main_main, df_main_side, df_side_side = list_to_df(main_ch_main), list_to_df(main_ch_side), list_to_df(side_ch_side)
-
 
 
     print("Intraprotein Main Chain-Main Chain Hydrogen Bonds\n".center(106))
@@ -352,20 +347,19 @@ Note that angles that are undefined are written as 999.99
 
 """)
 
+    #Intraprotein Ionic Interactions
+    print("Intraprotein Ionic Interactions\n".center(106))
+    print("Ionic Interactions within 6 Angstroms")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    df_ionic = df_all[[4,2,3,12,10,11]][(df_all[2].isin(ion_aa)) & (df_all[10].isin(ion_aa)) & 
+                                        (df_all[1].str.match("[NO][HEZ][^D]*")) & (df_all[9].str.match("[NO][HEZ][D^]*")) &
+                                        (df_all[16] < 6) & (df_all[4] != df_all[12])].drop_duplicates()
+    if df_ionic.empty:
+        print("")
+        print("NO IONIC INTERACTIONS FOUND\n\n\n".center(106))
+    else:
+        header_ionic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
+        table_ionic = tabulate(df_ionic, headers = header_ionic,showindex=False, numalign="left", tablefmt="rst")
 
     #Intraprotein Aromatic-Aromatic Interactions
     print("Intraprotein Aromatic-Aromatic Interactions\n".center(106))
