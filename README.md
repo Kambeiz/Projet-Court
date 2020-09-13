@@ -37,6 +37,8 @@ You also need a pdb file that will be used for calculation.
 
 ## Usage 
 
+Firstly, you can get the whole repository by using git clone, you'll be able then to test the script with the data already provided, or by using yours. 
+
 In your shell, you can launch the script by followings this line of command: 
 
 ```bash
