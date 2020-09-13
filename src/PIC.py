@@ -450,6 +450,66 @@ Note that angles that are undefined are written as 999.99
 
 
 
+    #Intraprotein Aromatic-Sulphur Interactions
+    print("Intraprotein Aromatic-Sulphur Interactions\n".center(106))
+    print("Aromatic-Sulphur Interactions within 5.3 Angstroms")
+
+
+    centroids_PHE_TYR = df_all[[4,5,6,7]][(df_all[2].isin(["PHE", "TYR"])) &
+                             (df_all[1].str.contains("C[GDEZ]"))  &
+                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
+    centroids_TRP = df_all[[4,5,6,7]][(df_all[2] == "TRP") &
+                             (df_all[1].str.contains("C[DEZH][23]"))  &
+                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
+
+    centroids_arro = pd.concat([centroids_PHE_TYR, centroids_TRP])
+
+
+    liste = list(centroids_arro.index)
+    arr_centro = centroids_arro.to_numpy()
+
+
+    df_coors_s = df_all[[4,5,6,7]][(df_all[2] == "CYS") & (df_all[1] == "SG")].drop_duplicates().groupby([4]).mean()
+
+    index_s = list(df_coors_s.index)
+    arr_coors_s = df_coors_s.to_numpy()
+
+
+    dist_mat_centro_s = distance_matrix(arr_centro, arr_coors_s)
+
+
+    res_1 = []
+    res_2 = []
+    list_dist = []
+
+    for i in range(len(liste)):
+        for j in range(len(index_s)):
+            if dist_mat_centro_s[i,j] < 5.3:
+                res_1.append(liste[i])
+                res_2.append(index_s[j])
+                list_dist.append(dist_mat_centro_s[i,j])
+
+    df_aromatic_s = pd.DataFrame()
+    for i in range(len(res_1)):
+        row = df_all[[4,2,3,12,10,11]][((df_all[4] == res_1[i]) & (df_all[12] == res_2[i])) | ((df_all[4] == res_2[i]) & (df_all[12] == res_1[i]))].drop_duplicates()
+        df_aromatic_s = df_aromatic_s.append(row)
+
+
+    if df_aromatic_s.empty:
+        print("")
+        print("NO INTRAPROTEIN AROMATIC-SULPHUR INTERACTIONS FOUND\n\n\n".center(106))
+    else:
+
+        #Insert the dist column
+        df_aromatic_s["D(centroid-centroid)"] = list_dist
+
+        header_aromatic_s = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(Centroid-Sulphur)", "Angle"]
+        table_aromatic_s = tabulate(df_aromatic_s, headers = header_aromatic_s, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
+        print(table_aromatic_s, "\n\n\n")
+
+
+
+
 
 
 
