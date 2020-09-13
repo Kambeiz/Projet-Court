@@ -1,4 +1,10 @@
 # Projet-Court : PIC
+[![Geckodriver](https://img.shields.io/badge/snakemake-=0.26.0-brightgreen.svg)](https://github.com/mozilla/geckodriver/releases)
+[![Firefox](https://img.shields.io/badge/firefox-brightgreen.svg)](https://www.mozilla.org/en-US/)
+[![Pandas](https://img.shields.io/badge/firefox-brightgreen.svg)](https://pandas.pydata.org/)
+[![Selenium]((https://img.shields.io/badge/firefox-brightgreen.svg)](https://selenium-python.readthedocs.io/)
+
+
 
 Projet M2 BI for Université de Paris 
 
@@ -37,10 +43,15 @@ You also need a pdb file that will be used for calculation.
 
 ## Usage 
 
-Firstly, you can get the whole repository by using git clone, you'll be able then to test the script with the data already provided, or by using yours. 
+Firstly, you can get the whole repository by using git clone:
 
-In your shell, you can launch the script by followings this line of command: 
+```bash
+git clone https://github.com/Kambeiz/Projet-Court/
+```
+
+In your shell, you can launch the script by following this line of command, using one of pdb files provided into our data folder: 
 
 ```bash
 cd Projet-Court && conda activate shortproject && python 3 src/PIC.py -p data/1BTA.pdb && conda deactivate
 ```
+
