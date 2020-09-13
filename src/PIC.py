@@ -26,6 +26,7 @@ import os
 import sys
 import argparse
 import re
+import math
 
 import numpy as np
 import pandas as pd
@@ -82,8 +83,8 @@ def parse_pdb(pdb_file):
         # Parsing through the file 
         for line in f_in:
             #Take the first NMR structure
-            if line.startswith("TER"):
-                break
+            #if line.startswith("TER"):
+            #   break
             # Sorting by ATOM
             if line.startswith("ATOM"):
                 # Extracting informations from the pdb
@@ -101,6 +102,28 @@ def parse_pdb(pdb_file):
     arr_coors = pd.DataFrame(rows, columns=["atom_num", "atom_name", "res_name", "chain_id", "res_num", "x", "y", "z"])[["x", "y", "z"]].to_numpy()
     # Return the list and dataframe
     return arr_coors, rows
+
+
+
+def get_dihedral(coor1, coor2, coor3, coor4):
+    """
+    Calcul d'un angle dihèdre
+    """
+    vec12 = coor1[0] - coor2[0], coor1[1] - coor2[1], coor1[2] - coor2[2]
+    vec23 = coor2[0] - coor3[0], coor2[1] - coor3[1], coor2[2] - coor3[2]
+    vec34 = coor3[0] - coor4[0], coor3[1] - coor4[1], coor3[2] - coor4[2]
+    
+    vec_norm1 = np.cross(vec12, vec23)
+    vec_norm2 = np.cross(vec23, vec34)
+     
+    angle_rad = math.acos(np.dot(vec_norm1, vec_norm2) / (np.linalg.norm(vec_norm1) * np.linalg.norm(vec_norm2)))
+    angle_deg = angle_rad * 180 / math.pi
+
+    if np.dot(vec12, vec_norm2) < 0:    #Calcul du produit mixte, pour assigner le bon signe à l'angle.
+        return angle_deg
+    else:
+        return -angle_deg
+
 
 
 # Main program
@@ -179,59 +202,124 @@ if __name__ == "__main__":
 
 
 
+
+
+
+
+
     #Intraprotein Aromatic-Aromatic Interactions
     print("Intraprotein Aromatic-Aromatic Interactions\n".center(74))
     print("Aromatic-Aromatic Interactions within 4.5 and 7 Angstroms")
 
 
-
-
-
-
     centroids_PHE_TYR = df_all[[4,5,6,7]][(df_all[2].isin(["PHE", "TYR"])) &
                              (df_all[1].str.contains("C[GDEZ]"))  &
                              (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
-    centroids_TRP = df_all[[1,2,4,5,6,7]][(df_all[2] == "TRP") &
+    centroids_TRP = df_all[[4,5,6,7]][(df_all[2] == "TRP") &
                              (df_all[1].str.contains("C[DEZH][23]"))  &
                              (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
 
     centroids_arro = pd.concat([centroids_PHE_TYR, centroids_TRP])
-    print(centroids_arro)
 
 
     liste = list(centroids_arro.index)
-
     arr_centro = centroids_arro.to_numpy()
     dist_mat_centro = distance_matrix(arr_centro, arr_centro)
+
 
     res_1 = []
     res_2 = []
     list_dist = []
 
-    for i in  range(len(liste)):
+    for i in range(len(liste)):
         for j in range(i+1, len(liste)):
-            if (dist_mat_centro[i,j] < 7) & (dist_mat_centro[i,j] > 4.5):
+            if (dist_mat_centro[i,j] > 4.5) & (dist_mat_centro[i,j] < 7):
                 res_1.append(liste[i])
                 res_2.append(liste[j])
                 list_dist.append(dist_mat_centro[i,j])
-    print(res_1)
-    print(res_2)
 
-    df_aromatic = df_all[[4,2,3,12,10,11]][(df_all[4].isin(res_1)) & (df_all[12].isin(res_2)) | (df_all[4].isin(res_2)) & (df_all[12].isin(res_1))].drop_duplicates()
+    df_aromatic = pd.DataFrame()
+    for i in range(len(res_1)):
+        row = df_all[[4,2,3,12,10,11]][((df_all[4] == res_1[i]) & (df_all[12] == res_2[i])) | ((df_all[4] == res_2[i]) & (df_all[12] == res_1[i]))].drop_duplicates()
+        df_aromatic = df_aromatic.append(row)
+
+
+    #Insert the dist column
+    df_aromatic["D(centroid-centroid)"] = list_dist
+
+
+
+    #Calculate the dihedral angles NOT WORKING
+    res_1 = df_aromatic.iloc[:,0].to_numpy()
+    res_2 = df_aromatic.iloc[:,3].to_numpy()
+
+    dihedral_angle = []
+
+    for i in range(len(res_1)):
+        if df_aromatic.iloc[i,1] == "PHE" or df_aromatic.iloc[i,1] == "TYR":
+            C1 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CG"))].drop_duplicates().to_numpy().flatten()
+            C2 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
+        if df_aromatic.iloc[i,4] == "PHE" or df_aromatic.iloc[i,4] == "TYR":
+            C3 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
+            C4 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CG"))].drop_duplicates().to_numpy().flatten()
+        if df_aromatic.iloc[i,1] == "TRP":
+            C1 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
+            C2 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
+        if df_aromatic.iloc[i,4] == "TRP":
+            C3 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
+            C4 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
+
+        angle = get_dihedral(C1, C2, C3, C4)
+        dihedral_angle.append(angle)
+
+    #Insert the dihedral angle column
+    df_aromatic["Dihedral Angle"] = dihedral_angle
+
+
     print(df_aromatic)
 
-    """
-    centroids_coors = df_all[[1,2,4,5,6,7,9,10,12,13,14,15]][(df_all[2].isin(arom_aa)) & (df_all[10].isin(arom_aa)) &
-                             (df_all[1].str.contains("C[GDEZ]")) & (df_all[9].str.contains("C[GDEZ]")) &
-                             (df_all[4] != df_all[12])]
-    print(centroids_coors)
-    df_aromatic = df_all[[4,2,3,12,10,11]][(df_all[2].isin(arom_aa)) & (df_all[10].isin(arom_aa)) & 
-                                           (df_all[1].str.contains("C[GDE][12]")) & (df_all[9].str.contains("C[BGDE]")) &
-                                           (df_all[16] < 6) & (df_all[4] != df_all[12])].drop_duplicates()
-    if df_aromatic.empty:
-        print("")
-        print("NO INTRAPROTEIN AROMATIC-AROMATIC INTERACTIONS FOUND\n\n\n".center(74))
-    else:
-        header_ionic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(centroid-centroid)", "Dihedral Angle"]
-        print(df_aromatic)
-    """
+
+
+
+
+    #Intraprotein Aromatic-Sulphur Interactions
+
+    centroids_PHE_TYR = df_all[[4,5,6,7]][(df_all[2].isin(["PHE", "TYR"])) &
+                             (df_all[1].str.contains("C[GDEZ]"))  &
+                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
+    centroids_TRP = df_all[[4,5,6,7]][(df_all[2] == "TRP") &
+                             (df_all[1].str.contains("C[DEZH][23]"))  &
+                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
+
+    centroids_arro = pd.concat([centroids_PHE_TYR, centroids_TRP])
+
+
+    liste = list(centroids_arro.index)
+    arr_centro = centroids_arro.to_numpy()
+
+
+    df_coors_s = df_all[[4,5,6,7]][(df_all[2] == "CYS") & (df_all[1] == "SG")].drop_duplicates().groupby([4]).mean()
+
+    index_s = list(df_coors_s.index)
+    arr_coors_s = df_coors_s.to_numpy()
+
+
+    dist_mat_centro_s = distance_matrix(arr_centro, arr_coors_s)
+
+
+    res_1 = []
+    res_2 = []
+    list_dist = []
+
+    for i in range(len(liste)):
+        for j in range(len(index_s)):
+            if dist_mat_centro_s[i,j] < 5.3:
+                res_1.append(liste[i])
+                res_2.append(index_s[j])
+                list_dist.append(dist_mat_centro_s[i,j])
+                print(liste[i], index_s[j], dist_mat_centro_s[i,j])
+
+    df_aromatic = pd.DataFrame()
+    for i in range(len(res_1)):
+        row = df_all[[4,2,3,12,10,11]][((df_all[4] == res_1[i]) & (df_all[12] == res_2[i])) | ((df_all[4] == res_2[i]) & (df_all[12] == res_1[i]))].drop_duplicates()
+        df_aromatic = df_aromatic.append(row)
