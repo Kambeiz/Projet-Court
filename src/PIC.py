@@ -41,7 +41,7 @@ from tabulate import tabulate
 # Variable declarations ########################################################
 hdc_aa = ["ALA", "VAL", "LEU", "ILE", "MET", "PHE", "TRP", "PRO", "TYR"]
 ani_aa = ["ASP", "GLU"]
-cat_aa = ["ARG", "HIS", "LYS"]
+cat_aa = ["ARG", "LYS"]   #Hist pas dedans...
 ion_aa = ["ASP", "GLU", "ARG", "HIS", "LYS"]
 url = "http://pic.mbu.iisc.ernet.in/job.html"
 list_elems = ["hbond3", "hbond4", "hbond5", "Submit"]
@@ -347,6 +347,8 @@ Note that angles that are undefined are written as 999.99
 
 """)
 
+
+
     #Intraprotein Ionic Interactions
     print("Intraprotein Ionic Interactions\n".center(106))
     print("Ionic Interactions within 6 Angstroms")
@@ -360,8 +362,10 @@ Note that angles that are undefined are written as 999.99
     else:
         header_ionic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
         table_ionic = tabulate(df_ionic, headers = header_ionic,showindex=False, numalign="left", tablefmt="rst")
-        print(table_ionic)
-        print("\n")
+        print(table_ionic, "\n\n\n")
+
+
+
 
     #Intraprotein Aromatic-Aromatic Interactions
     print("Intraprotein Aromatic-Aromatic Interactions\n".center(106))
@@ -449,9 +453,9 @@ Note that angles that are undefined are written as 999.99
 
 
 
-    #Intraprotein Aromatic-Sulphur Interactions
-    print("Intraprotein Aromatic-Sulphur Interactions\n".center(106))
-    print("Aromatic-Sulphur Interactions within 5.3 Angstroms")
+    #Intraprotein Cation-Pi Interactions
+    print("Intraprotein Cation-Pi Interactions\n".center(106))
+    print("Cation-Pi Interactions within 6 Angstroms")
 
 
     centroids_PHE_TYR = df_all[[4,5,6,7]][(df_all[2].isin(["PHE", "TYR"])) &
@@ -463,45 +467,44 @@ Note that angles that are undefined are written as 999.99
 
     centroids_arro = pd.concat([centroids_PHE_TYR, centroids_TRP])
 
-
     liste = list(centroids_arro.index)
     arr_centro = centroids_arro.to_numpy()
 
 
-    df_coors_s = df_all[[4,5,6,7]][(df_all[2] == "CYS") & (df_all[1] == "SG")].drop_duplicates().groupby([4]).mean()
+    df_coors_i = df_all[[4,5,6,7]][(df_all[2].isin(cat_aa)) & (df_all[1].str.match("N[HZ]*"))].drop_duplicates().groupby([4]).mean()
 
-    index_s = list(df_coors_s.index)
-    arr_coors_s = df_coors_s.to_numpy()
+    index_i = list(df_coors_i.index)
+    arr_coors_i = df_coors_i.to_numpy()
 
-    dist_mat_centro_s = distance_matrix(arr_centro, arr_coors_s)
+    dist_mat_centro_i = distance_matrix(arr_centro, arr_coors_i)
 
     res_1 = []
     res_2 = []
     list_dist = []
 
     for i in range(len(liste)):
-        for j in range(len(index_s)):
-            if dist_mat_centro_s[i,j] < 5.3:
+        for j in range(len(index_i)):
+            if dist_mat_centro_i[i,j] < 6:
                 res_1.append(liste[i])
-                res_2.append(index_s[j])
-                list_dist.append(dist_mat_centro_s[i,j])
+                res_2.append(index_i[j])
+                list_dist.append(dist_mat_centro_i[i,j])
 
-    df_arom_s = pd.DataFrame()
+    df_arom_i = pd.DataFrame()
     for i in range(len(res_1)):
         row = df_all[[4,2,3,12,10,11]][((df_all[4] == res_1[i]) & (df_all[12] == res_2[i])) | ((df_all[4] == res_2[i]) & (df_all[12] == res_1[i]))].drop_duplicates()
-        df_arom_s = df_arom_s.append(row)
+        df_arom_i = df_arom_i.append(row)
 
 
 
-    if df_arom_s.empty:
+    if df_arom_i.empty:
         print("")
-        print("NO INTRAPROTEIN AROMATIC-SULPHUR INTERACTIONS FOUND\n\n\n".center(106))
+        print("NO INTRAPROTEIN CATION-PI INTERACTIONS FOUND\n\n\n".center(106))
     else:
 
 
         #Insert the dist column
-        df_arom_s["D(centroid-centroid)"] = list_dist
+        df_arom_i["D(cation-Pi)"] = list_dist
 
-        header_arom_s = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(centroid-centroid)", "Angle"]
-        table_arom_s = tabulate(df_arom_s, headers = header_arom_s, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
-        print(table_arom_s, "\n\n\n")
+        header_arom_i = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(cation-Pi)", "Angle"]
+        table_arom_i = tabulate(df_arom_i, headers = header_arom_i, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
+        print(table_arom_i, "\n")
