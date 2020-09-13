@@ -328,7 +328,7 @@ Note that angles that are undefined are written as 999.99
 
     print("Intraprotein Side Chain-Side Chain Hydrogen Bonds\n".center(106))
 
-    if df_main_side.empty:
+    if df_side_side.empty:
         print("")
         print("NO INTRAPROTEIN Side CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
     else:
@@ -373,37 +373,41 @@ Note that angles that are undefined are written as 999.99
 
 
     #Calculate the aromatics centroids coordinates 
-    centroids_PHE_TYR = df_all[[4,5,6,7]][(df_all[2].isin(["PHE", "TYR"])) &
+    centroids_PHE_TYR = df_all[[3,4,5,6,7]][(df_all[2].isin(["PHE", "TYR"])) &
                              (df_all[1].str.contains("C[GDEZ]"))  &
-                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
-    centroids_TRP = df_all[[4,5,6,7]][(df_all[2] == "TRP") &
+                             (df_all[4] != df_all[12])].drop_duplicates().groupby([3, 4]).mean()
+    centroids_TRP = df_all[[3,4,5,6,7]][(df_all[2] == "TRP") &
                              (df_all[1].str.contains("C[DEZH][23]"))  &
-                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
+                             (df_all[4] != df_all[12])].drop_duplicates().groupby([3, 4]).mean()
 
     centroids_arro = pd.concat([centroids_PHE_TYR, centroids_TRP])
 
-
     liste = list(centroids_arro.index)
+
     arr_centro = centroids_arro.to_numpy()
     dist_mat_centro = distance_matrix(arr_centro, arr_centro)
 
 
     res_1 = []
     res_2 = []
+    chain_1 = []
+    chain_2 = []
     list_dist = []
 
     for i in range(len(liste)):
         for j in range(i+1, len(liste)):
             if (dist_mat_centro[i,j] > 4.5) & (dist_mat_centro[i,j] < 7):
-                res_1.append(liste[i])
-                res_2.append(liste[j])
+                res_1.append(liste[i][1])
+                res_2.append(liste[j][1])
+                chain_1.append(liste[i][0])
+                chain_2.append(liste[j][0])
                 list_dist.append(dist_mat_centro[i,j])
 
     df_aromatic = pd.DataFrame()
     for i in range(len(res_1)):
-        row = df_all[[4,2,3,12,10,11]][((df_all[4] == res_1[i]) & (df_all[12] == res_2[i])) | ((df_all[4] == res_2[i]) & (df_all[12] == res_1[i]))].drop_duplicates()
+        row = df_all[[4,2,3,12,10,11]][(((df_all[4] == res_1[i]) & (df_all[3] == chain_1[i])) & ((df_all[12] == res_2[i]) & (df_all[11] == chain_2[i]))) | 
+                                       (((df_all[4] == res_2[i]) & (df_all[3] == chain_2[i])) & ((df_all[12] == res_1[i]) & (df_all[11] == chain_1[i])))].drop_duplicates()
         df_aromatic = df_aromatic.append(row)
-
 
 
     if df_aromatic.empty:
@@ -414,7 +418,7 @@ Note that angles that are undefined are written as 999.99
         #Insert the dist column
         df_aromatic["D(centroid-centroid)"] = list_dist
 
-
+        """
         #Calculate the dihedral angles NOT WORKING
         res_1 = df_aromatic.iloc[:,0].to_numpy()
         res_2 = df_aromatic.iloc[:,3].to_numpy()
@@ -440,6 +444,8 @@ Note that angles that are undefined are written as 999.99
 
         #Insert the dihedral angle column
         df_aromatic["Dihedral Angle"] = dihedral_angle
+        """    
+    
 
         header_aromatic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(centroid-centroid)", "Dihedral Angle"]
         table_aromatic = tabulate(df_aromatic, headers = header_aromatic, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
@@ -455,21 +461,7 @@ Note that angles that are undefined are written as 999.99
     print("Aromatic-Sulphur Interactions within 5.3 Angstroms")
 
 
-    centroids_PHE_TYR = df_all[[4,5,6,7]][(df_all[2].isin(["PHE", "TYR"])) &
-                             (df_all[1].str.contains("C[GDEZ]"))  &
-                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
-    centroids_TRP = df_all[[4,5,6,7]][(df_all[2] == "TRP") &
-                             (df_all[1].str.contains("C[DEZH][23]"))  &
-                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
-
-    centroids_arro = pd.concat([centroids_PHE_TYR, centroids_TRP])
-
-
-    liste = list(centroids_arro.index)
-    arr_centro = centroids_arro.to_numpy()
-
-
-    df_coors_s = df_all[[4,5,6,7]][(df_all[2] == "CYS") & (df_all[1] == "SG")].drop_duplicates().groupby([4]).mean()
+    df_coors_s = df_all[[3,4,5,6,7]][(df_all[2] == "CYS") & (df_all[1] == "SG")].drop_duplicates().groupby([3, 4]).mean() #LES METHIONNINES CONNARD
 
     index_s = list(df_coors_s.index)
     arr_coors_s = df_coors_s.to_numpy()
@@ -480,19 +472,25 @@ Note that angles that are undefined are written as 999.99
 
     res_1 = []
     res_2 = []
+    chain_1 = []
+    chain_2 = []
     list_dist = []
 
     for i in range(len(liste)):
         for j in range(len(index_s)):
             if dist_mat_centro_s[i,j] < 5.3:
-                res_1.append(liste[i])
-                res_2.append(index_s[j])
+                res_1.append(liste[i][1])
+                res_2.append(index_s[j][1])
+                chain_1.append(liste[i][0])
+                chain_2.append(index_s[j][0])
                 list_dist.append(dist_mat_centro_s[i,j])
 
     df_aromatic_s = pd.DataFrame()
     for i in range(len(res_1)):
-        row = df_all[[4,2,3,12,10,11]][((df_all[4] == res_1[i]) & (df_all[12] == res_2[i])) | ((df_all[4] == res_2[i]) & (df_all[12] == res_1[i]))].drop_duplicates()
+        row = df_all[[4,2,3,12,10,11]][(((df_all[4] == res_1[i]) & (df_all[3] == chain_1[i])) & ((df_all[12] == res_2[i]) & (df_all[11] == chain_2[i]))) | 
+                                       (((df_all[4] == res_2[i]) & (df_all[3] == chain_2[i])) & ((df_all[12] == res_1[i]) & (df_all[11] == chain_1[i])))].drop_duplicates()
         df_aromatic_s = df_aromatic_s.append(row)
+
 
 
     if df_aromatic_s.empty:
@@ -518,20 +516,7 @@ Note that angles that are undefined are written as 999.99
     print("Cation-Pi Interactions within 6 Angstroms")
 
 
-    centroids_PHE_TYR = df_all[[4,5,6,7]][(df_all[2].isin(["PHE", "TYR"])) &
-                             (df_all[1].str.contains("C[GDEZ]"))  &
-                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
-    centroids_TRP = df_all[[4,5,6,7]][(df_all[2] == "TRP") &
-                             (df_all[1].str.contains("C[DEZH][23]"))  &
-                             (df_all[4] != df_all[12])].drop_duplicates().groupby([4]).mean()
-
-    centroids_arro = pd.concat([centroids_PHE_TYR, centroids_TRP])
-
-    liste = list(centroids_arro.index)
-    arr_centro = centroids_arro.to_numpy()
-
-
-    df_coors_i = df_all[[4,5,6,7]][(df_all[2].isin(cat_aa)) & (df_all[1].str.match("N[HZ]*"))].drop_duplicates().groupby([4]).mean()
+    df_coors_i = df_all[[3,4,5,6,7]][(df_all[2].isin(cat_aa)) & (df_all[1].str.match("N[HZ]*"))].drop_duplicates().groupby([3, 4]).mean()
 
     index_i = list(df_coors_i.index)
     arr_coors_i = df_coors_i.to_numpy()
@@ -540,18 +525,23 @@ Note that angles that are undefined are written as 999.99
 
     res_1 = []
     res_2 = []
+    chain_1 = []
+    chain_2 = []
     list_dist = []
 
     for i in range(len(liste)):
         for j in range(len(index_i)):
             if dist_mat_centro_i[i,j] < 6:
-                res_1.append(liste[i])
-                res_2.append(index_i[j])
+                res_1.append(liste[i][1])
+                res_2.append(index_i[j][1])
+                chain_1.append(liste[i][0])
+                chain_2.append(index_i[j][0])
                 list_dist.append(dist_mat_centro_i[i,j])
 
     df_arom_i = pd.DataFrame()
     for i in range(len(res_1)):
-        row = df_all[[4,2,3,12,10,11]][((df_all[4] == res_1[i]) & (df_all[12] == res_2[i])) | ((df_all[4] == res_2[i]) & (df_all[12] == res_1[i]))].drop_duplicates()
+        row = df_all[[4,2,3,12,10,11]][(((df_all[4] == res_1[i]) & (df_all[3] == chain_1[i])) & ((df_all[12] == res_2[i]) & (df_all[11] == chain_2[i]))) | 
+                                       (((df_all[4] == res_2[i]) & (df_all[3] == chain_2[i])) & ((df_all[12] == res_1[i]) & (df_all[11] == chain_1[i])))].drop_duplicates()
         df_arom_i = df_arom_i.append(row)
 
 
