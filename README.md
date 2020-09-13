@@ -37,10 +37,15 @@ You also need a pdb file that will be used for calculation.
 
 ## Usage 
 
-Firstly, you can get the whole repository by using git clone, you'll be able then to test the script with the data already provided, or by using yours. 
+Firstly, you can get the whole repository by using git clone:
 
-In your shell, you can launch the script by followings this line of command: 
+```bash
+git clone https://github.com/Kambeiz/Projet-Court/
+```
+
+In your shell, you can launch the script by following this line of command, using one of pdb files provided into our data folder: 
 
 ```bash
 cd Projet-Court && conda activate shortproject && python 3 src/PIC.py -p data/1BTA.pdb && conda deactivate
 ```
+
