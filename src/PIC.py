@@ -120,7 +120,7 @@ def parse_pdb(pdb_file):
 
     return arr_coors, rows
 
-
+'''
 def get_dihedral(coor1, coor2, coor3, coor4):
     """
     Dihedral angle calculation.
@@ -148,48 +148,12 @@ def get_dihedral(coor1, coor2, coor3, coor4):
         return angle_deg
     else:
         return -angle_deg
-
+'''
 
 def launching_HBONDS(pdbfile):
     """
-    Open PIC in a web-browser (Firefox) and get the Hbond output text.
+    Open PIC in a browser and get the Hbond file (.hbd).
 
-    Arguments
-    ---------
-    pdbfile (string): Path to the PDB file
-
-    Returns
-    -------
-    body (string): Body of the HTML page
-    """
-    url = "http://pic.mbu.iisc.ernet.in/job.html"
-    list_elements = ["hbond3", "hbond4", "hbond5", "Submit"]
-
-    firefox_options = webdriver.FirefoxOptions()  
-    firefox_options.add_argument("--headless")
-    # Chose between openind Firefox and not opening it
-    driver = webdriver.Firefox(options=firefox_options)    #Graphical
-    #driver = webdriver.Firefox()                          #Hidden
-    
-    driver.get(url)
-    upload = driver.find_element_by_name("pdbname")
-
-    absolute_path = os.path.abspath(pdbfile)
-    upload.send_keys(absolute_path)
-
-    for elem in list_elements:
-        click_elem = driver.find_element_by_name(elem)
-        click_elem.click()
-
-    body = (driver.find_element_by_xpath("//body").text).split("\n")
-    driver.close()
-
-    return body
-
-'''
-    def launching_HBONDS(pdbfile):
-    """
-    Open PIC in a browser and get the Hbond output.
     Arguments
     ---------
     pdbfile (string): Path to the PDB file
@@ -203,8 +167,8 @@ def launching_HBONDS(pdbfile):
     firefox_options = webdriver.FirefoxOptions()  
     firefox_options.add_argument("--headless")
     # Chose between openind Firefox and not opening it
-    #driver = webdriver.Firefox(options=firefox_options)    #Hidden 
-    driver = webdriver.Firefox()                          #Graphical
+    driver = webdriver.Firefox(options=firefox_options)    #Hidden 
+    #driver = webdriver.Firefox()                          #Graphical
     
     driver.get(url)
     upload = driver.find_element_by_name("pdbname")
@@ -216,12 +180,13 @@ def launching_HBONDS(pdbfile):
     driver.get(url_hbd)
     body = (driver.find_element_by_xpath("//body").text).split("\n")
     driver.close()
+
     return body
-'''
+
 
 def body_to_list(body):
     """
-    Parse the Hbond output into 3 Pandas dataframes.
+    Parse the Hbond output into a Pandas dataframe.
 
     Arguments
     ---------
@@ -229,49 +194,34 @@ def body_to_list(body):
 
     Returns
     -------
-    df_ch_main, df_ch_side, df_ch_side (dataframes): PIC Hydrogen bond interactions
+    df_hbond (dataframe): PIC Hydrogen bond interactions
     """
-    count = 0
-    main_ch_main = []
-    main_ch_side = []
-    side_ch_side = []
-    
+    list_hbond = []
+                   
+    #Removing header
+    for line in page_results:
+        if not line.startswith("#"):
+            res_num_d = int(line[4:9]) #or 10
+            chain_id_d = line[11]
+            res_name_d = line[13]
+            atom_name_d = line[15:18].strip()
 
-    ####################
-    for line in body:
-        if "Main Chain-Main" in line:
-            main_main = True
-        elif "Main Chain-Side" in line:
-            main_side = True
-        elif "Side Chain-Side" in line:
-            side_side = True
-        if len(line) > 9:
-            if line[:1].isdigit() and main_main == True:
-                main_ch_main.append(line)
-            elif line.startswith("Dd-a") and count == 0:
-                main_main = False
-                count += 1
-            elif line[:1].isdigit() and main_side == True:
-                main_ch_side.append(line)
-            elif line.startswith("Dd-a") and count == 1:
-                main_side = False
-                count += 1
-            elif line[:1].isdigit() and side_side == True:
-                side_ch_side.append(line)
-            elif line.startswith("Dd-a") and count == 2:
-                side_side=False
+            res_num_a = int(line[23:27]) #or 28
+            chain_id_a = line[29]
+            res_name_a = line[31]
+            atom_name_a = line[33:36].strip()
 
-    return list_to_df(main_ch_main), list_to_df(main_ch_side), list_to_df(side_ch_side)    
+            typ = line[37:39]
+            MO = line[40]
 
+            Dd_a = float(line[46:50])
+            Dh_a = float(line[51:55])
+            dHN = float(line[56:62])
+            aOC = float(line[63:69])
 
-def list_to_df(list_interactions):
-    """
-    Convert a list of list
-    """
-    df = pd.DataFrame(list_interactions)
-    df = df[0].str.split(pat=" ", expand=True)
+            list_hbond.append([res_num_d, chain_id_d, res_name_d, atom_name_d, res_num_a, chain_id_a, res_name_a, atom_name_a, MO, typ, Dd_a, Dh_a, dHN, aOC])
 
-    return df
+    return pd.DataFrame(list_hbond)  
 
 
 
@@ -341,7 +291,7 @@ if __name__ == "__main__":
 
     #============================= HBOND RESULTS ==============================#
     page_results = launching_HBONDS(pdb_file)
-    df_main_main, df_main_side, df_side_side = body_to_list(page_results)
+    df_hbond = body_to_list(page_results)
     legend_hbond = """
 Dd-a     =   Distance Between Donor and Acceptor
 Dh-a     =   Distance Between Hydrogen and Acceptor
@@ -355,6 +305,8 @@ Note that angles that are undefined are written as 999.99
 
     #Intraprotein Main Chain-Main Chain Hydrogen Bonds #########################
     print("Intraprotein Main Chain-Main Chain Hydrogen Bonds\n".center(106))
+    
+    df_main_main = df_hbond[[0,1,2,3,4,5,6,7,10,11,12,13]][df_hbond[9] == "MM"]
 
     if df_main_main.empty:
         print("")
@@ -370,6 +322,8 @@ Note that angles that are undefined are written as 999.99
     # Intraprotein Main Chain-Side Chain Hydrogen Bonds ########################
     print("Intraprotein Main Chain-Side Chain Hydrogen Bonds\n".center(106))
 
+    df_main_side = df_hbond[[0,1,2,3,4,5,6,7,8,10,11,12,13]][(df_hbond[9] == "SO") | (df_hbond[9] == "SN")]
+    
     if df_main_side.empty:
         print("")
         print("NO INTRAPROTEIN MAIN CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
@@ -384,6 +338,8 @@ Note that angles that are undefined are written as 999.99
     # Intraprotein Side Chain-Side Chain Hydrogen Bonds ########################
     print("Intraprotein Side Chain-Side Chain Hydrogen Bonds\n".center(106))
 
+    df_side_side = df_hbond[[0,1,2,3,4,5,6,7,8,10,11,12,13]][df_hbond[9] == "SS"]
+    
     if df_side_side.empty:
         print("")
         print("NO INTRAPROTEIN SIDE CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
