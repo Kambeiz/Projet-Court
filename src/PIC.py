@@ -21,7 +21,7 @@ Usage:
     $ python PIC.py -p pdb_file
 """
 
-__auteurs__ = ("Debbah Nagi, Yann Vander Meersche")
+__autors__ = ("Debbah Nagi, Vander Meersche Yann")
 __version__ = "1.0.0"
 __date__ = "2020-09-09"
 
@@ -38,7 +38,6 @@ import pandas as pd
 from tabulate import tabulate
 from scipy.spatial import distance_matrix
 from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 ################################################################################
 
 
@@ -262,7 +261,9 @@ if __name__ == "__main__":
                 # [Atom 1] [Atom 2] [Distance between Atom 1 and Atom 2]
                 rows_all.append(rows[i]+rows[j]+[dist_mat[i,j]])
     # Convert the list of list into a dataframe
-    df_all = pd.DataFrame(rows_all)
+    df_all = pd.DataFrame(rows_all, columns = ["atom_num1", "atom_name1", "res_name1", "chain_id1", "res_num1", "x1", "y1", "z1",
+                                               "atom_num2", "atom_name2", "res_name2", "chain_id2", "res_num2", "x2", "y2", "z2",
+                                               "atom_dist"])
     
 
 
@@ -271,9 +272,12 @@ if __name__ == "__main__":
     print("Intraprotein Hydrophobic Interactions\n".center(106))
     print("Hydrophobic Interactions within 5 Angstroms")
 
-    df_hydrophobic = df_all[[4,2,3,12,10,11]][(df_all[2].isin(hdc_aa)) & (df_all[10].isin(hdc_aa)) & 
-                                              (df_all[1].str.contains("C[BGDE]")) & (df_all[9].str.contains("C[BGDE]")) &
-                                              (df_all[16] <= 5.0)].drop_duplicates()
+    ["atom_num1", "atom_name1", "res_name1", "chain_id1", "res_num1", "x1", "y1", "z1", "atom_num2", "atom_name2", "res_name2", "chain_id2", "res_num2", "x2", "y2", "z2","atom_dist"]
+    ["0",         "1",          "2",         "3",         "4",        "5",  "6",  "7",  "8",         "9",          "10",        "11",        "12",       "13", "14", "15", "16"]
+
+    df_hydrophobic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(hdc_aa)) & (df_all["res_name2"].isin(hdc_aa)) & 
+                                              (df_all["atom_name1"].str.contains("C[BGDE]")) & (df_all["atom_name2"].str.contains("C[BGDE]")) &
+                                              (df_all["atom_dist"] <= 5.0)].drop_duplicates()
     if df_hydrophobic.empty:
         print("")
         print("NO INTRAPROTEIN HYDROPHOBIC INTERACTIONS FOUND\n\n".center(106))
@@ -288,9 +292,9 @@ if __name__ == "__main__":
     print("Intraprotein Disulphide Bridges\n".center(106))
     print("Disulphide bridges: Between sulphur atoms of cysteines within 2.2 Angstroms")
 
-    df_disulphide = df_all[[4,2,3,12,10,11,16]][(df_all[2] == "CYS") & (df_all[10] == "CYS") &
-                                                (df_all[1] == "SG") & (df_all[9] == "SG") &
-                                                (df_all[16] <= 2.2)]
+    df_disulphide = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2","atom_dist"]][(df_all["res_name1"] == "CYS") & (df_all["res_name2"] == "CYS") &
+                                                (df_all["atom_name1"] == "SG") & (df_all["atom_name2"] == "SG") &
+                                                (df_all["atom_dist"] <= 2.2)]
     if df_disulphide.empty:
         print("")
         print("NO INTRAPROTEIN DISULPHIDE BRIDGES FOUND\n\n\n".center(106))
@@ -379,9 +383,9 @@ Note that angles that are undefined are written as 999.99
     print("Intraprotein Ionic Interactions\n".center(106))
     print("Ionic Interactions within 6 Angstroms")
 
-    df_ionic = df_all[[4,2,3,12,10,11]][(df_all[2].isin(ion_aa)) & (df_all[10].isin(ion_aa)) & 
-                                        (df_all[1].str.match("[NO][HEZ][^D]*")) & (df_all[9].str.match("[NO][HEZ][D^]*")) &
-                                        (df_all[16] < 6)].drop_duplicates()
+    df_ionic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(ion_aa)) & (df_all["res_name2"].isin(ion_aa)) & 
+                                        (df_all["atom_name1"].str.match("[NO][HEZ][^D]*")) & (df_all["atom_name2"].str.match("[NO][HEZ][D^]*")) &
+                                        (df_all["atom_dist"] < 6)].drop_duplicates()
     if df_ionic.empty:
         print("")
         print("NO IONIC INTERACTIONS FOUND\n\n\n".center(106))
@@ -398,10 +402,10 @@ Note that angles that are undefined are written as 999.99
 
 
     # Calculate the aromatics centroids coordinates
-    centroids_PHE_TYR = df_all[[3,4,5,6,7]][(df_all[2].isin(["PHE", "TYR"])) &
-                             (df_all[1].str.contains("C[GDEZ]"))].drop_duplicates().groupby([3, 4]).mean()
-    centroids_TRP = df_all[[3,4,5,6,7]][(df_all[2] == "TRP") &
-                             (df_all[1].str.contains("C[DEZH][23]"))].drop_duplicates().groupby([3, 4]).mean()
+    centroids_PHE_TYR = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(["PHE", "TYR"])) &
+                             (df_all["atom_name1"].str.contains("C[GDEZ]"))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
+    centroids_TRP = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"] == "TRP") &
+                             (df_all["atom_name1"].str.contains("C[DEZH][23]"))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
 
     centroids_arro = pd.concat([centroids_PHE_TYR, centroids_TRP])
 
@@ -427,8 +431,8 @@ Note that angles that are undefined are written as 999.99
 
     df_aromatic = pd.DataFrame()
     for i in range(len(res_1)):
-        row = df_all[[4,2,3,12,10,11]][(((df_all[4] == res_1[i]) & (df_all[3] == chain_1[i])) & ((df_all[12] == res_2[i]) & (df_all[11] == chain_2[i]))) | 
-                                       (((df_all[4] == res_2[i]) & (df_all[3] == chain_2[i])) & ((df_all[12] == res_1[i]) & (df_all[11] == chain_1[i])))].drop_duplicates()
+        row = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & ((df_all["res_num2"] == res_2[i]) & (df_all["chain_id2"] == chain_2[i]))) | 
+                                                (((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & ((df_all["res_num2"] == res_1[i]) & (df_all["chain_id2"] == chain_1[i])))].drop_duplicates()
         df_aromatic = df_aromatic.append(row)
 
 
@@ -448,17 +452,17 @@ Note that angles that are undefined are written as 999.99
 
         for i in range(len(res_1)):
             if df_aromatic.iloc[i,1] == "PHE" or df_aromatic.iloc[i,1] == "TYR":
-                C1 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CG"))].drop_duplicates().to_numpy().flatten()
-                C2 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
-            if df_aromatic.iloc[i,4] == "PHE" or df_aromatic.iloc[i,4] == "TYR":
-                C3 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
-                C4 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CG"))].drop_duplicates().to_numpy().flatten()
+                C1 = df_all[["x1","y1","z1"]][(df_all["res_num1"] == res_1[i]) & (df_all[1].str.match("CG"))].drop_duplicates().to_numpy().flatten()
+                C2 = df_all[["x1","y1","z1"]][(df_all["res_num1"] == res_1[i]) & (df_all[1].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
+            if df_aromatic.iloc[i,"res_num1"] == "PHE" or df_aromatic.iloc[i,4] == "TYR":
+                C3 = df_all[["x1","y1","z1"]][(df_all["res_num1"] == res_2[i]) & (df_all[1].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
+                C4 = df_all[["x1","y1","z1"]][(df_all["res_num1"] == res_2[i]) & (df_all[1].str.match("CG"))].drop_duplicates().to_numpy().flatten()
             if df_aromatic.iloc[i,1] == "TRP":
-                C1 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
-                C2 = df_all[[5,6,7]][(df_all[4] == res_1[i]) & (df_all[1].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
+                C1 = df_all[["x1","y1","z1"]][(df_all["res_num1"] == res_1[i]) & (df_all[1].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
+                C2 = df_all[["x1","y1","z1"]][(df_all["res_num1"] == res_1[i]) & (df_all[1].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
             if df_aromatic.iloc[i,4] == "TRP":
-                C3 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
-                C4 = df_all[[5,6,7]][(df_all[4] == res_2[i]) & (df_all[1].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
+                C3 = df_all[["x1","y1","z1"]][(df_all["res_num1"] == res_2[i]) & (df_all[1].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
+                C"res_num1" = df_all[["x1","y1","z1"]][(df_all["res_num1"] == res_2[i]) & (df_all[1].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
 
             angle = get_dihedral(C1, C2, C3, C4)
             dihedral_angle.append(angle)
@@ -477,7 +481,7 @@ Note that angles that are undefined are written as 999.99
     print("Intraprotein Aromatic-Sulphur Interactions\n".center(106))
     print("Aromatic-Sulphur Interactions within 5.3 Angstroms")
 
-    df_coors_s = df_all[[3,4,5,6,7]][(df_all[2].isin(sulph_aa)) & (df_all[1].str.contains("S"))].drop_duplicates().groupby([3, 4]).mean()
+    df_coors_s = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(sulph_aa)) & (df_all["atom_name1"].str.contains("S"))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
 
     index_s = list(df_coors_s.index)
     arr_coors_s = df_coors_s.to_numpy()
@@ -501,8 +505,8 @@ Note that angles that are undefined are written as 999.99
 
     df_aromatic_s = pd.DataFrame()
     for i in range(len(res_1)):
-        row = df_all[[4,2,3,12,10,11]][(((df_all[4] == res_1[i]) & (df_all[3] == chain_1[i])) & ((df_all[12] == res_2[i]) & (df_all[11] == chain_2[i]))) | 
-                                       (((df_all[4] == res_2[i]) & (df_all[3] == chain_2[i])) & ((df_all[12] == res_1[i]) & (df_all[11] == chain_1[i])))].drop_duplicates()
+        row = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & ((df_all["res_num2"] == res_2[i]) & (df_all["chain_id2"] == chain_2[i]))) | 
+                                       (((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & ((df_all["res_num2"] == res_1[i]) & (df_all["chain_id2"] == chain_1[i])))].drop_duplicates()
         df_aromatic_s = df_aromatic_s.append(row)
 
 
@@ -524,7 +528,7 @@ Note that angles that are undefined are written as 999.99
     print("Intraprotein Cation-Pi Interactions\n".center(106))
     print("Cation-Pi Interactions within 6 Angstroms")
 
-    df_coors_i = df_all[[3,4,5,6,7]][(df_all[2].isin(cat_aa)) & (df_all[1].str.match("N[HZ]*"))].drop_duplicates().groupby([3, 4]).mean()
+    df_coors_i = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(cat_aa)) & (df_all["atom_name1"].str.match("N[HZ]*"))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
 
     index_i = list(df_coors_i.index)
     arr_coors_i = df_coors_i.to_numpy()
@@ -548,8 +552,8 @@ Note that angles that are undefined are written as 999.99
 
     df_arom_i = pd.DataFrame()
     for i in range(len(res_1)):
-        row = df_all[[4,2,3,12,10,11]][(((df_all[4] == res_1[i]) & (df_all[3] == chain_1[i])) & ((df_all[12] == res_2[i]) & (df_all[11] == chain_2[i]))) | 
-                                       (((df_all[4] == res_2[i]) & (df_all[3] == chain_2[i])) & ((df_all[12] == res_1[i]) & (df_all[11] == chain_1[i])))].drop_duplicates()
+        row = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & ((df_all["res_num2"] == res_2[i]) & (df_all["chain_id2"] == chain_2[i]))) | 
+                                       (((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & ((df_all["res_num2"] == res_1[i]) & (df_all["chain_id2"] == chain_1[i])))].drop_duplicates()
         df_arom_i = df_arom_i.append(row)
 
 
