@@ -183,6 +183,44 @@ def launching_HBONDS(pdbfile):
 
     return body
 
+'''def launching_HBONDS(pdbfile):
+    """
+    Open PIC in a browser and get the Hbond output.
+
+    Arguments
+    ---------
+    pdbfile (string): Path to the PDB file
+
+    Returns
+    -------
+    body (string): Body of the HTML page
+    """
+    url = "http://pic.mbu.iisc.ernet.in/job.html"
+    url_hbd = "http://pic.mbu.iisc.ernet.in/TEMP/" + pdbfile.split(".")[-2] + ".hbd" 
+    list_elements = ["hbond3", "hbond4", "hbond5", "Submit"]
+
+    firefox_options = webdriver.FirefoxOptions()  
+    firefox_options.add_argument("--headless")
+    # Chose between openind Firefox and not opening it
+    #driver = webdriver.Firefox(options=firefox_options)    #Hidden 
+    driver = webdriver.Firefox()                          #Graphical
+    
+    driver.get(url)
+    upload = driver.find_element_by_name("pdbname")
+
+    absolute_path = os.path.abspath(pdbfile)
+    upload.send_keys(absolute_path)
+
+    for elem in list_elements:
+        click_elem = driver.find_element_by_name(elem)
+        click_elem.click()
+
+    driver.get(url_hbd)
+    body = (driver.find_element_by_xpath("//body").text).split("\n")
+    driver.close()
+
+    return body'''
+
 
 def body_to_list(body):
     """
