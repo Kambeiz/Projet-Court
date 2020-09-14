@@ -557,7 +557,7 @@ Note that angles that are undefined are written as 999.99
     print("Cation-Pi Interactions within 6 Angstroms")
 
 
-    df_coors_i = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(cat_aa)) & (df_all["atom_name1"].isin(["NH","NZ"]))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
+    df_coors_i = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(cat_aa)) & (df_all["atom_name1"].isin(["NH1", "NH2", "NZ"]))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
 
 
     index_i = list(df_coors_i.index)
