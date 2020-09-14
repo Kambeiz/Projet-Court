@@ -119,6 +119,26 @@ def parse_pdb(pdb_file):
     return arr_coors, rows
 
 
+def get_angle(coor1, coor2, coor3):
+    """
+    Angle calculation
+    
+    Arguments
+    ----------
+    coor* (Numpy array): 3D coordinate of one atom
+
+    Returns
+    -------
+    angle_deg (float): Angle between three atoms.
+    """
+    vec2_1 = coor1 - coor2
+    vec2_3 = coor3 - coor2 
+    
+    dot = np.dot(vec2_1, vec2_3)/(np.linalg.norm(vec2_1)*np.linalg.norm(vec2_3))
+    angle = np.arccos(dot)
+    angle_deg= np.degrees(angle)
+    return angle_deg
+
 def get_dihedral(coor1, coor2, coor3, coor4):
     """
     Dihedral angle calculation.
@@ -145,7 +165,6 @@ def get_dihedral(coor1, coor2, coor3, coor4):
         return angle_deg
     else:
         return -angle_deg
-
 
 def launching_HBONDS(pdbfile):
     """
@@ -606,3 +625,4 @@ Note that angles that are undefined are written as 999.99
         header_arom_i = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(cation-Pi)", "Angle"]
         table_arom_i = tabulate(df_arom_i, headers = header_arom_i, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
         print(table_arom_i, "\n")
+
