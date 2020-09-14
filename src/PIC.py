@@ -261,7 +261,7 @@ if __name__ == "__main__":
         for j in range(i+1, arr_coors.shape[0]):
             # Add a row to the list only if the distance between them is below 
             # the threshold, and if atoms are form a different residue
-            if (dist_mat[i,j] < 10) and (rows_list[i][4] != rows_list[j][4]):
+            if (dist_mat[i,j] < 10):
                 # [Atom 1] [Atom 2] [Distance between Atom 1 and Atom 2]
                 rows_all.append(rows_list[i]+rows_list[j]+[dist_mat[i,j]])
     # Convert the list of list into a dataframe
@@ -279,7 +279,7 @@ if __name__ == "__main__":
 
     df_hydrophobic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(hdc_aa)) & (df_all["res_name2"].isin(hdc_aa)) & 
                                                                                                      (df_all["atom_name1"].str.contains("C[BGDE]")) & (df_all["atom_name2"].str.contains("C[BGDE]")) &
-                                                                                                     (df_all["atom_dist"] <= 5.0)].drop_duplicates()
+                                                                                                     (df_all["atom_dist"] <= 5.0) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
     if df_hydrophobic.empty:
         print("")
         print("NO INTRAPROTEIN HYDROPHOBIC INTERACTIONS FOUND\n\n".center(106))
@@ -370,7 +370,7 @@ Note that angles that are undefined are written as 999.99
 
     df_ionic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(ion_aa)) & (df_all["res_name2"].isin(ion_aa)) & 
                                                                                                (df_all["atom_name1"].str.match("[NO][HEZ][^D]*")) & (df_all["atom_name2"].str.match("[NO][HEZ][D^]*")) &
-                                                                                               (df_all["atom_dist"] < 6)].drop_duplicates()
+                                                                                               (df_all["atom_dist"] < 6) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
     if df_ionic.empty:
         print("")
         print("NO IONIC INTERACTIONS FOUND\n\n\n".center(106))
@@ -388,9 +388,9 @@ Note that angles that are undefined are written as 999.99
 
     # Calculate the aromatics centroids coordinates
     centroids_PHE_TYR = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(["PHE", "TYR"])) &
-                                                                        (df_all["atom_name1"].str.contains("C[GDEZ]"))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
+                                                                        (df_all["atom_name1"].str.contains("C[GDEZ]")) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
     centroids_TRP = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"] == "TRP") &
-                                                                    (df_all["atom_name1"].str.contains("C[DEZH][23]"))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
+                                                                    (df_all["atom_name1"].str.contains("C[DEZH][23]")) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
 
 
     # Creates a dataframe with every aromatics centroids
@@ -434,7 +434,7 @@ Note that angles that are undefined are written as 999.99
         #Insert the dist column
         df_aromatic["D(centroid-centroid)"] = list_dist
 
-
+        """
         #Calculate the dihedral angles NOT WORKING
         res_1 = df_aromatic.iloc[:,0].to_numpy()
         res_2 = df_aromatic.iloc[:,3].to_numpy()
@@ -460,6 +460,7 @@ Note that angles that are undefined are written as 999.99
 
         #Insert the dihedral angle column
         df_aromatic["Dihedral Angle"] = dihedral_angle
+        """
   
         #Creates a beautiful table with tabulate :)
         header_aromatic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(centroid-centroid)", "Dihedral Angle"]
