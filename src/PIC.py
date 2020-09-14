@@ -35,9 +35,9 @@ import os
 import sys
 import argparse
 import re
-import math
+# import math
 
-import numpy as np
+# import numpy as np
 import pandas as pd
 from tabulate import tabulate
 from scipy.spatial import distance_matrix
@@ -102,7 +102,7 @@ def parse_pdb(pdb_file):
             # If requiered take the first NMR structure
             if line.startswith("ENDMDL"):
                break
-            # Extractes informations from the PDB
+            # Extracts informations from the PDB
             if line.startswith("ATOM"):
                 atom_num = int(line[6:11])
                 atom_name = line[12:16].strip()
@@ -121,6 +121,27 @@ def parse_pdb(pdb_file):
     return arr_coors, rows
 
 '''
+
+def get_angle(coor1, coor2, coor3):
+    """
+    Angle calculation
+    
+    Arguments
+    ----------
+    coor* (Numpy array): 3D coordinate of one atom
+    Returns
+    -------
+    angle_deg (float): Angle between three atoms.
+    """
+    vec2_1 = coor1 - coor2
+    vec2_3 = coor3 - coor2 
+
+    dot = np.dot(vec2_1, vec2_3)/(np.linalg.norm(vec2_1)*np.linalg.norm(vec2_3))
+    angle = np.arccos(dot)
+    angle_deg= np.degrees(angle)
+    return angle_deg
+
+
 def get_dihedral(coor1, coor2, coor3, coor4):
     """
     Dihedral angle calculation.
@@ -152,7 +173,7 @@ def get_dihedral(coor1, coor2, coor3, coor4):
 
 def launching_HBONDS(pdbfile):
     """
-    Open PIC in a browser and get the Hbond file (.hbd).
+    Open PIC in a browser (headless) and get the Hbond file (.hbd).
 
     Arguments
     ---------
@@ -161,24 +182,47 @@ def launching_HBONDS(pdbfile):
     -------
     body (string): Body of the HTML page
     """
+    
+    # Url where we are launching HBOND
     url = "http://pic.mbu.iisc.ernet.in/job.html"
+    # Url where we will get our Hydrogen Interaction results
     url_hbd = "http://pic.mbu.iisc.ernet.in/TEMP/" + os.path.basename(pdbfile).split(".")[0] + ".hbd" 
+    
+    # Elements name that we will use in the page form for choosing our interactions
     list_elements = ["hbond3", "hbond4", "hbond5", "Submit"]
+    
+    # Options for the browser 
     firefox_options = webdriver.FirefoxOptions()  
     firefox_options.add_argument("--headless")
-    # Chose between openind Firefox and not opening it
+    # Chose between opening a window of Firefox and not opening it 
     driver = webdriver.Firefox(options=firefox_options)    #Hidden 
     #driver = webdriver.Firefox()                          #Graphical
     
+    
+    # Moving to the url chosen
     driver.get(url)
+    
+    # Searching the button for sendig our pdb file
     upload = driver.find_element_by_name("pdbname")
+    
+    # Getting absolute path of our pdb file
     absolute_path = os.path.abspath(pdbfile)
+    
+    # Sending the path of the file into the right form
     upload.send_keys(absolute_path)
+    
+    # Choosing our interactions
     for elem in list_elements:
         click_elem = driver.find_element_by_name(elem)
         click_elem.click()
+    
+    # Moving to the result page of interest
     driver.get(url_hbd)
+    
+    # Extracting the body text and splitting it in a list of each line
     body = (driver.find_element_by_xpath("//body").text).split("\n")
+    
+    # Closing the browser
     driver.close()
 
     return body
@@ -196,17 +240,19 @@ def body_to_list(body):
     -------
     df_hbond (dataframe): PIC Hydrogen bond interactions
     """
+    # Creating a list that will contain our information sorted
     list_hbond = []
                    
-    #Removing header
+    #Removing header and looping over the body text
     for line in page_results:
         if not line.startswith("#"):
-            res_num_d = int(line[4:9]) #or 10
+            # Extracting information per position in line
+            res_num_d = int(line[4:9]) 
             chain_id_d = line[11]
             res_name_d = line[13]
             atom_name_d = line[15:18].strip()
 
-            res_num_a = int(line[23:27]) #or 28
+            res_num_a = int(line[23:27])
             chain_id_a = line[29]
             res_name_a = line[31]
             atom_name_a = line[33:36].strip()
@@ -219,8 +265,10 @@ def body_to_list(body):
             dHN = float(line[56:62])
             aOC = float(line[63:69])
 
+            # Storing those informations into a list of list
             list_hbond.append([res_num_d, chain_id_d, res_name_d, atom_name_d, res_num_a, chain_id_a, res_name_a, atom_name_a, MO, typ, Dd_a, Dh_a, dHN, aOC])
 
+    # Return a dataframe with the list of list
     return pd.DataFrame(list_hbond)  
 
 
@@ -258,10 +306,11 @@ if __name__ == "__main__":
     print("Intraprotein Hydrophobic Interactions\n".center(106))
     print("Hydrophobic Interactions within 5 Angstroms")
 
-
+    # Defining a dataframe meeting requirements for hydrophobic interactions
     df_hydrophobic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(hdc_aa)) & (df_all["res_name2"].isin(hdc_aa)) & 
                                                                                                      (df_all["atom_name1"].str.contains("C[BGDE]")) & (df_all["atom_name2"].str.contains("C[BGDE]")) &
                                                                                                      (df_all["atom_dist"] <= 5.0) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
+    # Checking if the dataframe is empty and writing accordingly
     if df_hydrophobic.empty:
         print("")
         print("NO INTRAPROTEIN HYDROPHOBIC INTERACTIONS FOUND\n\n".center(106))
@@ -290,6 +339,8 @@ if __name__ == "__main__":
 
 
     #============================= HBOND RESULTS ==============================#
+    
+    # Call launching_HBONDS function and body_to_list 
     page_results = launching_HBONDS(pdb_file)
     df_hbond = body_to_list(page_results)
     legend_hbond = """
@@ -306,8 +357,10 @@ Note that angles that are undefined are written as 999.99
     #Intraprotein Main Chain-Main Chain Hydrogen Bonds #########################
     print("Intraprotein Main Chain-Main Chain Hydrogen Bonds\n".center(106))
     
+    # Defining a dataframe meeting the requirement of interaction type for main chain to main chain
     df_main_main = df_hbond[[0,1,2,3,4,5,6,7,10,11,12,13]][df_hbond[9] == "MM"]
 
+    # Checking if the dataframe is empty and printing accordingly
     if df_main_main.empty:
         print("")
         print("NO INTRAPROTEIN MAIN CHAIN-MAIN CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
@@ -322,6 +375,7 @@ Note that angles that are undefined are written as 999.99
     # Intraprotein Main Chain-Side Chain Hydrogen Bonds ########################
     print("Intraprotein Main Chain-Side Chain Hydrogen Bonds\n".center(106))
 
+    # Defining a dataframe meeting the requirement of interaction type for main chain to side chain
     df_main_side = df_hbond[[0,1,2,3,4,5,6,7,8,10,11,12,13]][(df_hbond[9] == "SO") | (df_hbond[9] == "SN")]
     
     if df_main_side.empty:
@@ -338,6 +392,7 @@ Note that angles that are undefined are written as 999.99
     # Intraprotein Side Chain-Side Chain Hydrogen Bonds ########################
     print("Intraprotein Side Chain-Side Chain Hydrogen Bonds\n".center(106))
 
+    # Defining a dataframe meeting the requirement of interaction type for side chain to side chain
     df_side_side = df_hbond[[0,1,2,3,4,5,6,7,8,10,11,12,13]][df_hbond[9] == "SS"]
     
     if df_side_side.empty:
@@ -356,6 +411,7 @@ Note that angles that are undefined are written as 999.99
     print("Intraprotein Ionic Interactions\n".center(106))
     print("Ionic Interactions within 6 Angstroms")
 
+    # Defining a dataframe meeting requirements for ionic interaction
     df_ionic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(ion_aa)) & (df_all["res_name2"].isin(ion_aa)) & 
                                                                                                (df_all["atom_name1"].str.match("[NO][HEZ][^D]*")) & (df_all["atom_name2"].str.match("[NO][HEZ][D^]*")) &
                                                                                                (df_all["atom_dist"] < 6) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
@@ -392,6 +448,7 @@ Note that angles that are undefined are written as 999.99
     # Calculates the distance matrix between centroids
     distmat_centro = distance_matrix(arr_centro, arr_centro)
 
+    # Creating 2 lists of residus, 2 lists of chains and one list of distance
     res_1, res_2 = [], []
     chain_1, chain_2 = [], []
     list_dist = []
