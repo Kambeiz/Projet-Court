@@ -1,13 +1,13 @@
 # Short Project: Protein Interactions Calculator
 [![Geckodriver](https://img.shields.io/badge/Geckodriver-=0.26.0-brightgreen.svg)](https://github.com/mozilla/geckodriver/releases)
 [![Selenium](https://img.shields.io/badge/Selenium-brightgreen.svg)](https://selenium-python.readthedocs.io/)
-[![Firefox](https://img.shields.io/badge/firefox-brightgreen.svg)](https://www.mozilla.org/en-US/)
+[![Firefox](https://img.shields.io/badge/Firefox-brightgreen.svg)](https://www.mozilla.org/en-US/)
 [![Pandas](https://img.shields.io/badge/Pandas-brightgreen.svg)](https://pandas.pydata.org/)
-[![ScyPy](https://img.shields.io/badge/Pandas-brightgreen.svg)](https://www.scipy.org/)
+[![ScyPy](https://img.shields.io/badge/SciPy-brightgreen.svg)](https://www.scipy.org/)
 
 
 
-M2 BI short-project at Université de Paris.
+M2-BI short-project at Université de Paris.
 
 ## Contents 
 
