@@ -61,4 +61,14 @@ Finally, you can launch the script with the following command line:
 ```bash
 python3 src/PIC.py -p data/1BTA.pdb
 ```
+Several options exists, from a help commands to cut-off choice (in Angstrum) for each interaction calculated:
 
+```bash
+python src/PIC.py [-h] -p PDB [-hydro HYDROPHOBIC] [-ion IONIC] [-AA A A] [-AS AROMSULPH] [-AC AROMCATION]
+```
+
+Which in practice, give you something like :
+
+```bash
+python3 src/PIC.py -p data/1BTA.pdb -hydro 6 -ion 5 -AA 5 7 -AS 6 -AC 7
+```
