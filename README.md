@@ -18,7 +18,7 @@ M2 BI short-project at Université de Paris.
 
 ## About this project
 
-The goal of this project is to re-implement calculations from the [Protein Interactions Calculator](http://pic.mbu.iisc.ernet.in/job.html) webserver, allowing to calculate differents interactions in a given protein structure. Our script is written in Python 3, and requier several packages included in a conda environment [env.yml](env.yml) for an user-friendly installation. It also requires an internet connection. 
+The goal of this project is to re-implement calculations from the [Protein Interactions Calculator](http://pic.mbu.iisc.ernet.in/job.html) webserver, allowing to calculate differents interactions in a given protein structure. Our script is written in Python 3, and requier several packages included in a conda environment ([env.yml](env.yml)) for an user-friendly installation. It also requires an internet connection. 
 
 ## Authors
 
