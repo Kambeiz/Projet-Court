@@ -35,9 +35,9 @@ import os
 import sys
 import argparse
 import re
-# import math
+import math
 
-# import numpy as np
+import numpy as np
 import pandas as pd
 from tabulate import tabulate
 from scipy.spatial import distance_matrix
@@ -69,7 +69,12 @@ def args():
     """
     # Declaration of expexted arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("-p", "--pdb", help="Path to the PDB file.", type=str, required=True)
+    parser.add_argument("-pdb", "--pdb", help="Path to the PDB file.", type=str, required=True)
+    parser.add_argument("-hydro", "--hydrophobic", help="Enter the interaction cut-off value (Default 5A).", type=float, required=False, default=5)
+    parser.add_argument("-ion", "--ionic", help="Enter the interaction cut-off value (Default 6A).", type=float, required=False, default=6)
+    parser.add_argument("-AA", "--aromarom", metavar="A", type=float, nargs=2, help="Enter the interaction cut-off value (Default 4.5A to 7A).", required=False, default=(4.5, 7))
+    parser.add_argument("-AS", "--aromsulph", help="Enter the interaction cut-off value (Default 5.3A).", type=float, required=False, default=5.3)
+    parser.add_argument("-AC", "--aromcation", help="Enter the interaction cut-off value (Default 6A).", type=float, required=False, default=6)
     args = parser.parse_args()
 
     # Check if the PDB file directory is valid
@@ -78,7 +83,13 @@ def args():
         sys.exit(f"{pdb_file} does not exist.\n"
                 "Please enter a valid PDB file.")
 
-    return pdb_file
+    hydro_cutoff = args.hydrophobic
+    ionic_cutoff = args.ionic
+    aromarom_cutoff_min, aromarom_cutoff_max = args.aromarom
+    aromsulph_cutoff = args.aromsulph
+    aromcation_cutoff = args.aromcation
+
+    return pdb_file, hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff
 
 
 def parse_pdb(pdb_file):
@@ -121,7 +132,6 @@ def parse_pdb(pdb_file):
     return arr_coors, rows
 
 '''
-
 def get_angle(coor1, coor2, coor3):
     """
     Angle calculation
@@ -251,15 +261,12 @@ def body_to_list(body):
             chain_id_d = line[11]
             res_name_d = line[13]
             atom_name_d = line[15:18].strip()
-
             res_num_a = int(line[23:27])
             chain_id_a = line[29]
             res_name_a = line[31]
             atom_name_a = line[33:36].strip()
-
             typ = line[37:39]
             MO = line[40]
-
             Dd_a = float(line[46:50])
             Dh_a = float(line[51:55])
             dHN = float(line[56:62])
@@ -268,8 +275,11 @@ def body_to_list(body):
             # Storing those informations into a list of list
             list_hbond.append([res_num_d, chain_id_d, res_name_d, atom_name_d, res_num_a, chain_id_a, res_name_a, atom_name_a, MO, typ, Dd_a, Dh_a, dHN, aOC])
 
-    # Return a dataframe with the list of list
-    return pd.DataFrame(list_hbond)  
+    # Cast the list of lists into a Pandas dataframe
+    aa_dict = {"A": "ALA", "R": "ARG", "N": "ASN", "D": "ASP", "C": "CYS", "E": "GLU", "Q": "GLN", "G": "GLY", "H": "HIS", "I": "ILE",
+               "L": "LEU", "K": "LYS", "M": "MET", "F": "PHE", "P": "PRO", "S": "SER", "T": "THR", "W": "TRP", "Y": "TYR", "V": "VAL"}
+    df_hbond = pd.DataFrame(list_hbond).replace({2: aa_dict, 6: aa_dict})
+    return df_hbond
 
 
 
@@ -277,7 +287,7 @@ def body_to_list(body):
 if __name__ == "__main__":
     
     # Taking the pdb_file and commandline options / parameters
-    pdb_file = args()
+    pdb_file, hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff = args()
 
     # Calling parse_pdb
     arr_coors, rows_list = parse_pdb(pdb_file)
@@ -287,11 +297,12 @@ if __name__ == "__main__":
 
     # Create list with the possible pairwise atom interactions in a given threshold
     rows_all = []
+
     for i in range(arr_coors.shape[0]):
         for j in range(i+1, arr_coors.shape[0]):
-            # Add a row to the list only if the distance between them is below 
-            # the threshold, and if atoms are form a different residue
-            if (dist_mat[i,j] < 10):
+            # Add a row to the list only if the distance between them is below the 
+            # threshold (speed-up calculation), and if atoms are form a different residue
+            if (dist_mat[i,j] < max(hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff) + 2):
                 # [Atom 1] [Atom 2] [Distance between Atom 1 and Atom 2]
                 rows_all.append(rows_list[i]+rows_list[j]+[dist_mat[i,j]])
     # Convert the list of list into a dataframe
@@ -304,12 +315,12 @@ if __name__ == "__main__":
     # Intraprotein Hydrophobic Interactions ####################################
     print("")
     print("Intraprotein Hydrophobic Interactions\n".center(106))
-    print("Hydrophobic Interactions within 5 Angstroms")
+    print(f"Hydrophobic Interactions within {hydro_cutoff} Angstroms")
 
     # Defining a dataframe meeting requirements for hydrophobic interactions
     df_hydrophobic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(hdc_aa)) & (df_all["res_name2"].isin(hdc_aa)) & 
                                                                                                      (df_all["atom_name1"].str.contains("C[BGDE]")) & (df_all["atom_name2"].str.contains("C[BGDE]")) &
-                                                                                                     (df_all["atom_dist"] <= 5.0) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
+                                                                                                     (df_all["atom_dist"] <= hydro_cutoff) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
     # Checking if the dataframe is empty and writing accordingly
     if df_hydrophobic.empty:
         print("")
@@ -409,12 +420,12 @@ Note that angles that are undefined are written as 999.99
 
     # Intraprotein Ionic Interactions ##########################################
     print("Intraprotein Ionic Interactions\n".center(106))
-    print("Ionic Interactions within 6 Angstroms")
+    print(f"Ionic Interactions within {ionic_cutoff} Angstroms")
 
     # Defining a dataframe meeting requirements for ionic interaction
     df_ionic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(ion_aa)) & (df_all["res_name2"].isin(ion_aa)) & 
                                                                                                (df_all["atom_name1"].str.match("[NO][HEZ][^D]*")) & (df_all["atom_name2"].str.match("[NO][HEZ][D^]*")) &
-                                                                                               (df_all["atom_dist"] < 6) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
+                                                                                               (df_all["atom_dist"] < ionic_cutoff) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
     if df_ionic.empty:
         print("")
         print("NO IONIC INTERACTIONS FOUND\n\n\n".center(106))
@@ -427,7 +438,7 @@ Note that angles that are undefined are written as 999.99
 
     # Intraprotein Aromatic-Aromatic Interactions ##############################
     print("Intraprotein Aromatic-Aromatic Interactions\n".center(106))
-    print("Aromatic-Aromatic Interactions within 4.5 and 7 Angstroms")
+    print(f"Aromatic-Aromatic Interactions within {aromarom_cutoff_min} and {aromarom_cutoff_max} Angstroms")
 
 
     # Calculate the aromatics centroids coordinates
@@ -455,7 +466,7 @@ Note that angles that are undefined are written as 999.99
     #Selects the residues names and chain ID of every pairs of centroids in the correct threshold
     for i in range(len(index_a)):
         for j in range(i+1, len(index_a)):
-            if (distmat_centro[i,j] > 4.5) & (distmat_centro[i,j] < 7):
+            if (distmat_centro[i,j] > aromarom_cutoff_min) & (distmat_centro[i,j] < aromarom_cutoff_max):
                 res_1.append(index_a[i][1])
                 res_2.append(index_a[j][1])
                 chain_1.append(index_a[i][0])
@@ -516,7 +527,7 @@ Note that angles that are undefined are written as 999.99
 
     # Intraprotein Aromatic-Sulphur Interactions ###############################
     print("Intraprotein Aromatic-Sulphur Interactions\n".center(106))
-    print("Aromatic-Sulphur Interactions within 5.3 Angstroms")
+    print(f"Aromatic-Sulphur Interactions within {aromsulph_cutoff} Angstroms")
 
     # Calculates the distance matrix between aromatics centroids and slphur atoms
     df_coors_s = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(sulph_aa)) & (df_all["atom_name1"].str.contains("S"))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
@@ -534,7 +545,7 @@ Note that angles that are undefined are written as 999.99
     #Selects the residues names and chain ID of every pairs of centroids/sulphurs in the correct threshold
     for i in range(len(index_a)):
         for j in range(len(index_s)):
-            if distmat_centro_sulphur[i,j] < 5.3:
+            if distmat_centro_sulphur[i,j] < aromsulph_cutoff:
                 res_1.append(index_a[i][1])
                 res_2.append(index_s[j][1])
                 chain_1.append(index_a[i][0])
@@ -567,7 +578,7 @@ Note that angles that are undefined are written as 999.99
 
     #Intraprotein Cation-Pi Interactions #######################################
     print("Intraprotein Cation-Pi Interactions\n".center(106))
-    print("Cation-Pi Interactions within 6 Angstroms")
+    print(f"Cation-Pi Interactions within {aromcation_cutoff} Angstroms")
 
 
     df_coors_i = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(cat_aa)) & (df_all["atom_name1"].isin(["NH1", "NH2", "NZ"]))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
@@ -584,7 +595,7 @@ Note that angles that are undefined are written as 999.99
     #Selects the residues names and chain ID of every pairs of centroids/cations in the correct threshold
     for i in range(len(index_a)):
         for j in range(len(index_i)):
-            if dist_mat_centro_i[i,j] < 6:
+            if dist_mat_centro_i[i,j] < aromcation_cutoff:
                 res_1.append(index_a[i][1])
                 res_2.append(index_i[j][1])
                 chain_1.append(index_a[i][0])
@@ -611,4 +622,3 @@ Note that angles that are undefined are written as 999.99
         header_arom_i = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(cation-Pi)", "Angle"]
         table_arom_i = tabulate(df_arom_i, headers = header_arom_i, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
         print(table_arom_i, "\n")
-
