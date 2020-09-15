@@ -50,8 +50,7 @@ from selenium import webdriver
 # CONSTANTS ####################################################################
 hdc_aa = ["ALA", "VAL", "LEU", "ILE", "MET", "PHE", "TRP", "PRO", "TYR"]
 ani_aa = ["ASP", "GLU"]
-cat_aa = ["ARG", "LYS"]
-ion_aa = ["ASP", "GLU", "ARG", "HIS", "LYS"]
+cat_aa = ["ARG", "LYS", "HIS"]
 sulph_aa = ["CYS", "MET"]
 ################################################################################
 
@@ -321,7 +320,7 @@ if __name__ == "__main__":
         for j in range(i+1, arr_coors.shape[0]):
             # Add a row to the list only if the distance between them is below the 
             # threshold (speed-up calculation), and if atoms are form a different residue
-            if (dist_mat[i,j] < max(hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff) + 1): # +1 to select all residues in arom_arom interactions
+            if (dist_mat[i,j] < max(hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff) + 3): # +3 to select all residues in arom_arom interactions
                 # [Atom 1] [Atom 2] [Distance between Atom 1 and Atom 2]
                 rows_all.append(rows_list[i]+rows_list[j]+[dist_mat[i,j]])
     # Convert the list of list into a dataframe
@@ -451,9 +450,10 @@ Note that angles that are undefined are written as 999.99
     print(f"Ionic Interactions within {ionic_cutoff} Angstroms")
 
     # Create a dataframe with ionic interactions
-    df_ionic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(ion_aa)) & (df_all["res_name2"].isin(ion_aa)) & 
-                                                                                               (df_all["atom_name1"].str.match("[NO][HEZ][^D]*")) & (df_all["atom_name2"].str.match("[NO][HEZ][D^]*")) &
-                                                                                               (df_all["atom_dist"] < ionic_cutoff) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
+    df_ionic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][((((df_all["res_name1"].isin(ani_aa)) & (df_all["res_name2"].isin(cat_aa))) & ((df_all["atom_name1"].str.contains("O[DE]+")) & (df_all["atom_name2"].str.contains("N[DHZE]+")))) |
+                                                                                                (((df_all["res_name2"].isin(ani_aa)) & (df_all["res_name1"].isin(cat_aa))) & ((df_all["atom_name2"].str.contains("O[DE]+")) & (df_all["atom_name1"].str.contains("N[DHZE]+"))))) &
+                                                                                                  (df_all["atom_dist"] < ionic_cutoff) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
+
     # Check if the dataframe is empty and print accordingly
     if df_ionic.empty:
         print("")
@@ -523,11 +523,12 @@ Note that angles that are undefined are written as 999.99
         #Insert the dist column
         df_aromatic["D(centroid-centroid)"] = list_dist
 
-        """
+
         #Calculate the dihedral angles NOT WORKING
         res_1 = df_aromatic.iloc[:,0].to_numpy()
         res_2 = df_aromatic.iloc[:,3].to_numpy()
 
+        """
         # Calculate the dihedral angles between 2 points of each aromatic cycle
         dihedral_angle = []
         for i in range(len(res_1)):
