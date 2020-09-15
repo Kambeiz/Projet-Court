@@ -18,12 +18,13 @@ Protein interaction tables
 
 Usage:
 ======
-    $ python PIC.py -p pdb_file
+    $ python PIC.py [-h] -pdb PDB [-hydro HYDROPHOBIC] [-ion IONIC] [-AA A A] [-AS AROMSULPH] [-AC AROMCATION]
+
 """
 
 __author__ = "Debbah Nagi, Vander Meersche Yann"
 
-__license__ = "M2BI"
+__license__ = "M2-BI"
 __version__ = "1.0.0"
 __date__ = "2020-09-09"
 __email__ = "debbah.nag@gmail.com, yann-vm@hotmail.fr"
@@ -69,7 +70,7 @@ def args():
     """
     # Declaration of expexted arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("-pdb", "--pdb", help="Path to the PDB file.", type=str, required=True)
+    parser.add_argument("-pdb", "--pdbfile", help="Path to the PDB file.", type=str, required=True)
     parser.add_argument("-hydro", "--hydrophobic", help="Enter the interaction cut-off value (Default 5A).", type=float, required=False, default=5)
     parser.add_argument("-ion", "--ionic", help="Enter the interaction cut-off value (Default 6A).", type=float, required=False, default=6)
     parser.add_argument("-AA", "--aromarom", metavar="A", type=float, nargs=2, help="Enter the interaction cut-off value (Default 4.5A to 7A).", required=False, default=(4.5, 7))
@@ -78,10 +79,11 @@ def args():
     args = parser.parse_args()
 
     # Check if the PDB file directory is valid
-    pdb_file = args.pdb
+    pdb_file = args.pdbfile
     if not os.path.isfile(pdb_file):
         sys.exit(f"{pdb_file} does not exist.\n"
                 "Please enter a valid PDB file.")
+
 
     hydro_cutoff = args.hydrophobic
     ionic_cutoff = args.ionic
@@ -126,7 +128,7 @@ def parse_pdb(pdb_file):
                 # Appends these informations into a list
                 rows.append([atom_num, atom_name, res_name, chain_id, res_num, x, y, z])
 
-    # Creates a NumPy array containing atoms coordinates
+    # Create a NumPy array containing atoms coordinates
     arr_coors = pd.DataFrame(rows, columns=["atom_num", "atom_name", "res_name", "chain_id", "res_num", "x", "y", "z"])[["x", "y", "z"]].to_numpy()
 
     return arr_coors, rows
@@ -134,14 +136,15 @@ def parse_pdb(pdb_file):
 '''
 def get_angle(coor1, coor2, coor3):
     """
-    Angle calculation
+    Angle calculation.
     
     Arguments
     ----------
     coor* (Numpy array): 3D coordinate of one atom
+
     Returns
     -------
-    angle_deg (float): Angle between three atoms.
+    angle_deg (float): Angle between three atoms
     """
     vec2_1 = coor1 - coor2
     vec2_3 = coor3 - coor2 
@@ -149,6 +152,7 @@ def get_angle(coor1, coor2, coor3):
     dot = np.dot(vec2_1, vec2_3)/(np.linalg.norm(vec2_1)*np.linalg.norm(vec2_3))
     angle = np.arccos(dot)
     angle_deg= np.degrees(angle)
+
     return angle_deg
 
 
@@ -198,10 +202,10 @@ def launching_HBONDS(pdbfile):
     # Url where we will get our Hydrogen Interaction results
     url_hbd = "http://pic.mbu.iisc.ernet.in/TEMP/" + os.path.basename(pdbfile).split(".")[0] + ".hbd" 
     
-    # Elements name that we will use in the page form for choosing our interactions
+    # Elements name that we will use in the page form to chose our interactions
     list_elements = ["hbond3", "hbond4", "hbond5", "Submit"]
     
-    # Options for the browser 
+    # Browser options
     firefox_options = webdriver.FirefoxOptions()  
     firefox_options.add_argument("--headless")
     # Chose between opening a window of Firefox and not opening it 
@@ -209,30 +213,30 @@ def launching_HBONDS(pdbfile):
     #driver = webdriver.Firefox()                          #Graphical
     
     
-    # Moving to the url chosen
+    # Go to the chosen url
     driver.get(url)
     
-    # Searching the button for sendig our pdb file
+    # Searche the button for sending our PDB file
     upload = driver.find_element_by_name("pdbname")
     
-    # Getting absolute path of our pdb file
+    # Get absolute path of our PDB file
     absolute_path = os.path.abspath(pdbfile)
     
-    # Sending the path of the file into the right form
+    # Send the path of the file into the right form
     upload.send_keys(absolute_path)
     
-    # Choosing our interactions
+    # Choose our interactions
     for elem in list_elements:
         click_elem = driver.find_element_by_name(elem)
         click_elem.click()
     
-    # Moving to the result page of interest
+    # Move to the result page of interest
     driver.get(url_hbd)
     
-    # Extracting the body text and splitting it in a list of each line
-    body = (driver.find_element_by_xpath("//body").text).split("\n")
+    # Extracte the body text
+    body = driver.find_element_by_xpath("//body").text
     
-    # Closing the browser
+    # Close the browser
     driver.close()
 
     return body
@@ -250,13 +254,13 @@ def body_to_list(body):
     -------
     df_hbond (dataframe): PIC Hydrogen bond interactions
     """
-    # Creating a list that will contain our information sorted
+    # Create a list with Hbond table rows
     list_hbond = []
                    
-    #Removing header and looping over the body text
-    for line in page_results:
+    #Remove header and looping over the body text
+    for line in body.split("\n"):
         if not line.startswith("#"):
-            # Extracting information per position in line
+            # Extract information by position in line
             res_num_d = int(line[4:9]) 
             chain_id_d = line[11]
             res_name_d = line[13]
@@ -272,37 +276,39 @@ def body_to_list(body):
             dHN = float(line[56:62])
             aOC = float(line[63:69])
 
-            # Storing those informations into a list of list
+            # Store those informations into a list of list
             list_hbond.append([res_num_d, chain_id_d, res_name_d, atom_name_d, res_num_a, chain_id_a, res_name_a, atom_name_a, MO, typ, Dd_a, Dh_a, dHN, aOC])
 
     # Cast the list of lists into a Pandas dataframe
     aa_dict = {"A": "ALA", "R": "ARG", "N": "ASN", "D": "ASP", "C": "CYS", "E": "GLU", "Q": "GLN", "G": "GLY", "H": "HIS", "I": "ILE",
                "L": "LEU", "K": "LYS", "M": "MET", "F": "PHE", "P": "PRO", "S": "SER", "T": "THR", "W": "TRP", "Y": "TYR", "V": "VAL"}
     df_hbond = pd.DataFrame(list_hbond).replace({2: aa_dict, 6: aa_dict})
+
     return df_hbond
 
 
 
-# Main program
+################################# MAIN PROGRAM #################################
+
 if __name__ == "__main__":
     
-    # Taking the pdb_file and commandline options / parameters
+    # Take the pdb_file and command line options/parameters
     pdb_file, hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff = args()
 
-    # Calling parse_pdb
+    # Parse the PDB file
     arr_coors, rows_list = parse_pdb(pdb_file)
 
-    # Creating a distance_matrix with the NumPy array
+    # Create a distance_matrix with the coordinates NumPy arrays
     dist_mat = distance_matrix(arr_coors, arr_coors)
 
-    # Create list with the possible pairwise atom interactions in a given threshold
+    # Create list with the possible pairwise atom interactions below a given threshold
     rows_all = []
 
     for i in range(arr_coors.shape[0]):
         for j in range(i+1, arr_coors.shape[0]):
             # Add a row to the list only if the distance between them is below the 
             # threshold (speed-up calculation), and if atoms are form a different residue
-            if (dist_mat[i,j] < max(hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff) + 2):
+            if (dist_mat[i,j] < max(hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff) + 1): # +1 to select all residues in arom_arom interactions
                 # [Atom 1] [Atom 2] [Distance between Atom 1 and Atom 2]
                 rows_all.append(rows_list[i]+rows_list[j]+[dist_mat[i,j]])
     # Convert the list of list into a dataframe
@@ -317,11 +323,11 @@ if __name__ == "__main__":
     print("Intraprotein Hydrophobic Interactions\n".center(106))
     print(f"Hydrophobic Interactions within {hydro_cutoff} Angstroms")
 
-    # Defining a dataframe meeting requirements for hydrophobic interactions
+    # Create a dataframe with hydrophobic interactions
     df_hydrophobic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(hdc_aa)) & (df_all["res_name2"].isin(hdc_aa)) & 
                                                                                                      (df_all["atom_name1"].str.contains("C[BGDE]")) & (df_all["atom_name2"].str.contains("C[BGDE]")) &
                                                                                                      (df_all["atom_dist"] <= hydro_cutoff) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
-    # Checking if the dataframe is empty and writing accordingly
+    # Check if the dataframe is empty and print accordingly
     if df_hydrophobic.empty:
         print("")
         print("NO INTRAPROTEIN HYDROPHOBIC INTERACTIONS FOUND\n\n".center(106))
@@ -336,9 +342,11 @@ if __name__ == "__main__":
     print("Intraprotein Disulphide Bridges\n".center(106))
     print("Disulphide bridges: Between sulphur atoms of cysteines within 2.2 Angstroms")
 
+    # Create a dataframe with disulphide bridges
     df_disulphide = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2","atom_dist"]][(df_all["res_name1"] == "CYS") & (df_all["res_name2"] == "CYS") &
                                                                                                                 (df_all["atom_name1"] == "SG") & (df_all["atom_name2"] == "SG") &
                                                                                                                 (df_all["atom_dist"] <= 2.2)]
+    # Check if the dataframe is empty and print accordingly
     if df_disulphide.empty:
         print("")
         print("NO INTRAPROTEIN DISULPHIDE BRIDGES FOUND\n\n\n".center(106))
@@ -354,6 +362,7 @@ if __name__ == "__main__":
     # Call launching_HBONDS function and body_to_list 
     page_results = launching_HBONDS(pdb_file)
     df_hbond = body_to_list(page_results)
+    
     legend_hbond = """
 Dd-a     =   Distance Between Donor and Acceptor
 Dh-a     =   Distance Between Hydrogen and Acceptor
@@ -368,10 +377,10 @@ Note that angles that are undefined are written as 999.99
     #Intraprotein Main Chain-Main Chain Hydrogen Bonds #########################
     print("Intraprotein Main Chain-Main Chain Hydrogen Bonds\n".center(106))
     
-    # Defining a dataframe meeting the requirement of interaction type for main chain to main chain
+    # Create a dataframe with main chain-main chain hydrogen bonds
     df_main_main = df_hbond[[0,1,2,3,4,5,6,7,10,11,12,13]][df_hbond[9] == "MM"]
 
-    # Checking if the dataframe is empty and printing accordingly
+    # Check if the dataframe is empty and print accordingly
     if df_main_main.empty:
         print("")
         print("NO INTRAPROTEIN MAIN CHAIN-MAIN CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
@@ -386,9 +395,10 @@ Note that angles that are undefined are written as 999.99
     # Intraprotein Main Chain-Side Chain Hydrogen Bonds ########################
     print("Intraprotein Main Chain-Side Chain Hydrogen Bonds\n".center(106))
 
-    # Defining a dataframe meeting the requirement of interaction type for main chain to side chain
+    # Create a dataframe with main chain-side chain hydrogen bonds
     df_main_side = df_hbond[[0,1,2,3,4,5,6,7,8,10,11,12,13]][(df_hbond[9] == "SO") | (df_hbond[9] == "SN")]
     
+    # Check if the dataframe is empty and print accordingly
     if df_main_side.empty:
         print("")
         print("NO INTRAPROTEIN MAIN CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
@@ -403,9 +413,10 @@ Note that angles that are undefined are written as 999.99
     # Intraprotein Side Chain-Side Chain Hydrogen Bonds ########################
     print("Intraprotein Side Chain-Side Chain Hydrogen Bonds\n".center(106))
 
-    # Defining a dataframe meeting the requirement of interaction type for side chain to side chain
+    # Create a dataframe with side chain-side chain hydrogen bonds
     df_side_side = df_hbond[[0,1,2,3,4,5,6,7,8,10,11,12,13]][df_hbond[9] == "SS"]
     
+    # Check if the dataframe is empty and print accordingly
     if df_side_side.empty:
         print("")
         print("NO INTRAPROTEIN SIDE CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
@@ -422,10 +433,11 @@ Note that angles that are undefined are written as 999.99
     print("Intraprotein Ionic Interactions\n".center(106))
     print(f"Ionic Interactions within {ionic_cutoff} Angstroms")
 
-    # Defining a dataframe meeting requirements for ionic interaction
+    # Create a dataframe with ionic interactions
     df_ionic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(ion_aa)) & (df_all["res_name2"].isin(ion_aa)) & 
                                                                                                (df_all["atom_name1"].str.match("[NO][HEZ][^D]*")) & (df_all["atom_name2"].str.match("[NO][HEZ][D^]*")) &
                                                                                                (df_all["atom_dist"] < ionic_cutoff) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
+    # Check if the dataframe is empty and print accordingly
     if df_ionic.empty:
         print("")
         print("NO IONIC INTERACTIONS FOUND\n\n\n".center(106))
@@ -440,40 +452,44 @@ Note that angles that are undefined are written as 999.99
     print("Intraprotein Aromatic-Aromatic Interactions\n".center(106))
     print(f"Aromatic-Aromatic Interactions within {aromarom_cutoff_min} and {aromarom_cutoff_max} Angstroms")
 
-
     # Calculate the aromatics centroids coordinates
-    centroids_PHE_TYR = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(["PHE", "TYR"])) &
-                                                                        (df_all["atom_name1"].str.contains("C[GDEZ]")) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
-    centroids_TRP = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"] == "TRP") &
-                                                                    (df_all["atom_name1"].str.contains("C[DEZH][23]")) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
-
-
-    # Creates a dataframe with every aromatics centroids
-    centroids_arom = pd.concat([centroids_PHE_TYR, centroids_TRP])
-    # Grabs the index (chain_id, res_num)
-    index_a = list(centroids_arom.index)
-    # Transforms the dataframe into a coordinate array
-    arr_centro = centroids_arom.to_numpy()
-
-
-    # Calculates the distance matrix between centroids
-    distmat_centro = distance_matrix(arr_centro, arr_centro)
-
-    # Creating 2 lists of residus, 2 lists of chains and one list of distance
     res_1, res_2 = [], []
     chain_1, chain_2 = [], []
     list_dist = []
-    #Selects the residues names and chain ID of every pairs of centroids in the correct threshold
-    for i in range(len(index_a)):
-        for j in range(i+1, len(index_a)):
-            if (distmat_centro[i,j] > aromarom_cutoff_min) & (distmat_centro[i,j] < aromarom_cutoff_max):
-                res_1.append(index_a[i][1])
-                res_2.append(index_a[j][1])
-                chain_1.append(index_a[i][0])
-                chain_2.append(index_a[j][0])
-                list_dist.append(distmat_centro[i,j])
+    
+    # Check if the Dataframe is empty to not raise an exception
+    try:
+        # Create 2 lists of residus, 2 lists of chains and one list of distance
+        centroids_PHE_TYR = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(["PHE", "TYR"])) &
+                                                                            (df_all["atom_name1"].str.contains("C[GDEZ]")) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
+        centroids_TRP = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"] == "TRP") &
+                                                                        (df_all["atom_name1"].str.contains("C[DEZH][23]")) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
+    
+        # Create a dataframe with every aromatics centroids
+        centroids_arom = pd.concat([centroids_PHE_TYR, centroids_TRP])
+        # Grab the index (chain_id, res_num)
+        index_a = list(centroids_arom.index)
+        # Transform the dataframe into a coordinate array
+        arr_centro = centroids_arom.to_numpy()
 
-    #Selects the lines of the dataframe corresponding to these pairs
+        # Calculate the distance matrix between centroids
+        distmat_centro = distance_matrix(arr_centro, arr_centro)
+
+        #Select the residues names and chain ID of every pairs of centroids in the correct threshold
+        for i in range(len(index_a)):
+            for j in range(i+1, len(index_a)):
+                if (distmat_centro[i,j] > aromarom_cutoff_min) & (distmat_centro[i,j] < aromarom_cutoff_max):
+                    res_1.append(index_a[i][1])
+                    res_2.append(index_a[j][1])
+                    chain_1.append(index_a[i][0])
+                    chain_2.append(index_a[j][0])
+                    list_dist.append(distmat_centro[i,j])
+
+    except pd.core.base.DataError:
+        pass
+
+
+    # Create a dataframe with aromatic-aromatic interactions
     df_aromatic = pd.DataFrame()
     for i in range(len(res_1)):
         row = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & 
@@ -482,7 +498,7 @@ Note that angles that are undefined are written as 999.99
                                                                                                ((df_all["res_num2"] == res_1[i]) & (df_all["chain_id2"] == chain_1[i])))].drop_duplicates()
         df_aromatic = df_aromatic.append(row)
 
-
+    # Check if the dataframe is empty and print accordingly
     if df_aromatic.empty:
         print("")
         print("NO INTRAPROTEIN AROMATIC-AROMATIC INTERACTIONS FOUND\n\n\n".center(106))
@@ -530,29 +546,34 @@ Note that angles that are undefined are written as 999.99
     print(f"Aromatic-Sulphur Interactions within {aromsulph_cutoff} Angstroms")
 
     # Calculates the distance matrix between aromatics centroids and slphur atoms
-    df_coors_s = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(sulph_aa)) & (df_all["atom_name1"].str.contains("S"))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
-    # Grabs the index (chain_id, res_num)
-    index_s = list(df_coors_s.index)
-    # Transforms the dataframe into a coordinate array
-    arr_coors_s = df_coors_s.to_numpy()
-
-    # Calculates the distance matrix between aromatic centroids and sulphur atoms
-    distmat_centro_sulphur = distance_matrix(arr_centro, arr_coors_s)
-
     res_1, res_2 = [], []
     chain_1, chain_2 = [], []
     list_dist = []
-    #Selects the residues names and chain ID of every pairs of centroids/sulphurs in the correct threshold
-    for i in range(len(index_a)):
-        for j in range(len(index_s)):
-            if distmat_centro_sulphur[i,j] < aromsulph_cutoff:
-                res_1.append(index_a[i][1])
-                res_2.append(index_s[j][1])
-                chain_1.append(index_a[i][0])
-                chain_2.append(index_s[j][0])
-                list_dist.append(distmat_centro_sulphur[i,j])
 
-    #Selects the lines of the dataframe corresponding to these pairs
+    # Check if the Dataframe is empty to not raise an exception
+    try:
+        df_coors_s = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(sulph_aa)) & (df_all["atom_name1"].str.contains("S"))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
+        # Grabs the index (chain_id, res_num)
+        index_s = list(df_coors_s.index)
+        # Transforms the dataframe into a coordinate array
+        arr_coors_s = df_coors_s.to_numpy()
+
+        # Calculates the distance matrix between aromatic centroids and sulphur atoms
+        distmat_centro_sulphur = distance_matrix(arr_centro, arr_coors_s)
+
+        #Selects the residues names and chain ID of every pairs of centroids/sulphurs in the correct threshold
+        for i in range(len(index_a)):
+            for j in range(len(index_s)):
+                if distmat_centro_sulphur[i,j] < aromsulph_cutoff:
+                    res_1.append(index_a[i][1])
+                    res_2.append(index_s[j][1])
+                    chain_1.append(index_a[i][0])
+                    chain_2.append(index_s[j][0])
+                    list_dist.append(distmat_centro_sulphur[i,j])
+    except pd.core.base.DataError:
+        pass
+
+    # Create a dataframe with aromatic-sulphur interactions
     df_aromatic_sulphur = pd.DataFrame()
     for i in range(len(res_1)):
         row = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & 
@@ -561,13 +582,12 @@ Note that angles that are undefined are written as 999.99
                                                                                                ((df_all["res_num2"] == res_1[i]) & (df_all["chain_id2"] == chain_1[i])))].drop_duplicates()
         df_aromatic_sulphur = df_aromatic_sulphur.append(row)
 
-
-
+    # Check if the dataframe is empty and print accordingly
     if df_aromatic_sulphur.empty:
         print("")
         print("NO INTRAPROTEIN AROMATIC-SULPHUR INTERACTIONS FOUND\n\n\n".center(106))
     else:
-        #Insert the dist column
+        # Insert the dist column
         df_aromatic_sulphur["D(centroid-centroid)"] = list_dist
 
         header_aromatic_s = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(Centroid-Sulphur)", "Angle"]
@@ -576,32 +596,38 @@ Note that angles that are undefined are written as 999.99
 
 
 
-    #Intraprotein Cation-Pi Interactions #######################################
+    # Intraprotein Cation-Pi Interactions #######################################
     print("Intraprotein Cation-Pi Interactions\n".center(106))
     print(f"Cation-Pi Interactions within {aromcation_cutoff} Angstroms")
 
-
-    df_coors_i = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(cat_aa)) & (df_all["atom_name1"].isin(["NH1", "NH2", "NZ"]))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
-
-
-    index_i = list(df_coors_i.index)
-    arr_coors_i = df_coors_i.to_numpy()
-
-    dist_mat_centro_i = distance_matrix(arr_centro, arr_coors_i)
-
+    # Calculates the distance matrix between aromatics centroids and cationics atoms
     res_1, res_2 = [], []
     chain_1, chain_2 = [], []
     list_dist = []
-    #Selects the residues names and chain ID of every pairs of centroids/cations in the correct threshold
-    for i in range(len(index_a)):
-        for j in range(len(index_i)):
-            if dist_mat_centro_i[i,j] < aromcation_cutoff:
-                res_1.append(index_a[i][1])
-                res_2.append(index_i[j][1])
-                chain_1.append(index_a[i][0])
-                chain_2.append(index_i[j][0])
-                list_dist.append(dist_mat_centro_i[i,j])
 
+    # Check if the Dataframe is empty to not raise an exception
+    try:
+        df_coors_i = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(cat_aa)) & (df_all["atom_name1"].isin(["NH1", "NH2", "NZ"]))].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
+
+        index_i = list(df_coors_i.index)
+        arr_coors_i = df_coors_i.to_numpy()
+
+        dist_mat_centro_i = distance_matrix(arr_centro, arr_coors_i)
+
+        #Selects the residues names and chain ID of every pairs of centroids/cations in the correct threshold
+        for i in range(len(index_a)):
+            for j in range(len(index_i)):
+                if dist_mat_centro_i[i,j] < aromcation_cutoff:
+                    res_1.append(index_a[i][1])
+                    res_2.append(index_i[j][1])
+                    chain_1.append(index_a[i][0])
+                    chain_2.append(index_i[j][0])
+                    list_dist.append(dist_mat_centro_i[i,j])
+
+    except pd.core.base.DataError:
+        pass
+
+    # Create a dataframe with cation-pi interactions
     df_arom_i = pd.DataFrame()
     for i in range(len(res_1)):
         row = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & 
@@ -610,8 +636,7 @@ Note that angles that are undefined are written as 999.99
                                                                                                ((df_all["res_num2"] == res_1[i]) & (df_all["chain_id2"] == chain_1[i])))].drop_duplicates()
         df_arom_i = df_arom_i.append(row)
 
-
-
+    # Check if the dataframe is empty and print accordingly
     if df_arom_i.empty:
         print("")
         print("NO INTRAPROTEIN CATION-PI INTERACTIONS FOUND\n\n\n".center(106))
