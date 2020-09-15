@@ -38,6 +38,7 @@ import argparse
 import re
 import math
 
+import selenium
 import numpy as np
 import pandas as pd
 from tabulate import tabulate
@@ -202,10 +203,10 @@ def launching_HBONDS(pdbfile):
     # Url where we will get our Hydrogen Interaction results
     url_hbd = "http://pic.mbu.iisc.ernet.in/TEMP/" + os.path.basename(pdbfile).split(".")[0] + ".hbd" 
     
-    # Elements name that we will use in the page form to chose our interactions
+    # Elements name that we will use in the page form for choosing our interactions
     list_elements = ["hbond3", "hbond4", "hbond5", "Submit"]
     
-    # Browser options
+    # Options for the browser 
     firefox_options = webdriver.FirefoxOptions()  
     firefox_options.add_argument("--headless")
     # Chose between opening a window of Firefox and not opening it 
@@ -213,34 +214,41 @@ def launching_HBONDS(pdbfile):
     #driver = webdriver.Firefox()                          #Graphical
     
     
-    # Go to the chosen url
-    driver.get(url)
+    # Moving to the url chosen
+    # Handling exception if the page is not loaded correctly
+    try:
+        driver.get(url)
+    # Returning a empty file, and closing the browser
+    except selenium.common.exceptions.WebDriverException:
+        print("Impossible to extract hydrogen bonds (are you connected to internet?) \n \n".center(106))
+        driver.close()
+        body = ""
+        return body
     
-    # Searche the button for sending our PDB file
+    # Searching the button for sendig our pdb file
     upload = driver.find_element_by_name("pdbname")
     
-    # Get absolute path of our PDB file
+    # Getting absolute path of our pdb file
     absolute_path = os.path.abspath(pdbfile)
     
-    # Send the path of the file into the right form
+    # Sending the path of the file into the right form
     upload.send_keys(absolute_path)
     
-    # Choose our interactions
+    # Choosing our interactions
     for elem in list_elements:
         click_elem = driver.find_element_by_name(elem)
         click_elem.click()
     
-    # Move to the result page of interest
+    # Moving to the result page of interest
     driver.get(url_hbd)
     
-    # Extracte the body text
-    body = driver.find_element_by_xpath("//body").text
+    # Extracting the body text and splitting it in a list of each line
+    body = (driver.find_element_by_xpath("//body").text).split("\n")
     
-    # Close the browser
+    # Closing the browser
     driver.close()
 
     return body
-
 
 def body_to_list(body):
     """
@@ -254,37 +262,42 @@ def body_to_list(body):
     -------
     df_hbond (dataframe): PIC Hydrogen bond interactions
     """
-    # Create a list with Hbond table rows
-    list_hbond = []
-                   
-    #Remove header and looping over the body text
-    for line in body.split("\n"):
-        if not line.startswith("#"):
-            # Extract information by position in line
-            res_num_d = int(line[4:9]) 
-            chain_id_d = line[11]
-            res_name_d = line[13]
-            atom_name_d = line[15:18].strip()
-            res_num_a = int(line[23:27])
-            chain_id_a = line[29]
-            res_name_a = line[31]
-            atom_name_a = line[33:36].strip()
-            typ = line[37:39]
-            MO = line[40]
-            Dd_a = float(line[46:50])
-            Dh_a = float(line[51:55])
-            dHN = float(line[56:62])
-            aOC = float(line[63:69])
+    
+    if body == "":
+        df_hbond = pd.DataFrame()
+        return df_hbond
+    else:
+        # Creating a list that will contain our information sorted
+        list_hbond = []
+                       
+        #Removing header and looping over the body text
+        for line in page_results:
+            if not line.startswith("#"):
+                # Extracting information per position in line
+                res_num_d = int(line[4:9]) 
+                chain_id_d = line[11]
+                res_name_d = line[13]
+                atom_name_d = line[15:18].strip()
+                res_num_a = int(line[23:27])
+                chain_id_a = line[29]
+                res_name_a = line[31]
+                atom_name_a = line[33:36].strip()
+                typ = line[37:39]
+                MO = line[40]
+                Dd_a = float(line[46:50])
+                Dh_a = float(line[51:55])
+                dHN = float(line[56:62])
+                aOC = float(line[63:69])
+    
+                # Storing those informations into a list of list
+                list_hbond.append([res_num_d, chain_id_d, res_name_d, atom_name_d, res_num_a, chain_id_a, res_name_a, atom_name_a, MO, typ, Dd_a, Dh_a, dHN, aOC])
+    
+        # Cast the list of lists into a Pandas dataframe
+        aa_dict = {"A": "ALA", "R": "ARG", "N": "ASN", "D": "ASP", "C": "CYS", "E": "GLU", "Q": "GLN", "G": "GLY", "H": "HIS", "I": "ILE",
+                   "L": "LEU", "K": "LYS", "M": "MET", "F": "PHE", "P": "PRO", "S": "SER", "T": "THR", "W": "TRP", "Y": "TYR", "V": "VAL"}
+        df_hbond = pd.DataFrame(list_hbond).replace({2: aa_dict, 6: aa_dict})
+        return df_hbond
 
-            # Store those informations into a list of list
-            list_hbond.append([res_num_d, chain_id_d, res_name_d, atom_name_d, res_num_a, chain_id_a, res_name_a, atom_name_a, MO, typ, Dd_a, Dh_a, dHN, aOC])
-
-    # Cast the list of lists into a Pandas dataframe
-    aa_dict = {"A": "ALA", "R": "ARG", "N": "ASN", "D": "ASP", "C": "CYS", "E": "GLU", "Q": "GLN", "G": "GLY", "H": "HIS", "I": "ILE",
-               "L": "LEU", "K": "LYS", "M": "MET", "F": "PHE", "P": "PRO", "S": "SER", "T": "THR", "W": "TRP", "Y": "TYR", "V": "VAL"}
-    df_hbond = pd.DataFrame(list_hbond).replace({2: aa_dict, 6: aa_dict})
-
-    return df_hbond
 
 
 
@@ -373,59 +386,63 @@ Note that angles that are undefined are written as 999.99
 
 
 """
-
-    #Intraprotein Main Chain-Main Chain Hydrogen Bonds #########################
-    print("Intraprotein Main Chain-Main Chain Hydrogen Bonds\n".center(106))
-    
-    # Create a dataframe with main chain-main chain hydrogen bonds
-    df_main_main = df_hbond[[0,1,2,3,4,5,6,7,10,11,12,13]][df_hbond[9] == "MM"]
-
-    # Check if the dataframe is empty and print accordingly
-    if df_main_main.empty:
+    if df_hbond.empty:
         print("")
-        print("NO INTRAPROTEIN MAIN CHAIN-MAIN CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
+        print("NO HYDROGEN BONDS FOUND\n\n\n".center(106))
     else:
-        header_main_main = ["POS", "CHAIN", "RES", "ATOM", "POS", "CHAIN", "RES", "ATOM", "Dd-a", "Dh-h", "A(d-H-N)", "A(a-O=C)"]
-        table_main_main = tabulate(df_main_main, headers = header_main_main, showindex=False, numalign="left", tablefmt="rst")
-        print("            DONOR                         ACCEPTOR                          PARAMETERS              ")
-        print(table_main_main)
-        print(legend_hbond)
 
-
-    # Intraprotein Main Chain-Side Chain Hydrogen Bonds ########################
-    print("Intraprotein Main Chain-Side Chain Hydrogen Bonds\n".center(106))
-
-    # Create a dataframe with main chain-side chain hydrogen bonds
-    df_main_side = df_hbond[[0,1,2,3,4,5,6,7,8,10,11,12,13]][(df_hbond[9] == "SO") | (df_hbond[9] == "SN")]
+        #Intraprotein Main Chain-Main Chain Hydrogen Bonds #########################
+        print("Intraprotein Main Chain-Main Chain Hydrogen Bonds\n".center(106))
+        
+        # Create a dataframe with main chain-main chain hydrogen bonds
+        df_main_main = df_hbond[[0,1,2,3,4,5,6,7,10,11,12,13]][df_hbond[9] == "MM"]
     
-    # Check if the dataframe is empty and print accordingly
-    if df_main_side.empty:
-        print("")
-        print("NO INTRAPROTEIN MAIN CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
-    else:
-        header_main_side = ["POS", "CHAIN", "RES", "ATOM", "POS", "CHAIN", "RES", "ATOM", "MO", "Dd-a", "Dh-h", "A(d-H-N)", "A(a-O=C)"]
-        table_main_side = tabulate(df_main_side, headers = header_main_side, showindex=False, numalign="left", tablefmt="rst")
-        print("             DONOR                         ACCEPTOR                             PARAMETERS                ")
-        print(table_main_side)
-        print(legend_hbond)
-
-
-    # Intraprotein Side Chain-Side Chain Hydrogen Bonds ########################
-    print("Intraprotein Side Chain-Side Chain Hydrogen Bonds\n".center(106))
-
-    # Create a dataframe with side chain-side chain hydrogen bonds
-    df_side_side = df_hbond[[0,1,2,3,4,5,6,7,8,10,11,12,13]][df_hbond[9] == "SS"]
+        # Check if the dataframe is empty and print accordingly
+        if df_main_main.empty:
+            print("")
+            print("NO INTRAPROTEIN MAIN CHAIN-MAIN CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
+        else:
+            header_main_main = ["POS", "CHAIN", "RES", "ATOM", "POS", "CHAIN", "RES", "ATOM", "Dd-a", "Dh-h", "A(d-H-N)", "A(a-O=C)"]
+            table_main_main = tabulate(df_main_main, headers = header_main_main, showindex=False, numalign="left", tablefmt="rst")
+            print("            DONOR                         ACCEPTOR                          PARAMETERS              ")
+            print(table_main_main)
+            print(legend_hbond)
     
-    # Check if the dataframe is empty and print accordingly
-    if df_side_side.empty:
-        print("")
-        print("NO INTRAPROTEIN SIDE CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
-    else:
-        header_side_side = ["POS", "CHAIN", "RES", "ATOM", "POS", "CHAIN", "RES", "ATOM", "MO", "Dd-a", "Dh-h", "A(d-H-N)", "A(a-O=C)"]
-        table_side_side = tabulate(df_side_side, headers = header_side_side, showindex=False, numalign="left", tablefmt="rst")
-        print("             DONOR                         ACCEPTOR                             PARAMETERS                ")
-        print(table_side_side)
-        print(legend_hbond)
+
+        # Intraprotein Main Chain-Side Chain Hydrogen Bonds ########################
+        print("Intraprotein Main Chain-Side Chain Hydrogen Bonds\n".center(106))
+    
+        # Create a dataframe with main chain-side chain hydrogen bonds
+        df_main_side = df_hbond[[0,1,2,3,4,5,6,7,8,10,11,12,13]][(df_hbond[9] == "SO") | (df_hbond[9] == "SN")]
+        
+        # Check if the dataframe is empty and print accordingly
+        if df_main_side.empty:
+            print("")
+            print("NO INTRAPROTEIN MAIN CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
+        else:
+            header_main_side = ["POS", "CHAIN", "RES", "ATOM", "POS", "CHAIN", "RES", "ATOM", "MO", "Dd-a", "Dh-h", "A(d-H-N)", "A(a-O=C)"]
+            table_main_side = tabulate(df_main_side, headers = header_main_side, showindex=False, numalign="left", tablefmt="rst")
+            print("             DONOR                         ACCEPTOR                             PARAMETERS                ")
+            print(table_main_side)
+            print(legend_hbond)
+    
+    
+        # Intraprotein Side Chain-Side Chain Hydrogen Bonds ########################
+        print("Intraprotein Side Chain-Side Chain Hydrogen Bonds\n".center(106))
+    
+        # Create a dataframe with side chain-side chain hydrogen bonds
+        df_side_side = df_hbond[[0,1,2,3,4,5,6,7,8,10,11,12,13]][df_hbond[9] == "SS"]
+        
+        # Check if the dataframe is empty and print accordingly
+        if df_side_side.empty:
+            print("")
+            print("NO INTRAPROTEIN SIDE CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
+        else:
+            header_side_side = ["POS", "CHAIN", "RES", "ATOM", "POS", "CHAIN", "RES", "ATOM", "MO", "Dd-a", "Dh-h", "A(d-H-N)", "A(a-O=C)"]
+            table_side_side = tabulate(df_side_side, headers = header_side_side, showindex=False, numalign="left", tablefmt="rst")
+            print("             DONOR                         ACCEPTOR                             PARAMETERS                ")
+            print(table_side_side)
+            print(legend_hbond)
 
 
 
