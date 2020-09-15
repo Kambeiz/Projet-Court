@@ -38,7 +38,7 @@ To execute the script, you need the folowing Python 3 packages:
   - Selenium
   - tabulate
 
-You can find the corresponding conda environment file into the ([repository](env.yml)). 
+You can find the corresponding conda environment file into the [repository](env.yml). 
 
 You also need a protein structure in PDB format that will be used for calculation. 
 
