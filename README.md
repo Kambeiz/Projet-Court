@@ -7,7 +7,7 @@
 
 
 
-Projet M2 BI for Université de Paris 
+M2 BI short-project at Université de Paris.
 
 ## Contents 
 
@@ -18,7 +18,7 @@ Projet M2 BI for Université de Paris
 
 ## About this project
 
-The goal of this project is to re-implement calculations from the [Protein Interactions Calculator](http://pic.mbu.iisc.ernet.in/job.html) webserver, allowing to calculate differents interactions in a given protein structure. Our script is written in Python 3, and requier several packages included in a conda environment (env.yml) for an user-friendly installation. It also requires an internet connection. 
+The goal of this project is to re-implement calculations from the [Protein Interactions Calculator](http://pic.mbu.iisc.ernet.in/job.html) webserver, allowing to calculate differents interactions in a given protein structure. Our script is written in Python 3, and requier several packages included in a conda environment [env.yml](env.yml) for an user-friendly installation. It also requires an internet connection. 
 
 ## Authors
 
@@ -38,7 +38,7 @@ To execute the script, you need the folowing Python 3 packages:
   - Selenium
   - tabulate
 
-You can find the corresponding conda environment file into the repository (à ajouter un lien direct). 
+You can find the corresponding conda environment file into the repository ([env.yml](env.yml)). 
 
 You also need a protein structure in PDB format that will be used for calculation. 
 
