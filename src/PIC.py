@@ -223,6 +223,12 @@ def launching_HBONDS(pdbfile):
         driver.close()
         body = ""
         return body
+    except:
+        print("Impossible to extract hydrogen bonds (Check the website of PIC server) \n \n".center(106))
+        driver.close()
+        body = ""
+        return body
+
     
     # Searching the button for sendig our pdb file
     upload = driver.find_element_by_name("pdbname")
