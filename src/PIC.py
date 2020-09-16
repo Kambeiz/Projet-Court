@@ -337,7 +337,7 @@ if __name__ == "__main__":
 
     # Create a dataframe with hydrophobic interactions
     df_hydrophobic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(hdc_aa)) & (df_all["res_name2"].isin(hdc_aa)) & 
-                                                                                                     (df_all["atom_name1"].str.contains("C[BGDE]")) & (df_all["atom_name2"].str.contains("C[BGDE]")) &
+                                                                                                     (df_all["atom_name1"].str.match("C[BGDEHZ]+")) & (df_all["atom_name2"].str.match("C[BGDEHZ]+")) &
                                                                                                      (df_all["atom_dist"] <= hydro_cutoff) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
     # Check if the dataframe is empty and print accordingly
     if df_hydrophobic.empty:
@@ -450,8 +450,8 @@ Note that angles that are undefined are written as 999.99
     print(f"Ionic Interactions within {ionic_cutoff} Angstroms")
 
     # Create a dataframe with ionic interactions
-    df_ionic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][((((df_all["res_name1"].isin(ani_aa)) & (df_all["res_name2"].isin(cat_aa))) & ((df_all["atom_name1"].str.contains("O[DE]+")) & (df_all["atom_name2"].str.contains("N[DHZE]+")))) |
-                                                                                                (((df_all["res_name2"].isin(ani_aa)) & (df_all["res_name1"].isin(cat_aa))) & ((df_all["atom_name2"].str.contains("O[DE]+")) & (df_all["atom_name1"].str.contains("N[DHZE]+"))))) &
+    df_ionic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][((((df_all["res_name1"].isin(ani_aa)) & (df_all["res_name2"].isin(cat_aa))) & ((df_all["atom_name1"].isin(["OD1", "OD2", "OE1", "OE2"])) & (df_all["atom_name2"].isin(["NH1", "NH2", "NZ", "ND1", "NE2"])))) |
+                                                                                                (((df_all["res_name2"].isin(ani_aa)) & (df_all["res_name1"].isin(cat_aa))) & ((df_all["atom_name2"].isin(["OD1", "OD2", "OE1", "OE2"])) & (df_all["atom_name1"].isin(["NH1", "NH2", "NZ", "ND1", "NE2"]))))) &
                                                                                                   (df_all["atom_dist"] < ionic_cutoff) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
 
     # Check if the dataframe is empty and print accordingly
@@ -478,9 +478,9 @@ Note that angles that are undefined are written as 999.99
     try:
         # Create 2 lists of residus, 2 lists of chains and one list of distance
         centroids_PHE_TYR = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"].isin(["PHE", "TYR"])) &
-                                                                            (df_all["atom_name1"].str.contains("C[GDEZ]")) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
+                                                                            (df_all["atom_name1"].isin(["CG", "CD1", "CD2", "CE1", "CE2", "CZ"])) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
         centroids_TRP = df_all[["chain_id1","res_num1","x1","y1","z1"]][(df_all["res_name1"] == "TRP") &
-                                                                        (df_all["atom_name1"].str.contains("C[DEZH][23]")) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
+                                                                        (df_all["atom_name1"].isin(["CD2", "CE2", "CZ2", "CH2", "CZ3", "CE3"])) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates().groupby(["chain_id1", "res_num1"]).mean()
     
         # Create a dataframe with every aromatics centroids
         centroids_arom = pd.concat([centroids_PHE_TYR, centroids_TRP])
