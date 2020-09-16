@@ -543,34 +543,6 @@ Note that angles that are undefined are written as 999.99
             print(f"NO {INTRAINTER} AROMATIC-AROMATIC INTERACTIONS FOUND\n\n\n".center(106))
         else:
 
-            """
-            #Calculate the dihedral angles NOT WORKING
-            res_1 = df_aromatic.iloc[:,0].to_numpy()
-            res_2 = df_aromatic.iloc[:,3].to_numpy()
-
-            # Calculate the dihedral angles between 2 points of each aromatic cycle
-            dihedral_angle = []
-            for i in range(len(res_1)):
-                if df_aromatic.iloc[i,1] == "PHE" or df_aromatic.iloc[i,1] == "TYR":
-                    C1 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & (df_all["atom_name1"].str.match("CG"))].drop_duplicates().to_numpy().flatten()
-                    C2 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & (df_all["atom_name1"].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
-                if df_aromatic.iloc[i,1] == "PHE" or df_aromatic.iloc[i,4] == "TYR":
-                    C3 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & (df_all["atom_name1"].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
-                    C4 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & (df_all["atom_name1"].str.match("CG"))].drop_duplicates().to_numpy().flatten()
-                if df_aromatic.iloc[i,1] == "TRP":
-                    C1 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & (df_all["atom_name1"].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
-                    C2 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & (df_all["atom_name1"].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
-                if df_aromatic.iloc[i,4] == "TRP":
-                    C3 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & (df_all["atom_name1"].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
-                    C4 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & (df_all["atom_name1"].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
-
-                angle = get_dihedral(C1, C2, C3, C4)
-                dihedral_angle.append(angle)
-
-            #Insert the dihedral angle column
-            df_aromatic["Dihedral Angle"] = dihedral_angle
-            """
-
             #Creates a beautiful table with tabulate :)
             header_aromatic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(centroid-centroid)", "Dihedral Angle"]
             table_aromatic = tabulate(df_aromatic, headers = header_aromatic, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
