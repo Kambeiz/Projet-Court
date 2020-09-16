@@ -37,7 +37,6 @@ import sys
 import argparse
 import re
 import math
-import warnings
 
 import selenium
 import numpy as np
@@ -225,7 +224,7 @@ def launching_HBONDS(pdbfile):
         driver.get(url)
     # Returning a empty file, and closing the browser
     except selenium.common.exceptions.WebDriverException:
-        print("Impossible to extract hydrogen bonds (are you connected to internet?) \n \n".center(106))
+        print("Impossible to extract hydrogen bonds (Are you connected to internet?) \n \n".center(106))
         driver.close()
         body = ""
         return body
@@ -317,11 +316,19 @@ def body_to_list(body):
 
 if __name__ == "__main__":
 
-    # Hidding the warning "UserWarning: Boolean Series key will be reindexed to match DataFrame index." when we are using -inter on -intra option 
-    warnings.filterwarnings('ignore')
-    
     # Take the pdb_file and command line options/parameters
     pdb_file, hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff, intrachain, interchain = args()
+
+    # Setup variable to print the type on interaction calculation:
+    if intrachain:
+        intrainter = "Intraprotein"
+        INTRAINTER = "INTRAPROTEIN"
+    elif interchain:
+        intrainter = "Interprotein"
+        INTRAINTER = "INTERPROTEIN"
+    else:
+        intrainter = "Intraprotein & Interprotein"
+        INTRAINTER = "INTRAPROTEIN & INTERPROTEIN"
 
     # Parse the PDB file
     arr_coors, rows_list = parse_pdb(pdb_file)
@@ -346,47 +353,54 @@ if __name__ == "__main__":
     
 
 
-    # Intraprotein Hydrophobic Interactions ####################################
+    # Hydrophobic Interactions #################################################
     print("")
-    print("Intraprotein Hydrophobic Interactions\n".center(106))
+    print(f"{intrainter} Hydrophobic Interactions\n".center(106))
     print(f"Hydrophobic Interactions within {hydro_cutoff} Angstroms")
 
     # Create a dataframe with hydrophobic interactions
     df_hydrophobic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(hdc_aa)) & (df_all["res_name2"].isin(hdc_aa)) &
                                                                                                      (df_all["atom_name1"].str.match("C[BGDEHZ]+")) & (df_all["atom_name2"].str.match("C[BGDEHZ]+")) &
                                                                                                      (df_all["atom_dist"] <= hydro_cutoff) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
+    
+    # Use an option to select the correct subset of data   
+    if intrachain:
+        df_hydrophobic = df_hydrophobic[(df_hydrophobic["chain_id1"] == df_hydrophobic["chain_id2"])]
+    elif interchain:
+        df_hydrophobic = df_hydrophobic[(df_hydrophobic["chain_id1"] != df_hydrophobic["chain_id2"])]
+
     # Check if the dataframe is empty and print accordingly
     if df_hydrophobic.empty:
         print("")
-        print("NO INTRAPROTEIN HYDROPHOBIC INTERACTIONS FOUND\n\n".center(106))
+        print(f"NO {INTRAINTER} HYDROPHOBIC INTERACTIONS FOUND\n\n".center(106))
     else:
-        if intrachain:
-            df_hydrophobic = df_hydrophobic[(df_all["chain_id1"] == df_all["chain_id2"])]
-        elif interchain:
-            df_hydrophobic = df_hydrophobic[(df_all["chain_id1"] != df_all["chain_id2"])]
         header_hydrophobic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
         table_hydrophobic = tabulate(df_hydrophobic, headers = header_hydrophobic, showindex=False, numalign="left", tablefmt="rst")
         print(table_hydrophobic, "\n\n\n")
 
 
 
-    # Intraprotein Disulphide Bridges ##########################################
-    print("Intraprotein Disulphide Bridges\n".center(106))
+    # Disulphide Bridges #######################################################
+    print(f"{intrainter} Disulphide Bridges\n".center(106))
     print("Disulphide bridges: Between sulphur atoms of cysteines within 2.2 Angstroms")
 
     # Create a dataframe with disulphide bridges
     df_disulphide = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2","atom_dist"]][(df_all["res_name1"] == "CYS") & (df_all["res_name2"] == "CYS") &
                                                                                                                 (df_all["atom_name1"] == "SG") & (df_all["atom_name2"] == "SG") &
                                                                                                                 (df_all["atom_dist"] <= 2.2)]
+    
+    # Use an option to select the correct subset of data 
+    if intrachain:
+        df_disulphide = df_disulphide[(df_disulphide["chain_id1"] == df_disulphide["chain_id2"])]
+    elif interchain:
+        df_disulphide = df_disulphide[(df_disulphide["chain_id1"] != df_disulphide["chain_id2"])]
+
+
     # Check if the dataframe is empty and print accordingly
     if df_disulphide.empty:
         print("")
-        print("NO INTRAPROTEIN DISULPHIDE BRIDGES FOUND\n\n\n".center(106))
+        print(f"NO {INTRAINTER} DISULPHIDE BRIDGES FOUND\n\n\n".center(106))
     else:
-        if intrachain:
-            df_disulphide = df_disulphide[(df_all["chain_id1"] == df_all["chain_id2"])]
-        elif interchain:
-            df_disulphide = df_disulphide[(df_all["chain_id1"] != df_all["chain_id2"])]
         header_disulphide = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "Distance"]
         table_disulphide = tabulate(df_disulphide, headers = header_disulphide, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
         print(table_disulphide, "\n\n\n")
@@ -399,10 +413,11 @@ if __name__ == "__main__":
     page_results = launching_HBONDS(pdb_file)
     df_hbond = body_to_list(page_results)
 
+    # Use an option to select the correct subset of data 
     if intrachain:
-        df_hbond = df_hbond[(df_all["chain_id1"] == df_all["chain_id2"])]
+        df_hbond = df_hbond[(df_hbond[1] == df_hbond[5])]
     elif interchain:
-        df_hbond = df_hbond[(df_all["chain_id1"] != df_all["chain_id2"])]
+        df_hbond = df_hbond[(df_hbond[1] != df_hbond[5])]
     
     legend_hbond = """
 Dd-a     =   Distance Between Donor and Acceptor
@@ -416,11 +431,11 @@ Note that angles that are undefined are written as 999.99
 """
     if df_hbond.empty:
         print("")
-        print("NO HYDROGEN BONDS FOUND\n\n\n".center(106))
+        print(f"NO {INTRAINTER} HYDROGEN BONDS FOUND\n\n\n".center(106))
     else:
 
-        #Intraprotein Main Chain-Main Chain Hydrogen Bonds #########################
-        print("Intraprotein Main Chain-Main Chain Hydrogen Bonds\n".center(106))
+        # Main Chain-Main Chain Hydrogen Bonds #################################
+        print(f"{intrainter} Main Chain-Main Chain Hydrogen Bonds\n".center(106))
         
         # Create a dataframe with main chain-main chain hydrogen bonds
         df_main_main = df_hbond[[0,1,2,3,4,5,6,7,10,11,12,13]][df_hbond[9] == "MM"]
@@ -428,7 +443,7 @@ Note that angles that are undefined are written as 999.99
         # Check if the dataframe is empty and print accordingly
         if df_main_main.empty:
             print("")
-            print("NO INTRAPROTEIN MAIN CHAIN-MAIN CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
+            print(f"NO {INTRAINTER} MAIN CHAIN-MAIN CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
         else:
             header_main_main = ["POS", "CHAIN", "RES", "ATOM", "POS", "CHAIN", "RES", "ATOM", "Dd-a", "Dh-h", "A(d-H-N)", "A(a-O=C)"]
             table_main_main = tabulate(df_main_main, headers = header_main_main, showindex=False, numalign="left", tablefmt="rst")
@@ -437,8 +452,8 @@ Note that angles that are undefined are written as 999.99
             print(legend_hbond)
     
 
-        # Intraprotein Main Chain-Side Chain Hydrogen Bonds ########################
-        print("Intraprotein Main Chain-Side Chain Hydrogen Bonds\n".center(106))
+        # Main Chain-Side Chain Hydrogen Bonds ########################
+        print("{intrainter} Main Chain-Side Chain Hydrogen Bonds\n".center(106))
     
         # Create a dataframe with main chain-side chain hydrogen bonds
         df_main_side = df_hbond[[0,1,2,3,4,5,6,7,8,10,11,12,13]][(df_hbond[9] == "SO") | (df_hbond[9] == "SN")]
@@ -446,7 +461,7 @@ Note that angles that are undefined are written as 999.99
         # Check if the dataframe is empty and print accordingly
         if df_main_side.empty:
             print("")
-            print("NO INTRAPROTEIN MAIN CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
+            print(f"NO {INTRAINTER} MAIN CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
         else:
             header_main_side = ["POS", "CHAIN", "RES", "ATOM", "POS", "CHAIN", "RES", "ATOM", "MO", "Dd-a", "Dh-h", "A(d-H-N)", "A(a-O=C)"]
             table_main_side = tabulate(df_main_side, headers = header_main_side, showindex=False, numalign="left", tablefmt="rst")
@@ -455,8 +470,8 @@ Note that angles that are undefined are written as 999.99
             print(legend_hbond)
     
     
-        # Intraprotein Side Chain-Side Chain Hydrogen Bonds ########################
-        print("Intraprotein Side Chain-Side Chain Hydrogen Bonds\n".center(106))
+        # Side Chain-Side Chain Hydrogen Bonds ########################
+        print(f"{intrainter} Side Chain-Side Chain Hydrogen Bonds\n".center(106))
     
         # Create a dataframe with side chain-side chain hydrogen bonds
         df_side_side = df_hbond[[0,1,2,3,4,5,6,7,8,10,11,12,13]][df_hbond[9] == "SS"]
@@ -464,7 +479,7 @@ Note that angles that are undefined are written as 999.99
         # Check if the dataframe is empty and print accordingly
         if df_side_side.empty:
             print("")
-            print("NO INTRAPROTEIN SIDE CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
+            print(f"NO {INTRAINTER} SIDE CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND\n\n\n".center(106))
         else:
             header_side_side = ["POS", "CHAIN", "RES", "ATOM", "POS", "CHAIN", "RES", "ATOM", "MO", "Dd-a", "Dh-h", "A(d-H-N)", "A(a-O=C)"]
             table_side_side = tabulate(df_side_side, headers = header_side_side, showindex=False, numalign="left", tablefmt="rst")
@@ -474,8 +489,8 @@ Note that angles that are undefined are written as 999.99
 
 
 
-    # Intraprotein Ionic Interactions ##########################################
-    print("Intraprotein Ionic Interactions\n".center(106))
+    # Ionic Interactions ##########################################
+    print(f"{intrainter} Ionic Interactions\n".center(106))
     print(f"Ionic Interactions within {ionic_cutoff} Angstroms")
 
     # Create a dataframe with ionic interactions
@@ -483,23 +498,25 @@ Note that angles that are undefined are written as 999.99
                                                                                                 (((df_all["res_name2"].isin(ani_aa)) & (df_all["res_name1"].isin(cat_aa))) & ((df_all["atom_name2"].isin(["OD1", "OD2", "OE1", "OE2"])) & (df_all["atom_name1"].isin(["NH1", "NH2", "NZ", "ND1", "NE2"]))))) &
                                                                                                   (df_all["atom_dist"] < ionic_cutoff) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
 
+    # Use an option to select the correct subset of data 
+    if intrachain:
+        df_ionic = df_ionic[(df_ionic["chain_id1"] == df_ionic["chain_id2"])]
+    elif interchain:
+        df_ionic = df_ionic[(df_ionic["chain_id1"] != df_ionic["chain_id2"])]
+
     # Check if the dataframe is empty and print accordingly
     if df_ionic.empty:
         print("")
         print("NO IONIC INTERACTIONS FOUND\n\n\n".center(106))
     else:
-        if intrachain:
-            df_ionic = df_ionic[(df_all["chain_id1"] == df_all["chain_id2"])]
-        elif interchain:
-            df_ionic = df_ionic[(df_all["chain_id1"] != df_all["chain_id2"])]
         header_ionic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
         table_ionic = tabulate(df_ionic, headers = header_ionic, showindex=False, numalign="left", tablefmt="rst")
         print(table_ionic, "\n\n\n")
 
 
 
-    # Intraprotein Aromatic-Aromatic Interactions ##############################
-    print("Intraprotein Aromatic-Aromatic Interactions\n".center(106))
+    # Aromatic-Aromatic Interactions ##############################
+    print(f"{intrainter} Aromatic-Aromatic Interactions\n".center(106))
     print(f"Aromatic-Aromatic Interactions within {aromarom_cutoff_min} and {aromarom_cutoff_max} Angstroms")
 
     # Calculate the aromatics centroids coordinates
@@ -548,57 +565,62 @@ Note that angles that are undefined are written as 999.99
                                                                                                ((df_all["res_num2"] == res_1[i]) & (df_all["chain_id2"] == chain_1[i])))].drop_duplicates()
         df_aromatic = df_aromatic.append(row)
 
-    # Check if the dataframe is empty and print accordingly
-    if df_aromatic.empty:
-        print("")
-        print("NO INTRAPROTEIN AROMATIC-AROMATIC INTERACTIONS FOUND\n\n\n".center(106))
-    else:
+
+    if not df_aromatic.empty:
         #Insert the dist column
         df_aromatic["D(centroid-centroid)"] = list_dist
 
-
-        #Calculate the dihedral angles NOT WORKING
-        res_1 = df_aromatic.iloc[:,0].to_numpy()
-        res_2 = df_aromatic.iloc[:,3].to_numpy()
-
-        """
-        # Calculate the dihedral angles between 2 points of each aromatic cycle
-        dihedral_angle = []
-        for i in range(len(res_1)):
-            if df_aromatic.iloc[i,1] == "PHE" or df_aromatic.iloc[i,1] == "TYR":
-                C1 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & (df_all["atom_name1"].str.match("CG"))].drop_duplicates().to_numpy().flatten()
-                C2 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & (df_all["atom_name1"].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
-            if df_aromatic.iloc[i,1] == "PHE" or df_aromatic.iloc[i,4] == "TYR":
-                C3 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & (df_all["atom_name1"].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
-                C4 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & (df_all["atom_name1"].str.match("CG"))].drop_duplicates().to_numpy().flatten()
-            if df_aromatic.iloc[i,1] == "TRP":
-                C1 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & (df_all["atom_name1"].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
-                C2 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & (df_all["atom_name1"].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
-            if df_aromatic.iloc[i,4] == "TRP":
-                C3 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & (df_all["atom_name1"].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
-                C4 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & (df_all["atom_name1"].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
-
-            angle = get_dihedral(C1, C2, C3, C4)
-            dihedral_angle.append(angle)
-
-        #Insert the dihedral angle column
-        df_aromatic["Dihedral Angle"] = dihedral_angle
-        """
-  
+        # Use an option to select the correct subset of data 
         if intrachain:
-            df_aromatic = df_aromatic[(df_all["chain_id1"] == df_all["chain_id2"])]
+            df_aromatic = df_aromatic[(df_aromatic["chain_id1"] == df_aromatic["chain_id2"])]
         elif interchain:
-            df_aromatic = df_aromatic[(df_all["chain_id1"] != df_all["chain_id2"])]
+            df_aromatic = df_aromatic[(df_aromatic["chain_id1"] != df_aromatic["chain_id2"])]
 
-        #Creates a beautiful table with tabulate :)
-        header_aromatic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(centroid-centroid)", "Dihedral Angle"]
-        table_aromatic = tabulate(df_aromatic, headers = header_aromatic, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
-        print(table_aromatic, "\n\n\n")
+        # Check if the dataframe is empty and print accordingly
+        if df_aromatic.empty:
+            print("")
+            print(f"NO {INTRAINTER} AROMATIC-AROMATIC INTERACTIONS FOUND\n\n\n".center(106))
+        else:
+
+            #Calculate the dihedral angles NOT WORKING
+            res_1 = df_aromatic.iloc[:,0].to_numpy()
+            res_2 = df_aromatic.iloc[:,3].to_numpy()
+
+            """
+            # Calculate the dihedral angles between 2 points of each aromatic cycle
+            dihedral_angle = []
+            for i in range(len(res_1)):
+                if df_aromatic.iloc[i,1] == "PHE" or df_aromatic.iloc[i,1] == "TYR":
+                    C1 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & (df_all["atom_name1"].str.match("CG"))].drop_duplicates().to_numpy().flatten()
+                    C2 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & (df_all["atom_name1"].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
+                if df_aromatic.iloc[i,1] == "PHE" or df_aromatic.iloc[i,4] == "TYR":
+                    C3 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & (df_all["atom_name1"].str.match("CZ"))].drop_duplicates().to_numpy().flatten()
+                    C4 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & (df_all["atom_name1"].str.match("CG"))].drop_duplicates().to_numpy().flatten()
+                if df_aromatic.iloc[i,1] == "TRP":
+                    C1 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & (df_all["atom_name1"].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
+                    C2 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_1[i]) & (df_all["chain_id1"] == chain_1[i])) & (df_all["atom_name1"].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
+                if df_aromatic.iloc[i,4] == "TRP":
+                    C3 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & (df_all["atom_name1"].str.match("CZ2"))].drop_duplicates().to_numpy().flatten()
+                    C4 = df_all[["x1","y1","z1"]][((df_all["res_num1"] == res_2[i]) & (df_all["chain_id1"] == chain_2[i])) & (df_all["atom_name1"].str.match("CE3"))].drop_duplicates().to_numpy().flatten()
+
+                angle = get_dihedral(C1, C2, C3, C4)
+                dihedral_angle.append(angle)
+
+            #Insert the dihedral angle column
+            df_aromatic["Dihedral Angle"] = dihedral_angle
+            """
+
+            #Creates a beautiful table with tabulate :)
+            header_aromatic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(centroid-centroid)", "Dihedral Angle"]
+            table_aromatic = tabulate(df_aromatic, headers = header_aromatic, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
+            print(table_aromatic, "\n\n\n")
+    else:
+        print("")
+        print(f"NO {INTRAINTER} AROMATIC-AROMATIC INTERACTIONS FOUND\n\n\n".center(106))
 
 
-
-    # Intraprotein Aromatic-Sulphur Interactions ###############################
-    print("Intraprotein Aromatic-Sulphur Interactions\n".center(106))
+    # Aromatic-Sulphur Interactions ###############################
+    print(f"{intrainter} Aromatic-Sulphur Interactions\n".center(106))
     print(f"Aromatic-Sulphur Interactions within {aromsulph_cutoff} Angstroms")
 
     # Calculates the distance matrix between aromatics centroids and slphur atoms
@@ -638,26 +660,33 @@ Note that angles that are undefined are written as 999.99
                                                                                                ((df_all["res_num2"] == res_1[i]) & (df_all["chain_id2"] == chain_1[i])))].drop_duplicates()
         df_aromatic_sulphur = df_aromatic_sulphur.append(row)
 
-    # Check if the dataframe is empty and print accordingly
-    if df_aromatic_sulphur.empty:
-        print("")
-        print("NO INTRAPROTEIN AROMATIC-SULPHUR INTERACTIONS FOUND\n\n\n".center(106))
-    else:
-        # Insert the dist column
+    # Insert the dist column if the dataframe is not empty
+    if not df_aromatic_sulphur.empty:
         df_aromatic_sulphur["D(centroid-centroid)"] = list_dist
 
+        # Use an option to select the correct subset of data 
         if intrachain:
-            df_aromatic_sulphur = df_aromatic_sulphur[(df_all["chain_id1"] == df_all["chain_id2"])]
+            df_aromatic_sulphur = df_aromatic_sulphur[(df_aromatic_sulphur["chain_id1"] == df_aromatic_sulphur["chain_id2"])]
         elif interchain:
-            df_aromatic_sulphur = df_aromatic_sulphur[(df_all["chain_id1"] != df_all["chain_id2"])]
-        header_aromatic_s = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(Centroid-Sulphur)", "Angle"]
-        table_aromatic_s = tabulate(df_aromatic_sulphur, headers = header_aromatic_s, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
-        print(table_aromatic_s, "\n\n\n")
+            df_aromatic_sulphur = df_aromatic_sulphur[(df_aromatic_sulphur["chain_id1"] != df_aromatic_sulphur["chain_id2"])]
 
 
+        # Check if the dataframe is empty after the option and print accordingly
+        if df_aromatic_sulphur.empty:
+            print("")
+            print(f"NO {INTRAINTER} AROMATIC-SULPHUR INTERACTIONS FOUND\n\n\n".center(106))
+        else:
+            header_aromatic_s = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(Centroid-Sulphur)", "Angle"]
+            table_aromatic_s = tabulate(df_aromatic_sulphur, headers = header_aromatic_s, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
+            print(table_aromatic_s, "\n\n\n")
 
-    # Intraprotein Cation-Pi Interactions #######################################
-    print("Intraprotein Cation-Pi Interactions\n".center(106))
+    else:
+        print("")
+        print(f"NO {INTRAINTER} AROMATIC-SULPHUR INTERACTIONS FOUND\n\n\n".center(106))
+
+
+    # Cation-Pi Interactions ######################################
+    print(f"{intrainter} Cation-Pi Interactions\n".center(106))
     print(f"Cation-Pi Interactions within {aromcation_cutoff} Angstroms")
 
     # Calculates the distance matrix between aromatics centroids and cationics atoms
@@ -696,18 +725,24 @@ Note that angles that are undefined are written as 999.99
                                                                                                ((df_all["res_num2"] == res_1[i]) & (df_all["chain_id2"] == chain_1[i])))].drop_duplicates()
         df_arom_i = df_arom_i.append(row)
 
-    # Check if the dataframe is empty and print accordingly
-    if df_arom_i.empty:
-        print("")
-        print("NO INTRAPROTEIN CATION-PI INTERACTIONS FOUND\n\n\n".center(106))
-    else:
+    if not df_arom_i.empty:
         #Insert the dist column
         df_arom_i["D(cation-Pi)"] = list_dist
 
+        # Use an option to select the correct subset of data 
         if intrachain:
-            df_arom_i = df_arom_i[(df_all["chain_id1"] == df_all["chain_id2"])]
+            df_arom_i = df_arom_i[(df_arom_i["chain_id1"] == df_arom_i["chain_id2"])]
         elif interchain:
-            df_arom_i = df_arom_i[(df_all["chain_id1"] != df_all["chain_id2"])]
-        header_arom_i = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(cation-Pi)", "Angle"]
-        table_arom_i = tabulate(df_arom_i, headers = header_arom_i, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
-        print(table_arom_i, "\n")
+            df_arom_i = df_arom_i[(df_arom_i["chain_id1"] != df_arom_i["chain_id2"])]
+
+        # Check if the dataframe is empty and print accordingly
+        if df_arom_i.empty:
+            print("")
+            print(f"NO {INTRAINTER} CATION-PI INTERACTIONS FOUND\n\n\n".center(106))
+        else:
+            header_arom_i = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(cation-Pi)", "Angle"]
+            table_arom_i = tabulate(df_arom_i, headers = header_arom_i, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
+            print(table_arom_i, "\n")
+    else:
+        print("")
+        print(f"NO {INTRAINTER} CATION-PI INTERACTIONS FOUND\n\n\n".center(106))
