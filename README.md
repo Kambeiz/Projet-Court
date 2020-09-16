@@ -61,7 +61,7 @@ Finally, you can launch the script with the following command line to calculate 
 ```bash
 python3 src/PIC.py -pdb data/1BTA.pdb
 ```
-You can also use the help option (-h) to display every command line options. With these options, you can select the type of interaction (intra- or inter-chain calculation) and set your own thresholds, just like the PIC webserver.
+You can also use the help option *(-h)* to display every command line options. With these options, you can select the type of interaction *(intra- or inter-chain calculation)* and set your own thresholds, just like the PIC webserver.
 
 ```bash
 usage: PIC.py [-h] -pdb PDBFILE [-intra | -inter] [-hydro HYDROPHOBIC]
