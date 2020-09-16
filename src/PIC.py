@@ -37,6 +37,7 @@ import sys
 import argparse
 import re
 import math
+import warnings
 
 import selenium
 import numpy as np
@@ -71,6 +72,9 @@ def args():
     # Declaration of expexted arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("-pdb", "--pdbfile", help="Path to the PDB file.", type=str, required=True)
+    group = parser.add_mutually_exclusive_group(required=False)
+    group.add_argument("-intra", "--intrachain", help="Use this option to only print the intra-chain interactions.", action="store_true")
+    group.add_argument("-inter", "--interchain", help="Use this option to only print the inter-chain interactions.", action="store_true")
     parser.add_argument("-hydro", "--hydrophobic", help="Enter the interaction cut-off value (Default 5A).", type=float, required=False, default=5)
     parser.add_argument("-ion", "--ionic", help="Enter the interaction cut-off value (Default 6A).", type=float, required=False, default=6)
     parser.add_argument("-AA", "--aromarom", metavar="A", type=float, nargs=2, help="Enter the interaction cut-off value (Default 4.5A to 7A).", required=False, default=(4.5, 7))
@@ -90,8 +94,10 @@ def args():
     aromarom_cutoff_min, aromarom_cutoff_max = args.aromarom
     aromsulph_cutoff = args.aromsulph
     aromcation_cutoff = args.aromcation
+    intrachain = args.intrachain
+    interchain = args.interchain
 
-    return pdb_file, hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff
+    return pdb_file, hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff, intrachain, interchain
 
 
 def parse_pdb(pdb_file):
@@ -255,6 +261,7 @@ def launching_HBONDS(pdbfile):
 
     return body
 
+
 def body_to_list(body):
     """
     Parse the Hbond output into a Pandas dataframe.
@@ -309,9 +316,12 @@ def body_to_list(body):
 ################################# MAIN PROGRAM #################################
 
 if __name__ == "__main__":
+
+    # Hidding the warning "UserWarning: Boolean Series key will be reindexed to match DataFrame index." when we are using -inter on -intra option 
+    warnings.filterwarnings('ignore')
     
     # Take the pdb_file and command line options/parameters
-    pdb_file, hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff = args()
+    pdb_file, hydro_cutoff, ionic_cutoff, aromarom_cutoff_min, aromarom_cutoff_max, aromsulph_cutoff, aromcation_cutoff, intrachain, interchain = args()
 
     # Parse the PDB file
     arr_coors, rows_list = parse_pdb(pdb_file)
@@ -342,7 +352,7 @@ if __name__ == "__main__":
     print(f"Hydrophobic Interactions within {hydro_cutoff} Angstroms")
 
     # Create a dataframe with hydrophobic interactions
-    df_hydrophobic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(hdc_aa)) & (df_all["res_name2"].isin(hdc_aa)) & 
+    df_hydrophobic = df_all[["res_num1","res_name1","chain_id1","res_num2","res_name2","chain_id2"]][(df_all["res_name1"].isin(hdc_aa)) & (df_all["res_name2"].isin(hdc_aa)) &
                                                                                                      (df_all["atom_name1"].str.match("C[BGDEHZ]+")) & (df_all["atom_name2"].str.match("C[BGDEHZ]+")) &
                                                                                                      (df_all["atom_dist"] <= hydro_cutoff) & (df_all["res_num1"] != df_all["res_num2"])].drop_duplicates()
     # Check if the dataframe is empty and print accordingly
@@ -350,6 +360,10 @@ if __name__ == "__main__":
         print("")
         print("NO INTRAPROTEIN HYDROPHOBIC INTERACTIONS FOUND\n\n".center(106))
     else:
+        if intrachain:
+            df_hydrophobic = df_hydrophobic[(df_all["chain_id1"] == df_all["chain_id2"])]
+        elif interchain:
+            df_hydrophobic = df_hydrophobic[(df_all["chain_id1"] != df_all["chain_id2"])]
         header_hydrophobic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
         table_hydrophobic = tabulate(df_hydrophobic, headers = header_hydrophobic, showindex=False, numalign="left", tablefmt="rst")
         print(table_hydrophobic, "\n\n\n")
@@ -369,6 +383,10 @@ if __name__ == "__main__":
         print("")
         print("NO INTRAPROTEIN DISULPHIDE BRIDGES FOUND\n\n\n".center(106))
     else:
+        if intrachain:
+            df_disulphide = df_disulphide[(df_all["chain_id1"] == df_all["chain_id2"])]
+        elif interchain:
+            df_disulphide = df_disulphide[(df_all["chain_id1"] != df_all["chain_id2"])]
         header_disulphide = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "Distance"]
         table_disulphide = tabulate(df_disulphide, headers = header_disulphide, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
         print(table_disulphide, "\n\n\n")
@@ -380,6 +398,11 @@ if __name__ == "__main__":
     # Call launching_HBONDS function and body_to_list 
     page_results = launching_HBONDS(pdb_file)
     df_hbond = body_to_list(page_results)
+
+    if intrachain:
+        df_hbond = df_hbond[(df_all["chain_id1"] == df_all["chain_id2"])]
+    elif interchain:
+        df_hbond = df_hbond[(df_all["chain_id1"] != df_all["chain_id2"])]
     
     legend_hbond = """
 Dd-a     =   Distance Between Donor and Acceptor
@@ -465,6 +488,10 @@ Note that angles that are undefined are written as 999.99
         print("")
         print("NO IONIC INTERACTIONS FOUND\n\n\n".center(106))
     else:
+        if intrachain:
+            df_ionic = df_ionic[(df_all["chain_id1"] == df_all["chain_id2"])]
+        elif interchain:
+            df_ionic = df_ionic[(df_all["chain_id1"] != df_all["chain_id2"])]
         header_ionic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain"]
         table_ionic = tabulate(df_ionic, headers = header_ionic, showindex=False, numalign="left", tablefmt="rst")
         print(table_ionic, "\n\n\n")
@@ -558,6 +585,11 @@ Note that angles that are undefined are written as 999.99
         df_aromatic["Dihedral Angle"] = dihedral_angle
         """
   
+        if intrachain:
+            df_aromatic = df_aromatic[(df_all["chain_id1"] == df_all["chain_id2"])]
+        elif interchain:
+            df_aromatic = df_aromatic[(df_all["chain_id1"] != df_all["chain_id2"])]
+
         #Creates a beautiful table with tabulate :)
         header_aromatic = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(centroid-centroid)", "Dihedral Angle"]
         table_aromatic = tabulate(df_aromatic, headers = header_aromatic, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
@@ -614,6 +646,10 @@ Note that angles that are undefined are written as 999.99
         # Insert the dist column
         df_aromatic_sulphur["D(centroid-centroid)"] = list_dist
 
+        if intrachain:
+            df_aromatic_sulphur = df_aromatic_sulphur[(df_all["chain_id1"] == df_all["chain_id2"])]
+        elif interchain:
+            df_aromatic_sulphur = df_aromatic_sulphur[(df_all["chain_id1"] != df_all["chain_id2"])]
         header_aromatic_s = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(Centroid-Sulphur)", "Angle"]
         table_aromatic_s = tabulate(df_aromatic_sulphur, headers = header_aromatic_s, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
         print(table_aromatic_s, "\n\n\n")
@@ -668,6 +704,10 @@ Note that angles that are undefined are written as 999.99
         #Insert the dist column
         df_arom_i["D(cation-Pi)"] = list_dist
 
+        if intrachain:
+            df_arom_i = df_arom_i[(df_all["chain_id1"] == df_all["chain_id2"])]
+        elif interchain:
+            df_arom_i = df_arom_i[(df_all["chain_id1"] != df_all["chain_id2"])]
         header_arom_i = ["Position", "Residue", "Chain", "Position", "Residue", "Chain", "D(cation-Pi)", "Angle"]
         table_arom_i = tabulate(df_arom_i, headers = header_arom_i, showindex=False, numalign="left", floatfmt=".2f", tablefmt="rst")
         print(table_arom_i, "\n")
