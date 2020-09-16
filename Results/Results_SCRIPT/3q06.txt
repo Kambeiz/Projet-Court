@@ -22,6 +22,7 @@ Position    Residue    Chain    Position    Residue    Chain
 109         PHE        A        145         LEU        A
 109         PHE        A        147         VAL        A
 109         PHE        A        255         ILE        A
+109         PHE        A        111         LEU        A
 111         LEU        A        113         PHE        A
 111         LEU        A        143         VAL        A
 111         LEU        A        255         ILE        A
@@ -130,6 +131,7 @@ Position    Residue    Chain    Position    Residue    Chain
 218         VAL        A        232         ILE        A
 220         TYR        A        257         LEU        A
 220         TYR        A        222         PRO        A
+220         TYR        A        223         PRO        A
 222         PRO        A        223         PRO        A
 232         ILE        A        234         PHE        A
 234         PHE        A        236         PHE        A
@@ -275,6 +277,7 @@ Position    Residue    Chain    Position    Residue    Chain
 195         ILE        C        216         VAL        C
 195         ILE        C        234         PHE        C
 197         VAL        C        203         ALA        C
+197         VAL        C        205         TYR        C
 197         VAL        C        216         VAL        C
 197         VAL        C        218         VAL        C
 197         VAL        C        234         PHE        C
@@ -298,6 +301,7 @@ Position    Residue    Chain    Position    Residue    Chain
 236         PHE        C        272         VAL        C
 236         PHE        C        251         ILE        C
 236         PHE        C        253         VAL        C
+236         PHE        C        270         PHE        C
 246         MET        C        251         ILE        C
 246         MET        C        274         VAL        C
 251         ILE        C        253         VAL        C
@@ -332,6 +336,7 @@ Position    Residue    Chain    Position    Residue    Chain
 109         PHE        D        145         LEU        D
 109         PHE        D        147         VAL        D
 109         PHE        D        255         ILE        D
+109         PHE        D        111         LEU        D
 111         LEU        D        113         PHE        D
 111         LEU        D        143         VAL        D
 111         LEU        D        255         ILE        D
@@ -441,6 +446,7 @@ Position    Residue    Chain    Position    Residue    Chain
 218         VAL        D        232         ILE        D
 220         TYR        D        257         LEU        D
 220         TYR        D        222         PRO        D
+220         TYR        D        223         PRO        D
 222         PRO        D        223         PRO        D
 232         ILE        D        234         PHE        D
 234         PHE        D        236         PHE        D
@@ -448,6 +454,7 @@ Position    Residue    Chain    Position    Residue    Chain
 236         PHE        D        274         VAL        D
 236         PHE        D        272         VAL        D
 236         PHE        D        253         VAL        D
+236         PHE        D        270         PHE        D
 246         MET        D        251         ILE        D
 246         MET        D        274         VAL        D
 251         ILE        D        253         VAL        D
@@ -527,8 +534,8 @@ Position    Residue    Chain    Position    Residue    Chain
 143         VAL        B        145         LEU        B
 143         VAL        B        232         ILE        B
 143         VAL        B        234         PHE        B
-143         VAL        B        255         ILE        B
 143         VAL        B        270         PHE        B
+143         VAL        B        255         ILE        B
 145         LEU        B        220         TYR        B
 145         LEU        B        232         ILE        B
 145         LEU        B        157         VAL        B
@@ -591,9 +598,11 @@ Position    Residue    Chain    Position    Residue    Chain
 232         ILE        B        234         PHE        B
 234         PHE        B        236         PHE        B
 234         PHE        B        255         ILE        B
+234         PHE        B        270         PHE        B
 236         PHE        B        274         VAL        B
 236         PHE        B        272         VAL        B
 236         PHE        B        253         VAL        B
+236         PHE        B        270         PHE        B
 246         MET        B        251         ILE        B
 251         ILE        B        272         VAL        B
 252         LEU        B        254         ILE        B
@@ -2068,11 +2077,10 @@ Position    Residue    Chain    Position    Residue    Chain
 287         GLU        A        291         LYS        A
 292         LYS        A        336         GLU        C
 326         GLU        A        335         ARG        C
-333         ARG        A        349         GLU        C
 335         ARG        A        339         GLU        A
 336         GLU        A        337         ARG        A
-337         ARG        A        352         ASP        C
 337         ARG        A        349         GLU        C
+337         ARG        A        352         ASP        C
 339         GLU        A        342         ARG        A
 342         ARG        A        343         GLU        A
 342         ARG        A        346         GLU        A
@@ -2112,7 +2120,6 @@ Position    Residue    Chain    Position    Residue    Chain
 290         ARG        C        346         GLU        C
 335         ARG        C        339         GLU        C
 339         GLU        C        342         ARG        C
-342         ARG        C        346         GLU        C
 101         LYS        D        228         ASP        B
 110         ARG        D        148         ASP        D
 110         ARG        D        228         ASP        D
@@ -2142,10 +2149,8 @@ Position    Residue    Chain    Position    Residue    Chain
 287         GLU        D        290         ARG        D
 287         GLU        D        291         LYS        D
 292         LYS        D        336         GLU        B
-324         ASP        D        335         ARG        B
 324         ASP        D        337         ARG        B
 326         GLU        D        335         ARG        B
-333         ARG        D        349         GLU        B
 333         ARG        D        352         ASP        B
 335         ARG        D        339         GLU        D
 336         GLU        D        337         ARG        D
@@ -2166,7 +2171,6 @@ Position    Residue    Chain    Position    Residue    Chain
 164         LYS        B        271         GLU        B
 168         HIS        B        171         GLU        B
 171         GLU        B        249         ARG        B
-174         ARG        B        180         GLU        B
 175         ARG        B        184         ASP        B
 184         ASP        B        196         ARG        B
 184         ASP        B        235         LYS        B
@@ -2174,14 +2178,13 @@ Position    Residue    Chain    Position    Residue    Chain
 186         ASP        B        235         LYS        B
 193         HIS        B        207         ASP        B
 198         GLU        B        235         LYS        B
-202         ARG        B        221         GLU        B
 207         ASP        B        214         HIS        B
 273         ARG        B        281         ASP        B
 273         ARG        B        285         GLU        B
 280         ARG        B        281         ASP        B
 282         ARG        B        286         GLU        B
-282         ARG        B        343         GLU        B
 282         ARG        B        339         GLU        B
+282         ARG        B        343         GLU        B
 282         ARG        B        346         GLU        B
 283         ARG        B        339         GLU        B
 283         ARG        B        336         GLU        B

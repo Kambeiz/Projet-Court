@@ -17,15 +17,16 @@ Position    Residue    Chain    Position    Residue    Chain
 13          ILE        A        16          LEU        A
 13          ILE        A        70          VAL        A
 16          LEU        A        20          LEU        A
+16          LEU        A        53          TRP        A
 16          LEU        A        67          ALA        A
 16          LEU        A        70          VAL        A
-16          LEU        A        53          TRP        A
 20          LEU        A        24          LEU        A
 20          LEU        A        26          LEU        A
 20          LEU        A        30          TYR        A
 20          LEU        A        37          LEU        A
 20          LEU        A        74          PHE        A
 20          LEU        A        70          VAL        A
+20          LEU        A        53          TRP        A
 20          LEU        A        51          LEU        A
 24          LEU        A        26          LEU        A
 24          LEU        A        45          VAL        A
@@ -78,6 +79,8 @@ Position    Residue    Chain    Position    Residue    Chain
 53          TRP        A        56          PHE        A
 53          TRP        A        67          ALA        A
 53          TRP        A        71          LEU        A
+53          TRP        A        70          VAL        A
+53          TRP        A        74          PHE        A
 56          PHE        A        88          LEU        A
 56          PHE        A        67          ALA        A
 56          PHE        A        71          LEU        A
@@ -315,7 +318,6 @@ Position    Residue    Chain    Position    Residue    Chain
 1           LYS        A        46          GLU        A
 2           LYS        A        52          GLU        A
 8           GLU        A        54          ARG        A
-11          ARG        A        15          ASP        A
 17          HIS        A        32          GLU        A
 21          LYS        A        28          GLU        A
 52          GLU        A        54          ARG        A
