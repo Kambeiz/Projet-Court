@@ -64,11 +64,32 @@ python3 src/PIC.py -p data/1BTA.pdb
 Several options exists, from a help commands to cut-off choice (in Angstrum) for each interaction calculated:
 
 ```bash
-python src/PIC.py [-h] -p PDB [-hydro HYDROPHOBIC] [-ion IONIC] [-AA A A] [-AS AROMSULPH] [-AC AROMCATION]
+usage: PIC.py [-h] -pdb PDBFILE [-intra | -inter] [-hydro HYDROPHOBIC]
+              [-ion IONIC] [-AA A A] [-AS AROMSULPH] [-AC AROMCATION]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -pdb PDBFILE, --pdbfile PDBFILE
+                        Path to the PDB file.
+  -intra, --intrachain  Use this option to only print the intra-chain
+                        interactions.
+  -inter, --interchain  Use this option to only print the inter-chain
+                        interactions.
+  -hydro HYDROPHOBIC, --hydrophobic HYDROPHOBIC
+                        Enter the interaction cut-off value (Default 5A).
+  -ion IONIC, --ionic IONIC
+                        Enter the interaction cut-off value (Default 6A).
+  -AA A A, --aromarom A A
+                        Enter the interaction cut-off value (Default 4.5A to
+                        7A).
+  -AS AROMSULPH, --aromsulph AROMSULPH
+                        Enter the interaction cut-off value (Default 5.3A).
+  -AC AROMCATION, --aromcation AROMCATION
+                        Enter the interaction cut-off value (Default 6A).
 ```
 
 Which in practice, give you something like :
 
 ```bash
-python3 src/PIC.py -p data/1BTA.pdb -hydro 6 -ion 5 -AA 5 7 -AS 6 -AC 7
+python3 src/PIC.py -p data/1BTA.pdb -hydro 6 -ion 5 -AA 5 7 -AS 6 -AC 7 -intra
 ```
