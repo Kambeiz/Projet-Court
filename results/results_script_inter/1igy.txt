@@ -1,0 +1,157 @@
+
+                                  Intraprotein Hydrophobic Interactions
+                                  
+Hydrophobic Interactions within 5 Angstroms
+==========  =========  =======  ==========  =========  =======
+Position    Residue    Chain    Position    Residue    Chain
+==========  =========  =======  ==========  =========  =======
+36          TYR        A        103         TRP        B
+36          TYR        A        98          VAL        B
+44          PRO        A        103         TRP        B
+44          PRO        A        45          LEU        B
+44          PRO        A        91          TYR        B
+46          LEU        A        101         PRO        B
+55          TYR        A        101         PRO        B
+55          TYR        A        102         TYR        B
+94          TYR        A        47          TRP        B
+94          TYR        A        50          TYR        B
+95          PRO        A        47          TRP        B
+96          TYR        A        47          TRP        B
+98          PHE        A        45          LEU        B
+98          PHE        A        37          ILE        B
+98          PHE        A        103         TRP        B
+98          PHE        A        47          TRP        B
+118         PHE        A        124         LEU        B
+118         PHE        A        126         PRO        B
+118         PHE        A        140         LEU        B
+133         VAL        A        124         LEU        B
+133         VAL        A        143         LEU        B
+135         PHE        A        174         PHE        B
+135         PHE        A        124         LEU        B
+160         LEU        A        177         VAL        B
+370         TYR        B        375         PRO        D
+372         ILE        B        375         PRO        D
+375         PRO        B        370         TYR        D
+375         PRO        B        372         ILE        D
+375         PRO        B        391         MET        D
+391         MET        B        375         PRO        D
+36          TYR        C        103         TRP        D
+36          TYR        C        98          VAL        D
+44          PRO        C        103         TRP        D
+44          PRO        C        45          LEU        D
+44          PRO        C        91          TYR        D
+46          LEU        C        101         PRO        D
+55          TYR        C        101         PRO        D
+55          TYR        C        102         TYR        D
+94          TYR        C        47          TRP        D
+94          TYR        C        50          TYR        D
+95          PRO        C        47          TRP        D
+96          TYR        C        47          TRP        D
+98          PHE        C        45          LEU        D
+98          PHE        C        37          ILE        D
+98          PHE        C        103         TRP        D
+98          PHE        C        47          TRP        D
+118         PHE        C        124         LEU        D
+118         PHE        C        126         PRO        D
+118         PHE        C        140         LEU        D
+133         VAL        C        124         LEU        D
+133         VAL        C        143         LEU        D
+135         PHE        C        174         PHE        D
+135         PHE        C        124         LEU        D
+160         LEU        C        177         VAL        D
+==========  =========  =======  ==========  =========  ======= 
+
+
+
+                                     Intraprotein Disulphide Bridges
+                                     
+Disulphide bridges: Between sulphur atoms of cysteines within 2.2 Angstroms
+==========  =========  =======  ==========  =========  =======  ==========
+Position    Residue    Chain    Position    Residue    Chain    Distance
+==========  =========  =======  ==========  =========  =======  ==========
+214         CYS        A        235         CYS        B        2.04
+237         CYS        B        237         CYS        D        2.04
+240         CYS        B        240         CYS        D        2.05
+242         CYS        B        242         CYS        D        2.03
+214         CYS        C        235         CYS        D        2.05
+==========  =========  =======  ==========  =========  =======  ========== 
+
+
+
+                Impossible to extract hydrogen bonds (are you connected to internet?) 
+ 
+                 
+
+                                        NO HYDROGEN BONDS FOUND
+
+
+                                        
+                                     Intraprotein Ionic Interactions
+                                     
+Ionic Interactions within 6 Angstroms
+==========  =========  =======  ==========  =========  =======
+Position    Residue    Chain    Position    Residue    Chain
+==========  =========  =======  ==========  =========  =======
+123         GLU        A        221         LYS        B
+167         ASP        A        172         HIS        B
+170         ASP        A        172         HIS        B
+184         ASP        A        309         ARG        D
+187         GLU        A        309         ARG        D
+377         GLU        B        470         LYS        D
+383         LYS        B        394         ASP        D
+394         ASP        B        383         LYS        D
+427         ASP        B        440         LYS        D
+440         LYS        B        427         ASP        D
+470         LYS        B        377         GLU        D
+123         GLU        C        221         LYS        D
+167         ASP        C        172         HIS        D
+170         ASP        C        172         HIS        D
+==========  =========  =======  ==========  =========  ======= 
+
+
+
+                               Intraprotein Aromatic-Aromatic Interactions
+                               
+Aromatic-Aromatic Interactions within 4.5 and 7 Angstroms
+==========  =========  =======  ==========  =========  =======  ======================
+Position    Residue    Chain    Position    Residue    Chain    D(centroid-centroid)
+==========  =========  =======  ==========  =========  =======  ======================
+36          TYR        A        103         TRP        B        4.97
+55          TYR        A        102         TYR        B        6.55
+94          TYR        A        50          TYR        B        5.32
+94          TYR        A        47          TRP        B        5.23
+96          TYR        A        47          TRP        B        5.68
+98          PHE        A        103         TRP        B        6.00
+135         PHE        A        174         PHE        B        5.69
+438         TYR        B        438         TYR        D        4.50
+36          TYR        C        103         TRP        D        4.86
+55          TYR        C        102         TYR        D        6.33
+94          TYR        C        50          TYR        D        5.20
+94          TYR        C        47          TRP        D        5.18
+96          TYR        C        47          TRP        D        5.62
+98          PHE        C        103         TRP        D        5.97
+135         PHE        C        174         PHE        D        5.62
+==========  =========  =======  ==========  =========  =======  ====================== 
+
+
+
+                               Intraprotein Aromatic-Sulphur Interactions
+                                
+Aromatic-Sulphur Interactions within 5.3 Angstroms
+==========  =========  =======  ==========  =========  =======  =====================  =======
+Position    Residue    Chain    Position    Residue    Chain    D(Centroid-Sulphur)    Angle
+==========  =========  =======  ==========  =========  =======  =====================  =======
+==========  =========  =======  ==========  =========  =======  =====================  ======= 
+
+
+
+                                   Intraprotein Cation-Pi Interactions
+                                   
+Cation-Pi Interactions within 6 Angstroms
+==========  =========  =======  ==========  =========  =======  ==============
+Position    Residue    Chain    Position    Residue    Chain    D(cation-Pi)
+==========  =========  =======  ==========  =========  =======  ==============
+436         PHE        B        440         LYS        D        3.53
+440         LYS        B        436         PHE        D        3.75
+==========  =========  =======  ==========  =========  =======  ============== 
+

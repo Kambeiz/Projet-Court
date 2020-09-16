@@ -1,0 +1,129 @@
+
+                                  Intraprotein Hydrophobic Interactions
+                                  
+Hydrophobic Interactions within 5 Angstroms
+==========  =========  =======  ==========  =========  =======
+Position    Residue    Chain    Position    Residue    Chain
+==========  =========  =======  ==========  =========  =======
+2           ILE        A        11          LEU        B
+2           ILE        A        26          TYR        B
+2           ILE        A        15          LEU        B
+3           VAL        A        28          PRO        B
+13          LEU        A        2           VAL        B
+13          LEU        A        18          VAL        B
+16          LEU        A        15          LEU        B
+16          LEU        A        18          VAL        B
+16          LEU        A        2           VAL        B
+16          LEU        A        6           LEU        B
+16          LEU        A        14          ALA        B
+16          LEU        A        11          LEU        B
+19          TYR        A        15          LEU        B
+19          TYR        A        25          PHE        B
+==========  =========  =======  ==========  =========  ======= 
+
+
+
+                                     Intraprotein Disulphide Bridges
+                                     
+Disulphide bridges: Between sulphur atoms of cysteines within 2.2 Angstroms
+==========  =========  =======  ==========  =========  =======  ==========
+Position    Residue    Chain    Position    Residue    Chain    Distance
+==========  =========  =======  ==========  =========  =======  ==========
+7           CYS        A        7           CYS        B        2.04
+20          CYS        A        19          CYS        B        2.04
+==========  =========  =======  ==========  =========  =======  ========== 
+
+
+
+                            Intraprotein Main Chain-Main Chain Hydrogen Bonds
+                            
+            DONOR                         ACCEPTOR                          PARAMETERS              
+=====  =======  =====  ======  =====  =======  =====  ======  ======  ======  ==========  ==========
+POS    CHAIN    RES    ATOM    POS    CHAIN    RES    ATOM    Dd-a    Dh-h    A(d-H-N)    A(a-O=C)
+=====  =======  =====  ======  =====  =======  =====  ======  ======  ======  ==========  ==========
+21     A        ASN    N       23     B        GLY    O       2.99    2.03    165.8       124.15
+4      B        GLN    N       2      B        VAL    O       3.22    2.42    138.46      85.74
+6      B        LEU    N       6      A        CYS    O       2.71    1.73    172.3       152.61
+6      B        LEU    N       4      B        GLN    O       3.3     3.22    86          98.73
+9      B        SER    N       7      B        CYS    O       3.27    3.29    80.56       105.75
+10     B        HIS    N       7      B        CYS    O       3.1     2.29    138.22      134.05
+10     B        HIS    N       8      B        GLY    O       3.11    3.02    86.05       77.38
+=====  =======  =====  ======  =====  =======  =====  ======  ======  ======  ==========  ==========
+
+Dd-a     =   Distance Between Donor and Acceptor
+Dh-a     =   Distance Between Hydrogen and Acceptor
+A(d-H-N) =   Angle Between Donor-H-N
+A(a-O=C) =   Angle Between Acceptor-O=C
+MO       =   Multiple Occupancy
+Note that angles that are undefined are written as 999.99
+
+
+
+                            Intraprotein Main Chain-Side Chain Hydrogen Bonds
+                            
+             DONOR                         ACCEPTOR                             PARAMETERS                
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+POS    CHAIN    RES    ATOM    POS    CHAIN    RES    ATOM    MO    Dd-a    Dh-h    A(d-H-N)    A(a-O=C)
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+21     A        ASN    OD1     22     B        ARG    O       1     3.35    4.24    29.57       138.58
+21     A        ASN    OD1     22     B        ARG    O       2     3.35    2.51    135.86      138.58
+4      B        GLN    NE2     1      B        PHE    O       1     3.01    3.65    45.67       117.02
+4      B        GLN    NE2     1      B        PHE    O       2     3.01    2.05    154.35      117.02
+5      B        HIS    ND1     7      A        CYS    O             3.1     2.22    160.98      141.12
+7      B        CYS    SG      7      A        CYS    O             3.65    9.99    999.99      87.18
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+
+Dd-a     =   Distance Between Donor and Acceptor
+Dh-a     =   Distance Between Hydrogen and Acceptor
+A(d-H-N) =   Angle Between Donor-H-N
+A(a-O=C) =   Angle Between Acceptor-O=C
+MO       =   Multiple Occupancy
+Note that angles that are undefined are written as 999.99
+
+
+
+                            Intraprotein Side Chain-Side Chain Hydrogen Bonds
+                            
+
+                      NO INTRAPROTEIN SIDE CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND
+
+
+                       
+                                     Intraprotein Ionic Interactions
+                                     
+Ionic Interactions within 6 Angstroms
+==========  =========  =======  ==========  =========  =======
+Position    Residue    Chain    Position    Residue    Chain
+==========  =========  =======  ==========  =========  =======
+17          GLU        A        22          ARG        B
+==========  =========  =======  ==========  =========  ======= 
+
+
+
+                               Intraprotein Aromatic-Aromatic Interactions
+                               
+Aromatic-Aromatic Interactions within 4.5 and 7 Angstroms
+==========  =========  =======  ==========  =========  =======  ======================
+Position    Residue    Chain    Position    Residue    Chain    D(centroid-centroid)
+==========  =========  =======  ==========  =========  =======  ======================
+19          TYR        A        25          PHE        B        5.52
+==========  =========  =======  ==========  =========  =======  ====================== 
+
+
+
+                               Intraprotein Aromatic-Sulphur Interactions
+                                
+Aromatic-Sulphur Interactions within 5.3 Angstroms
+
+                          NO INTRAPROTEIN AROMATIC-SULPHUR INTERACTIONS FOUND
+
+
+                          
+                                   Intraprotein Cation-Pi Interactions
+                                   
+Cation-Pi Interactions within 6 Angstroms
+
+                             NO INTRAPROTEIN CATION-PI INTERACTIONS FOUND
+
+
+                              

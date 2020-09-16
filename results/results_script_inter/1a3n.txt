@@ -1,0 +1,230 @@
+
+                                  Interprotein Hydrophobic Interactions
+                                  
+Hydrophobic Interactions within 5 Angstroms
+==========  =========  =======  ==========  =========  =======
+Position    Residue    Chain    Position    Residue    Chain
+==========  =========  =======  ==========  =========  =======
+34          LEU        A        128         ALA        B
+34          LEU        A        124         PRO        B
+34          LEU        A        125         PRO        B
+95          PRO        A        37          TRP        D
+107         VAL        A        111         VAL        B
+107         VAL        A        115         ALA        B
+107         VAL        A        122         PHE        B
+110         ALA        A        115         ALA        B
+111         ALA        A        115         ALA        B
+119         PRO        A        33          VAL        B
+119         PRO        A        51          PRO        B
+119         PRO        A        55          MET        B
+120         ALA        A        51          PRO        B
+123         ALA        A        33          VAL        B
+123         ALA        A        34          VAL        B
+140         TYR        A        37          TRP        D
+37          TRP        B        140         TYR        C
+37          TRP        B        95          PRO        C
+34          LEU        C        128         ALA        D
+34          LEU        C        124         PRO        D
+34          LEU        C        125         PRO        D
+107         VAL        C        111         VAL        D
+107         VAL        C        115         ALA        D
+107         VAL        C        122         PHE        D
+110         ALA        C        115         ALA        D
+111         ALA        C        115         ALA        D
+119         PRO        C        33          VAL        D
+119         PRO        C        51          PRO        D
+119         PRO        C        55          MET        D
+120         ALA        C        51          PRO        D
+123         ALA        C        33          VAL        D
+123         ALA        C        34          VAL        D
+==========  =========  =======  ==========  =========  ======= 
+
+
+
+                                     Interprotein Disulphide Bridges
+                                     
+Disulphide bridges: Between sulphur atoms of cysteines within 2.2 Angstroms
+
+                               NO INTERPROTEIN DISULPHIDE BRIDGES FOUND
+
+
+                                
+                            Interprotein Main Chain-Main Chain Hydrogen Bonds
+                            
+
+                      NO INTERPROTEIN MAIN CHAIN-MAIN CHAIN HYDROGEN BONDS FOUND
+
+
+                       
+                            {intrainter} Main Chain-Side Chain Hydrogen Bonds
+                            
+             DONOR                         ACCEPTOR                             PARAMETERS                
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+POS    CHAIN    RES    ATOM    POS    CHAIN    RES    ATOM    MO    Dd-a    Dh-h    A(d-H-N)    A(a-O=C)
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+31     A        ARG    NH1     122    B        PHE    O       1     3.07    4       24.5        143.83
+31     A        ARG    NH1     122    B        PHE    O       2     3.07    2.24    138.56      143.83
+31     A        ARG    NH2     122    B        PHE    O       1     2.96    3.81    30.72       148.25
+31     A        ARG    NH2     122    B        PHE    O       2     2.96    2.04    147.34      148.25
+40     A        LYS    NZ      146    D        HIS    OXT           2.73    9.99    999.99      127.98
+127    A        LYS    NZ      141    C        ARG    O             3.47    9.99    999.99      81.51
+127    A        LYS    NZ      141    C        ARG    OXT           2.84    9.99    999.99      112.79
+141    A        ARG    NH1     34     D        VAL    O       1     2.92    1.94    155.42      138.01
+141    A        ARG    NH1     34     D        VAL    O       2     2.92    3.43    52.4        138.01
+30     B        ARG    NH1     117    A        PHE    O       1     3.2     4.15    21.98       130.16
+30     B        ARG    NH1     117    A        PHE    O       2     3.2     2.42    132.52      130.16
+30     B        ARG    NH2     117    A        PHE    O       1     2.86    3.66    33.89       150.13
+30     B        ARG    NH2     117    A        PHE    O       2     2.86    1.9     153.2       150.13
+40     B        ARG    NE      91     C        LEU    O             2.88    2       142.05      154.69
+40     B        ARG    NH2     91     C        LEU    O       1     3.02    2.16    138.53      158.32
+40     B        ARG    NH2     91     C        LEU    O       2     3.02    3.89    27.58       158.32
+40     B        ARG    NE      92     C        ARG    O             3.2     2.77    105.74      107.84
+116    B        HIS    NE2     114    A        PRO    O             2.72    1.92    146.35      120.35
+31     C        ARG    NH1     122    D        PHE    O       1     3.12    4.09    19.86       143.34
+31     C        ARG    NH1     122    D        PHE    O       2     3.12    2.36    131.64      143.34
+31     C        ARG    NH2     122    D        PHE    O       1     2.79    3.58    33.84       152.93
+31     C        ARG    NH2     122    D        PHE    O       2     2.79    1.81    154.3       152.93
+40     C        LYS    NZ      146    B        HIS    OXT           2.7     9.99    999.99      121.57
+127    C        LYS    NZ      141    A        ARG    O             3.28    9.99    999.99      85.55
+127    C        LYS    NZ      141    A        ARG    OXT           2.78    9.99    999.99      110.27
+141    C        ARG    NH1     34     B        VAL    O       1     2.97    2       149.74      137.38
+141    C        ARG    NH1     34     B        VAL    O       2     2.97    3.4     56.6        137.38
+30     D        ARG    NH1     117    C        PHE    O       1     3.26    4.22    20.85       126.43
+30     D        ARG    NH1     117    C        PHE    O       2     3.26    2.49    132.54      126.43
+30     D        ARG    NH2     117    C        PHE    O       1     2.84    3.62    35.21       148.87
+30     D        ARG    NH2     117    C        PHE    O       2     2.84    1.87    158.23      148.87
+40     D        ARG    NE      91     A        LEU    O             2.91    2.01    139.67      154.28
+40     D        ARG    NH2     91     A        LEU    O       1     2.76    1.83    147.32      151.87
+40     D        ARG    NH2     91     A        LEU    O       2     2.76    3.59    30.25       151.87
+40     D        ARG    NE      92     A        ARG    O             3.28    2.69    114.11      110.35
+116    D        HIS    NE2     114    C        PRO    O             2.81    1.96    153.42      118.05
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+
+Dd-a     =   Distance Between Donor and Acceptor
+Dh-a     =   Distance Between Hydrogen and Acceptor
+A(d-H-N) =   Angle Between Donor-H-N
+A(a-O=C) =   Angle Between Acceptor-O=C
+MO       =   Multiple Occupancy
+Note that angles that are undefined are written as 999.99
+
+
+
+                            Interprotein Side Chain-Side Chain Hydrogen Bonds
+                            
+             DONOR                         ACCEPTOR                             PARAMETERS                
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+POS    CHAIN    RES    ATOM    POS    CHAIN    RES    ATOM    MO    Dd-a    Dh-h    A(d-H-N)    A(a-O=C)
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+31     A        ARG    NH1     127    B        GLN    OE1     1     2.97    1.94    166.79      999.99
+31     A        ARG    NH1     127    B        GLN    OE1     2     2.97    3.52    50.23       999.99
+42     A        TYR    OH      99     D        ASP    OD2           2.59    9.99    999.99      999.99
+92     A        ARG    NH2     43     D        GLU    OE1     1     3.12    3.83    40.28       999.99
+92     A        ARG    NH2     43     D        GLU    OE1     2     3.12    2.09    165.29      999.99
+92     A        ARG    NH2     43     D        GLU    OE2     1     3.19    3.3     74.88       999.99
+92     A        ARG    NH2     43     D        GLU    OE2     2     3.19    2.36    135.98      999.99
+97     A        ASN    ND2     99     D        ASP    OD2     1     2.81    1.77    163.88      999.99
+97     A        ASN    ND2     99     D        ASP    OD2     2     2.81    3.33    50.84       999.99
+103    A        HIS    NE2     131    B        GLN    OE1           2.73    1.88    154.11      999.99
+104    A        CYS    SG      127    B        GLN    NE2           3.92    9.99    999.99      999.99
+122    A        HIS    NE2     112    B        CYS    SG            3.99    3.66    104.39      999.99
+141    A        ARG    NH1     126    C        ASP    OD2     1     2.69    3.52    32.43       999.99
+141    A        ARG    NH1     126    C        ASP    OD2     2     2.69    1.74    154.03      999.99
+141    A        ARG    NH2     126    C        ASP    OD2     1     3.11    4.06    20.18       999.99
+141    A        ARG    NH2     126    C        ASP    OD2     2     3.11    2.33    131.54      999.99
+30     B        ARG    NH1     122    A        HIS    ND1     1     3.08    2.09    155.99      999.99
+30     B        ARG    NH1     122    A        HIS    ND1     2     3.08    3.45    60.71       999.99
+35     B        TYR    OH      126    A        ASP    OD2           3.1     9.99    999.99      999.99
+37     B        TRP    NE1     94     C        ASP    OD2           2.87    1.98    166.96      999.99
+99     B        ASP    OD2     97     C        ASN    ND2     1     2.92    2.31    114.19      999.99
+99     B        ASP    OD2     97     C        ASN    ND2     2     2.92    2.81    85.14       999.99
+112    B        CYS    SG      122    A        HIS    NE2           3.99    9.99    999.99      999.99
+127    B        GLN    NE2     104    A        CYS    SG      1     3.92    3.1     134.51      999.99
+127    B        GLN    NE2     104    A        CYS    SG      2     3.92    4.23    65.55       999.99
+131    B        GLN    OE1     103    A        HIS    NE2     1     2.73    1.71    155.91      999.99
+131    B        GLN    OE1     103    A        HIS    NE2     2     2.73    3.12    58.71       999.99
+31     C        ARG    NH1     127    D        GLN    OE1     1     2.85    1.83    160.36      999.99
+31     C        ARG    NH1     127    D        GLN    OE1     2     2.85    3.35    52.16       999.99
+42     C        TYR    OH      99     B        ASP    OD2           2.51    9.99    999.99      999.99
+92     C        ARG    NH2     43     B        GLU    OE2     1     2.57    3.07    52.21       999.99
+92     C        ARG    NH2     43     B        GLU    OE2     2     2.57    1.56    162.7       999.99
+97     C        ASN    ND2     99     B        ASP    OD2     1     2.92    1.86    168.82      999.99
+97     C        ASN    ND2     99     B        ASP    OD2     2     2.92    3.44    50.62       999.99
+103    C        HIS    NE2     131    D        GLN    OE1           2.69    1.82    159.42      999.99
+104    C        CYS    SG      127    D        GLN    NE2           3.88    9.99    999.99      999.99
+122    C        HIS    NE2     112    D        CYS    SG            4       3.63    107.53      999.99
+141    C        ARG    NH1     126    A        ASP    OD2     1     2.77    3.64    29.72       999.99
+141    C        ARG    NH1     126    A        ASP    OD2     2     2.77    1.87    151.83      999.99
+141    C        ARG    NH2     126    A        ASP    OD2     1     3.15    4.06    24.73       999.99
+141    C        ARG    NH2     126    A        ASP    OD2     2     3.15    2.31    136.22      999.99
+30     D        ARG    NH1     122    C        HIS    ND1     1     3.08    2.1     153.07      999.99
+30     D        ARG    NH1     122    C        HIS    ND1     2     3.08    3.44    61.15       999.99
+35     D        TYR    OH      126    C        ASP    OD2           3.09    9.99    999.99      999.99
+37     D        TRP    NE1     94     A        ASP    OD2           2.9     2.01    166.67      999.99
+99     D        ASP    OD2     97     A        ASN    ND2     1     2.81    2.17    115.92      999.99
+99     D        ASP    OD2     97     A        ASN    ND2     2     2.81    2.68    85.61       999.99
+112    D        CYS    SG      122    C        HIS    NE2           4       9.99    999.99      999.99
+127    D        GLN    NE2     104    C        CYS    SG      1     3.88    3.06    135.74      999.99
+127    D        GLN    NE2     104    C        CYS    SG      2     3.88    4.19    65.53       999.99
+131    D        GLN    OE1     103    C        HIS    NE2     1     2.69    1.66    158.23      999.99
+131    D        GLN    OE1     103    C        HIS    NE2     2     2.69    3.08    58.55       999.99
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+
+Dd-a     =   Distance Between Donor and Acceptor
+Dh-a     =   Distance Between Hydrogen and Acceptor
+A(d-H-N) =   Angle Between Donor-H-N
+A(a-O=C) =   Angle Between Acceptor-O=C
+MO       =   Multiple Occupancy
+Note that angles that are undefined are written as 999.99
+
+
+
+                                     Interprotein Ionic Interactions
+                                     
+Ionic Interactions within 6 Angstroms
+==========  =========  =======  ==========  =========  =======
+Position    Residue    Chain    Position    Residue    Chain
+==========  =========  =======  ==========  =========  =======
+92          ARG        A        43          GLU        D
+126         ASP        A        141         ARG        C
+141         ARG        A        126         ASP        C
+43          GLU        B        92          ARG        C
+==========  =========  =======  ==========  =========  ======= 
+
+
+
+                               Interprotein Aromatic-Aromatic Interactions
+                               
+Aromatic-Aromatic Interactions within 4.5 and 7 Angstroms
+==========  =========  =======  ==========  =========  =======  ======================
+Position    Residue    Chain    Position    Residue    Chain    D(centroid-centroid)
+==========  =========  =======  ==========  =========  =======  ======================
+140         TYR        A        37          TRP        D        5.48
+37          TRP        B        140         TYR        C        5.38
+==========  =========  =======  ==========  =========  =======  ====================== 
+
+
+
+                               Interprotein Aromatic-Sulphur Interactions
+                                
+Aromatic-Sulphur Interactions within 5.3 Angstroms
+
+                          NO INTERPROTEIN AROMATIC-SULPHUR INTERACTIONS FOUND
+
+
+                          
+                                   Interprotein Cation-Pi Interactions
+                                   
+Cation-Pi Interactions within 6 Angstroms
+==========  =========  =======  ==========  =========  =======  ==============
+Position    Residue    Chain    Position    Residue    Chain    D(cation-Pi)
+==========  =========  =======  ==========  =========  =======  ==============
+42          TYR        A        40          ARG        D        4.71
+117         PHE        A        30          ARG        B        4.94
+35          TYR        B        141         ARG        C        4.94
+31          ARG        A        122         PHE        B        5.66
+40          ARG        B        42          TYR        C        4.73
+117         PHE        C        30          ARG        D        4.81
+141         ARG        A        35          TYR        D        4.93
+31          ARG        C        122         PHE        D        5.56
+==========  =========  =======  ==========  =========  =======  ============== 
+

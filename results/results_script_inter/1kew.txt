@@ -1,0 +1,90 @@
+
+                                  Intraprotein Hydrophobic Interactions
+                                  
+Hydrophobic Interactions within 5 Angstroms
+==========  =========  =======  ==========  =========  =======
+Position    Residue    Chain    Position    Residue    Chain
+==========  =========  =======  ==========  =========  =======
+90          ILE        A        185         TYR        B
+93          PRO        A        105         TYR        B
+93          PRO        A        181         TRP        B
+94          ALA        A        105         TYR        B
+97          ILE        A        105         TYR        B
+97          ILE        A        102         VAL        B
+97          ILE        A        177         LEU        B
+97          ILE        A        181         TRP        B
+101         ILE        A        177         LEU        B
+102         VAL        A        97          ILE        B
+105         TYR        A        97          ILE        B
+105         TYR        A        93          PRO        B
+105         TYR        A        94          ALA        B
+166         PRO        A        181         TRP        B
+166         PRO        A        185         TYR        B
+169         ALA        A        177         LEU        B
+169         ALA        A        180         ALA        B
+177         LEU        A        97          ILE        B
+177         LEU        A        169         ALA        B
+177         LEU        A        101         ILE        B
+180         ALA        A        169         ALA        B
+181         TRP        A        166         PRO        B
+181         TRP        A        93          PRO        B
+181         TRP        A        97          ILE        B
+185         TYR        A        90          ILE        B
+185         TYR        A        166         PRO        B
+==========  =========  =======  ==========  =========  ======= 
+
+
+
+                                     Intraprotein Disulphide Bridges
+                                     
+Disulphide bridges: Between sulphur atoms of cysteines within 2.2 Angstroms
+
+                               NO INTRAPROTEIN DISULPHIDE BRIDGES FOUND
+
+
+                                
+
+                                        NO HYDROGEN BONDS FOUND
+
+
+                                        
+                                     Intraprotein Ionic Interactions
+                                     
+Ionic Interactions within 6 Angstroms
+==========  =========  =======  ==========  =========  =======
+Position    Residue    Chain    Position    Residue    Chain
+==========  =========  =======  ==========  =========  =======
+139         ASP        A        183         ARG        B
+183         ARG        A        139         ASP        B
+183         ARG        A        301         ASP        B
+301         ASP        A        183         ARG        B
+==========  =========  =======  ==========  =========  ======= 
+
+
+
+                               Intraprotein Aromatic-Aromatic Interactions
+                               
+Aromatic-Aromatic Interactions within 4.5 and 7 Angstroms
+==========  =========  =======  ==========  =========  =======  ======================  ================
+Position    Residue    Chain    Position    Residue    Chain    D(centroid-centroid)    Dihedral Angle
+==========  =========  =======  ==========  =========  =======  ======================  ================
+==========  =========  =======  ==========  =========  =======  ======================  ================ 
+
+
+
+                               Intraprotein Aromatic-Sulphur Interactions
+                                
+Aromatic-Sulphur Interactions within 5.3 Angstroms
+
+                          NO INTRAPROTEIN AROMATIC-SULPHUR INTERACTIONS FOUND
+
+
+                          
+                                   Intraprotein Cation-Pi Interactions
+                                   
+Cation-Pi Interactions within 6 Angstroms
+==========  =========  =======  ==========  =========  =======  ==============  =======
+Position    Residue    Chain    Position    Residue    Chain    D(cation-Pi)    Angle
+==========  =========  =======  ==========  =========  =======  ==============  =======
+==========  =========  =======  ==========  =========  =======  ==============  ======= 
+

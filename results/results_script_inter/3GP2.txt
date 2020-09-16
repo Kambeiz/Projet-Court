@@ -1,0 +1,98 @@
+
+                                  Intraprotein Hydrophobic Interactions
+                                  
+Hydrophobic Interactions within 5 Angstroms
+==========  =========  =======  ==========  =========  =======
+Position    Residue    Chain    Position    Residue    Chain
+==========  =========  =======  ==========  =========  =======
+12          PHE        A        13          LEU        B
+15          ALA        A        13          LEU        B
+18          LEU        A        11          ALA        B
+19          PHE        A        17          LEU        B
+35          VAL        A        18          ALA        B
+36          MET        A        18          ALA        B
+39          LEU        A        18          ALA        B
+51          MET        A        17          LEU        B
+68          PHE        A        17          LEU        B
+71          MET        A        17          LEU        B
+72          MET        A        17          LEU        B
+72          MET        A        13          LEU        B
+72          MET        A        16          MET        B
+76          MET        A        16          MET        B
+76          MET        A        13          LEU        B
+85          ILE        A        16          MET        B
+88          ALA        A        16          MET        B
+92          PHE        A        12          ILE        B
+92          PHE        A        8           LEU        B
+92          PHE        A        11          ALA        B
+105         LEU        A        8           LEU        B
+109         MET        A        11          ALA        B
+112         LEU        A        11          ALA        B
+116         LEU        A        2           PHE        B
+124         MET        A        4           ALA        B
+124         MET        A        8           LEU        B
+124         MET        A        2           PHE        B
+128         ALA        A        8           LEU        B
+141         PHE        A        12          ILE        B
+144         MET        A        12          ILE        B
+144         MET        A        8           LEU        B
+145         MET        A        12          ILE        B
+145         MET        A        16          MET        B
+==========  =========  =======  ==========  =========  ======= 
+
+
+
+                                     Intraprotein Disulphide Bridges
+                                     
+Disulphide bridges: Between sulphur atoms of cysteines within 2.2 Angstroms
+
+                               NO INTRAPROTEIN DISULPHIDE BRIDGES FOUND
+
+
+                                
+
+                                        NO HYDROGEN BONDS FOUND
+
+
+                                        
+                                     Intraprotein Ionic Interactions
+                                     
+Ionic Interactions within 6 Angstroms
+==========  =========  =======  ==========  =========  =======
+Position    Residue    Chain    Position    Residue    Chain
+==========  =========  =======  ==========  =========  =======
+7           GLU        A        6           ARG        B
+11          GLU        A        9           LYS        B
+14          GLU        A        7           LYS        B
+114         GLU        A        7           LYS        B
+127         GLU        A        5           ARG        B
+==========  =========  =======  ==========  =========  ======= 
+
+
+
+                               Intraprotein Aromatic-Aromatic Interactions
+                               
+Aromatic-Aromatic Interactions within 4.5 and 7 Angstroms
+==========  =========  =======  ==========  =========  =======  ======================  ================
+Position    Residue    Chain    Position    Residue    Chain    D(centroid-centroid)    Dihedral Angle
+==========  =========  =======  ==========  =========  =======  ======================  ================
+==========  =========  =======  ==========  =========  =======  ======================  ================ 
+
+
+
+                               Intraprotein Aromatic-Sulphur Interactions
+                                
+Aromatic-Sulphur Interactions within 5.3 Angstroms
+
+                          NO INTRAPROTEIN AROMATIC-SULPHUR INTERACTIONS FOUND
+
+
+                          
+                                   Intraprotein Cation-Pi Interactions
+                                   
+Cation-Pi Interactions within 6 Angstroms
+==========  =========  =======  ==========  =========  =======  ==============  =======
+Position    Residue    Chain    Position    Residue    Chain    D(cation-Pi)    Angle
+==========  =========  =======  ==========  =========  =======  ==============  =======
+==========  =========  =======  ==========  =========  =======  ==============  ======= 
+

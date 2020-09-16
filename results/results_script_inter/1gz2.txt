@@ -1,0 +1,69 @@
+
+                                  Interprotein Hydrophobic Interactions
+                                  
+Hydrophobic Interactions within 5 Angstroms
+
+                             NO INTERPROTEIN HYDROPHOBIC INTERACTIONS FOUND
+
+                             
+                                     Interprotein Disulphide Bridges
+                                     
+Disulphide bridges: Between sulphur atoms of cysteines within 2.2 Angstroms
+
+                               NO INTERPROTEIN DISULPHIDE BRIDGES FOUND
+
+
+                                
+                            Interprotein Main Chain-Main Chain Hydrogen Bonds
+                            
+
+                      NO INTERPROTEIN MAIN CHAIN-MAIN CHAIN HYDROGEN BONDS FOUND
+
+
+                       
+                            {intrainter} Main Chain-Side Chain Hydrogen Bonds
+                            
+
+                      NO INTERPROTEIN MAIN CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND
+
+
+                       
+                            Interprotein Side Chain-Side Chain Hydrogen Bonds
+                            
+
+                      NO INTERPROTEIN SIDE CHAIN-SIDE CHAIN HYDROGEN BONDS FOUND
+
+
+                       
+                                     Interprotein Ionic Interactions
+                                     
+Ionic Interactions within 6 Angstroms
+
+                                      NO IONIC INTERACTIONS FOUND
+
+
+                                      
+                               Interprotein Aromatic-Aromatic Interactions
+                               
+Aromatic-Aromatic Interactions within 4.5 and 7 Angstroms
+
+                         NO INTERPROTEIN AROMATIC-AROMATIC INTERACTIONS FOUND
+
+
+                          
+                               Interprotein Aromatic-Sulphur Interactions
+                                
+Aromatic-Sulphur Interactions within 5.3 Angstroms
+
+                          NO INTERPROTEIN AROMATIC-SULPHUR INTERACTIONS FOUND
+
+
+                          
+                                   Interprotein Cation-Pi Interactions
+                                   
+Cation-Pi Interactions within 6 Angstroms
+
+                             NO INTERPROTEIN CATION-PI INTERACTIONS FOUND
+
+
+                              

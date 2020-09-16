@@ -1,0 +1,686 @@
+
+                                  Intraprotein Hydrophobic Interactions
+                                  
+Hydrophobic Interactions within 5 Angstroms
+==========  =========  =======  ==========  =========  =======
+Position    Residue    Chain    Position    Residue    Chain
+==========  =========  =======  ==========  =========  =======
+97          VAL        A        233         TYR        C
+103         TYR        A        225         VAL        C
+212         PHE        A        201         LEU        C
+264         LEU        A        225         VAL        C
+328         PHE        A        338         PHE        C
+330         LEU        A        338         PHE        C
+330         LEU        A        341         PHE        C
+332         ILE        A        330         LEU        C
+338         PHE        A        328         PHE        C
+338         PHE        A        330         LEU        C
+341         PHE        A        330         LEU        C
+341         PHE        A        348         LEU        C
+348         LEU        A        341         PHE        C
+97          VAL        D        233         TYR        B
+103         TYR        D        225         VAL        B
+169         MET        D        233         TYR        B
+212         PHE        D        201         LEU        B
+264         LEU        D        225         VAL        B
+328         PHE        D        338         PHE        B
+330         LEU        D        332         ILE        B
+330         LEU        D        338         PHE        B
+330         LEU        D        341         PHE        B
+332         ILE        D        328         PHE        B
+332         ILE        D        330         LEU        B
+332         ILE        D        348         LEU        B
+338         PHE        D        328         PHE        B
+338         PHE        D        330         LEU        B
+341         PHE        D        330         LEU        B
+341         PHE        D        348         LEU        B
+==========  =========  =======  ==========  =========  ======= 
+
+
+
+                                     Intraprotein Disulphide Bridges
+                                     
+Disulphide bridges: Between sulphur atoms of cysteines within 2.2 Angstroms
+
+                               NO INTRAPROTEIN DISULPHIDE BRIDGES FOUND
+
+
+                                
+                            Intraprotein Main Chain-Main Chain Hydrogen Bonds
+                            
+            DONOR                         ACCEPTOR                          PARAMETERS              
+=====  =======  =====  ======  =====  =======  =====  ======  ======  ======  ==========  ==========
+POS    CHAIN    RES    ATOM    POS    CHAIN    RES    ATOM    Dd-a    Dh-h    A(d-H-N)    A(a-O=C)
+=====  =======  =====  ======  =====  =======  =====  ======  ======  ======  ==========  ==========
+159    A        ALA    N       216    A        VAL    O       2.94    2.07    146.53      158.71
+160    A        MET    N       254    A        ILE    O       3.25    2.41    144.14      131.59
+162    A        ILE    N       252    A        LEU    O       2.99    2.07    154.88      153.59
+164    A        LYS    N       250    A        PRO    O       2.78    1.86    156.19      146.72
+167    A        GLN    N       165    A        GLN    O       3.44    3.45    81.86       76.7
+168    A        HIS    N       165    A        GLN    O       3.12    2.24    150.05      119.7
+168    A        HIS    N       166    A        SER    O       2.9     2.53    102.77      77.82
+169    A        MET    N       165    A        GLN    O       3.19    2.54    124.03      161.33
+170    A        THR    N       168    A        HIS    O       3.21    3.44    68.54       84.47
+171    A        GLU    N       168    A        HIS    O       2.7     1.79    154.57      135.3
+171    A        GLU    N       169    A        MET    O       2.63    2.32    98.01       87.12
+173    A        VAL    N       171    A        GLU    O       3.43    3.72    65.64       101.69
+174    A        ARG    N       172    A        VAL    O       3.23    2.69    115.59      92.82
+175    A        ARG    N       192    A        GLN    O       3.42    3.18    95.69       147.52
+178    A        HIS    N       176    A        CYS    O       3.47    3.46    82.89       74.11
+179    A        HIS    N       176    A        CYS    O       3.45    2.83    121.11      112.59
+179    A        HIS    N       177    A        PRO    O       3.34    3.47    74.2        74.95
+180    A        GLU    N       176    A        CYS    O       2.98    2.15    142.66      157.16
+180    A        GLU    N       177    A        PRO    O       3.34    2.76    118.8       100.15
+181    A        ARG    N       179    A        HIS    O       2.65    2.45    90.75       80.12
+182    A        SER    N       179    A        HIS    O       3.26    3.12    89.24       132.72
+184    A        ASP    N       182    A        SER    O       3.12    2.59    114         73.63
+185    A        SER    N       183    A        SER    O       2.64    1.78    143.93      95.71
+187    A        GLY    N       185    A        SER    O       2.91    2.72    91.35       76.85
+189    A        ALA    N       187    A        GLY    O       3.4     3.19    94.51       69.57
+192    A        GLN    N       190    A        PRO    O       3.45    3.25    93.79       73.92
+194    A        LEU    N       192    A        GLN    O       3.31    3.5     70.96       105.39
+249    A        ARG    N       246    A        MET    O       3.24    2.35    152.56      113.86
+249    A        ARG    N       247    A        ASN    O       3.03    2.67    102.36      77.95
+251    A        ILE    N       249    A        ARG    O       3.37    3.62    67.51       104.87
+252    A        LEU    N       162    A        ILE    O       2.78    1.97    137.34      171.73
+253    A        VAL    N       270    A        PHE    O       2.97    2       171.39      160.65
+254    A        ILE    N       160    A        MET    O       2.68    1.71    169.6       163.08
+255    A        ILE    N       268    A        ASP    O       2.85    2.12    131.99      150.82
+256    A        THR    N       158    A        ARG    O       2.88    1.97    154.63      151.07
+257    A        LEU    N       266    A        GLY    O       2.78    1.79    173.55      150.74
+258    A        GLU    N       156    A        ARG    O       3.16    2.3     145.21      143.27
+259    A        ASP    N       263    A        ASN    O       2.95    2.02    156.9       154.68
+260    A        SER    N       154    A        GLY    O       3.5     3.76    67.44       107.41
+261    A        SER    N       259    A        ASP    O       3.09    3.08    81.79       78.78
+262    A        GLY    N       259    A        ASP    O       2.85    2.07    136         116.1
+265    A        LEU    N       257    A        LEU    O       2.77    2.2     115.04      166.96
+266    A        GLY    N       257    A        LEU    O       3.28    2.79    112.26      138.27
+267    A        ARG    N       103    A        TYR    O       2.74    1.83    154.65      143.7
+268    A        ASP    N       255    A        ILE    O       2.91    2.04    147.06      170.49
+270    A        PHE    N       253    A        VAL    O       3.09    2.18    154.17      156.38
+271    A        GLU    N       131    A        ASN    O       3.1     2.14    164.93      155.75
+273    A        ARG    N       133    A        MET    O       2.95    2       161.53      158.11
+275    A        CYS    N       135    A        VAL    O       3.01    2.11    152.87      146.66
+279    A        GLY    N       277    A        CYS    O       3.36    3.53    72.05       78.96
+280    A        ARG    N       277    A        CYS    O       3.21    2.78    106.68      118.04
+280    A        ARG    N       278    A        PRO    O       3.3     3.51    69.41       78.64
+281    A        ASP    N       277    A        CYS    O       2.95    1.99    165.38      171.9
+281    A        ASP    N       278    A        PRO    O       3.39    3.2     92.81       111.51
+282    A        ARG    N       278    A        PRO    O       2.8     1.96    145.07      164.29
+282    A        ARG    N       279    A        GLY    O       3.18    2.55    123.02      109.52
+282    A        ARG    N       280    A        ARG    O       2.94    2.91    82.05       82.79
+283    A        ARG    N       279    A        GLY    O       2.97    2       168.86      162.02
+283    A        ARG    N       280    A        ARG    O       2.9     2.45    107.96      127.37
+284    A        THR    N       280    A        ARG    O       2.89    1.92    166.1       170.41
+284    A        THR    N       282    A        ARG    O       3.4     3.67    66.52       75.25
+120    C        LYS    N       118    C        THR    O       3.39    3.65    66.96       102.26
+121    C        SER    N       119    C        ALA    O       2.64    2.06    115.9       85.14
+122    C        VAL    N       119    C        ALA    O       2.87    1.9     172.46      138.06
+125    C        THR    N       134    C        PHE    O       3.26    2.62    123.46      120.12
+127    C        SER    N       132    C        LYS    O       2.75    2       131.29      154.83
+129    C        ALA    N       127    C        SER    O       3.34    3.41    77.2        71.76
+130    C        LEU    N       127    C        SER    O       3.48    3.1     104.51      107.46
+131    C        ASN    N       127    C        SER    O       2.4     1.75    120.38      158.2
+131    C        ASN    N       128    C        PRO    O       3.36    2.75    120.84      94.01
+132    C        LYS    N       127    C        SER    O       3.12    2.24    146.89      135.84
+133    C        MET    N       271    C        GLU    O       2.68    1.7     171.16      162.21
+134    C        PHE    N       125    C        THR    O       3.15    2.47    126.63      126.64
+135    C        VAL    N       273    C        ARG    O       3.29    2.57    130.56      164.46
+136    C        GLN    N       123    C        THR    O       2.88    1.94    158.61      164.57
+138    C        ALA    N       136    C        GLN    O       3.22    3.36    73.41       106.33
+138    C        ALA    N       236    C        PHE    O       3.09    2.12    165.24      127
+139    C        LYS    N       136    C        GLN    O       3.26    2.41    143.66      131.54
+139    C        LYS    N       137    C        LEU    O       3.17    3.12    83.79       80.93
+141    C        VAL    N       234    C        PHE    O       3.1     2.31    134.72      155.86
+143    C        VAL    N       141    C        VAL    O       3.41    3.34    85.58       103.15
+143    C        VAL    N       232    C        ILE    O       2.96    1.99    171.93      163.48
+144    C        GLN    N       112    C        GLY    O       2.69    1.78    153.18      158.91
+145    C        LEU    N       230    C        THR    O       2.47    1.76    125.72      154.08
+146    C        TYR    N       110    C        ARG    O       3.03    2.08    165.49      174.09
+148    C        ASP    N       107    C        TYR    O       2.6     1.88    127.02      147.14
+149    C        SER    N       147    C        VAL    O       3.3     3.33    80.19       76.73
+154    C        GLY    N       152    C        PRO    O       3.19    3.07    88.25       103.31
+155    C        THR    N       152    C        PRO    O       3.26    2.32    158.64      139.97
+156    C        ARG    N       154    C        GLY    O       3.37    3.72    61.74       104.31
+215    C        SER    N       206    C        LEU    O       3.44    2.52    155.43      124.82
+217    C        VAL    N       204    C        GLU    O       2.52    1.6     155.26      157.61
+218    C        VAL    N       157    C        VAL    O       3.01    2.08    157.11      160.92
+220    C        TYR    N       155    C        THR    O       3.02    2.08    158.89      145.86
+220    C        TYR    N       218    C        VAL    O       3.5     3.76    67          100.69
+224    C        GLU    N       222    C        PRO    O       3.45    3.62    72.41       103.35
+227    C        SER    N       224    C        GLU    O       3       2.14    145.15      146.95
+227    C        SER    N       225    C        VAL    O       3.02    2.29    130.23      75.7
+230    C        THR    N       145    C        LEU    O       3.04    2.16    148.9       131.97
+232    C        ILE    N       143    C        VAL    O       2.99    2.24    131.27      142.93
+234    C        PHE    N       141    C        VAL    O       3.44    2.48    169.65      129.34
+235    C        LYS    N       196    C        ARG    O       2.77    1.87    147.9       147.81
+237    C        MET    N       194    C        LEU    O       2.88    1.98    149.95      163.13
+238    C        CYS    N       236    C        PHE    O       2.72    1.88    145.05      94.29
+240    C        SER    N       274    C        VAL    O       2.93    1.96    173.08      124.96
+241    C        SER    N       239    C        ASN    O       2.76    1.87    148.77      86.86
+242    C        CYS    N       239    C        ASN    O       3.39    2.51    150.58      119.19
+243    C        MET    N       241    C        SER    O       3.33    3.49    72.31       100.14
+245    C        GLY    N       242    C        CYS    O       3.25    2.74    112.92      119.64
+245    C        GLY    N       243    C        MET    O       3.44    3.36    86.39       57.53
+247    C        ASN    N       242    C        CYS    O       2.89    2.15    130.89      156.38
+247    C        ASN    N       245    C        GLY    O       2.67    2.72    76.82       79.65
+248    C        ARG    N       246    C        MET    O       3.46    3.79    63.25       78.01
+281    C        ASP    N       277    C        CYS    O       3.07    2.2     146.12      155.45
+282    C        ARG    N       278    C        PRO    O       3.15    2.33    141.42      139.76
+282    C        ARG    N       279    C        GLY    O       3.2     2.5     129.44      117.88
+282    C        ARG    N       280    C        ARG    O       2.89    2.87    81.6        85.55
+283    C        ARG    N       279    C        GLY    O       3.04    2.12    155.13      160.37
+283    C        ARG    N       280    C        ARG    O       2.73    2.18    113.72      128.88
+284    C        THR    N       280    C        ARG    O       2.99    2.02    166.87      170.09
+284    C        THR    N       282    C        ARG    O       3.33    3.56    68.24       74.31
+285    C        GLU    N       281    C        ASP    O       3.15    2.19    164.83      146.39
+285    C        GLU    N       282    C        ARG    O       3.42    3.23    92.77       105.12
+286    C        GLU    N       282    C        ARG    O       2.73    1.92    138.48      157.19
+286    C        GLU    N       283    C        ARG    O       3.21    2.55    125.53      108.7
+286    C        GLU    N       284    C        THR    O       2.98    2.91    84.97       80.42
+287    C        GLU    N       283    C        ARG    O       2.69    1.89    135.57      157
+287    C        GLU    N       284    C        THR    O       2.7     2.11    116.83      119.67
+288    C        ASN    N       284    C        THR    O       2.76    1.86    152.3       172.67
+289    C        LEU    N       286    C        GLU    O       3.3     2.41    151.91      109.02
+289    C        LEU    N       287    C        GLU    O       2.91    2.47    106.56      79.14
+290    C        ARG    N       286    C        GLU    O       3.14    2.27    144.88      148.34
+290    C        ARG    N       287    C        GLU    O       2.95    2.41    113.02      111.07
+291    C        LYS    N       287    C        GLU    O       3.48    3.64    72.81       154.55
+291    C        LYS    N       289    C        LEU    O       2.57    1.68    147.18      82.49
+292    C        LYS    N       289    C        LEU    O       3.12    2.52    119.06      105.14
+321    C        LYS    N       289    C        LEU    O       3.38    2.57    141.14      152.37
+321    C        LYS    N       291    C        LYS    O       3.14    2.93    93.74       75.76
+328    C        PHE    N       332    A        ILE    O       3.45    2.54    154.03      108.72
+330    C        LEU    N       330    A        LEU    O       3.25    2.29    163.44      158.82
+332    C        ILE    N       328    A        PHE    O       2.79    2.02    133.96      161.15
+334    C        GLY    N       326    A        GLU    O       3.47    2.56    155.63      159.55
+337    C        ARG    N       334    C        GLY    O       3.33    2.83    113.05      107.33
+337    C        ARG    N       335    C        ARG    O       3.19    3.26    76.97       79.2
+338    C        PHE    N       334    C        GLY    O       2.75    1.83    153.74      160.78
+338    C        PHE    N       335    C        ARG    O       3.07    2.58    110.62      114.71
+121    D        SER    N       119    D        ALA    O       2.86    2.01    142.17      81.62
+123    D        THR    N       121    D        SER    O       2.84    2.6     93.46       78.15
+124    D        CYS    N       121    D        SER    O       2.68    2.08    117.21      129.89
+124    D        CYS    N       122    D        VAL    O       3.38    2.66    130.36      67.47
+125    D        THR    N       134    D        PHE    O       2.81    1.85    165.57      164.49
+127    D        SER    N       132    D        LYS    O       3       2.02    174.72      163.74
+129    D        ALA    N       127    D        SER    O       3.32    3.28    83.54       76.69
+130    D        LEU    N       127    D        SER    O       2.96    2.1     145.53      123.15
+130    D        LEU    N       128    D        PRO    O       2.94    2.86    84.54       76.77
+131    D        ASN    N       127    D        SER    O       2.73    2.14    117.27      147.3
+131    D        ASN    N       128    D        PRO    O       2.96    2.24    129.67      99.35
+132    D        LYS    N       127    D        SER    O       3.25    2.28    169.16      139.74
+132    D        LYS    N       130    D        LEU    O       3.21    3.45    67.91       69.5
+133    D        MET    N       271    D        GLU    O       2.59    1.63    160.73      156.65
+134    D        PHE    N       125    D        THR    O       2.73    1.8     158.69      175.22
+135    D        VAL    N       273    D        ARG    O       3.15    2.19    166.37      158.12
+137    D        LEU    N       275    D        CYS    O       3.45    2.6     145.04      159.45
+138    D        ALA    N       136    D        GLN    O       3.29    3.57    65.58       105.45
+138    D        ALA    N       236    D        PHE    O       2.93    1.98    160.33      153.69
+139    D        LYS    N       136    D        GLN    O       3       2.07    161.15      136.77
+139    D        LYS    N       137    D        LEU    O       2.94    2.52    106.63      84.38
+141    D        VAL    N       234    D        PHE    O       2.79    1.91    148.59      160.73
+143    D        VAL    N       232    D        ILE    O       2.7     1.79    153.5       160.36
+144    D        GLN    N       112    D        GLY    O       2.89    2       148.2       162.29
+145    D        LEU    N       230    D        THR    O       3.07    2.21    143.83      123.38
+146    D        TYR    N       110    D        ARG    O       3.01    2.05    165.41      169.1
+148    D        ASP    N       107    D        TYR    O       2.58    1.69    146.76      146.65
+154    D        GLY    N       152    D        PRO    O       3.44    3.59    73.64       102.7
+155    D        THR    N       152    D        PRO    O       3.28    2.48    137         144.76
+156    D        ARG    N       258    D        GLU    O       2.83    1.85    169.06      170.06
+157    D        VAL    N       218    D        VAL    O       2.81    1.91    149.32      162.51
+158    D        ARG    N       256    D        THR    O       2.85    1.88    169.15      157.42
+159    D        ALA    N       216    D        VAL    O       2.95    2.08    146.62      159.2
+160    D        MET    N       254    D        ILE    O       3.25    2.4     145.59      131.79
+162    D        ILE    N       252    D        LEU    O       2.98    2.05    155.49      154
+164    D        LYS    N       250    D        PRO    O       2.77    1.85    156.49      146.67
+167    D        GLN    N       165    D        GLN    O       3.46    3.46    82.15       76.39
+168    D        HIS    N       165    D        GLN    O       3.14    2.25    150.02      119.09
+220    D        TYR    N       218    D        VAL    O       3.45    3.67    69.56       101.46
+221    D        GLU    N       219    D        PRO    O       3.46    3.61    73.64       100.71
+226    D        GLY    N       224    D        GLU    O       3       3.29    64.23       109.76
+227    D        SER    N       224    D        GLU    O       3.17    2.35    140.29      163.05
+230    D        THR    N       145    D        LEU    O       3.08    2.13    162.03      138.97
+232    D        ILE    N       143    D        VAL    O       2.65    1.85    135.13      154.08
+234    D        PHE    N       141    D        VAL    O       2.81    1.85    164.27      153.14
+235    D        LYS    N       196    D        ARG    O       2.63    1.79    141.11      153.63
+237    D        MET    N       194    D        LEU    O       2.86    1.91    161.45      146.46
+238    D        CYS    N       236    D        PHE    O       3.45    2.81    123.13      81.15
+240    D        SER    N       274    D        VAL    O       2.76    1.91    144.36      118.62
+241    D        SER    N       239    D        ASN    O       2.38    1.51    143.11      97.7
+242    D        CYS    N       239    D        ASN    O       2.97    2.19    136.19      136.5
+245    D        GLY    N       242    D        CYS    O       3.14    2.33    138.32      118.98
+245    D        GLY    N       243    D        MET    O       3.38    2.81    117.89      60.73
+247    D        ASN    N       242    D        CYS    O       3.08    2.35    130.29      149.45
+247    D        ASN    N       245    D        GLY    O       2.78    2.76    80.85       83.39
+249    D        ARG    N       246    D        MET    O       3.25    2.36    152.11      113.27
+249    D        ARG    N       247    D        ASN    O       3.03    2.68    101.77      77.86
+251    D        ILE    N       249    D        ARG    O       3.37    3.61    68.09       104.59
+252    D        LEU    N       162    D        ILE    O       2.77    1.95    138.18      171.53
+253    D        VAL    N       270    D        PHE    O       2.97    2       171.19      160.49
+254    D        ILE    N       160    D        MET    O       2.67    1.7     169.29      163.28
+255    D        ILE    N       268    D        ASP    O       2.85    2.1     132.62      150.65
+344    D        ARG    N       340    D        GLN    O       3.48    3.02    109.14      121.43
+344    D        ARG    N       341    D        PHE    O       3.37    2.65    129.59      90.01
+344    D        ARG    N       342    D        ARG    O       2.87    2.57    97.04       77.78
+345    D        ASN    N       341    D        PHE    O       2.83    1.95    147.1       142.84
+345    D        ASN    N       342    D        ARG    O       2.98    2.37    118.89      120.06
+346    D        GLU    N       342    D        ARG    O       2.54    1.68    144         173.78
+347    D        ALA    N       344    D        ARG    O       3.42    2.57    143.88      97.57
+347    D        ALA    N       345    D        ASN    O       3.07    2.71    102.07      69.23
+348    D        LEU    N       345    D        ASN    O       3.25    2.55    127.72      105.15
+349    D        GLU    N       345    D        ASN    O       3.28    2.57    128.86      149.19
+349    D        GLU    N       347    D        ALA    O       3.37    3.14    95.07       69.08
+350    D        LEU    N       347    D        ALA    O       3.31    2.41    151.22      109.31
+350    D        LEU    N       348    D        LEU    O       3.35    3.18    91.33       68.77
+351    D        LYS    N       347    D        ALA    O       3.44    2.46    171.66      153.08
+352    D        ASP    N       350    D        LEU    O       2.73    1.92    138.79      94.58
+354    D        GLN    N       352    D        ASP    O       3.03    2.77    96.17       74.8
+101    B        LYS    N       99     B        SER    O       3.29    2.52    134.86      71.84
+102    B        THR    N       100    B        GLN    O       3.36    3.29    85.32       99.44
+103    B        TYR    N       101    B        LYS    O       2.66    1.99    123.2       101.93
+105    B        GLY    N       103    B        TYR    O       3.29    3.37    76.87       76.23
+109    B        PHE    N       104    B        GLN    O       3.33    2.74    118.06      133.75
+110    B        ARG    N       108    B        GLY    O       2.55    2.24    97.15       111.38
+112    B        GLY    N       144    B        GLN    O       3.47    2.6     147.57      103.34
+116    B        SER    N       114    B        LEU    O       3.31    3.03    97.61       98.12
+121    B        SER    N       119    B        ALA    O       3.32    2.65    125.71      85.11
+127    B        SER    N       132    B        LYS    O       2.58    1.84    129.11      164.29
+129    B        ALA    N       127    B        SER    O       3.23    3.43    69.64       76.54
+131    B        ASN    N       127    B        SER    O       2.79    2.21    116.44      143.4
+131    B        ASN    N       129    B        ALA    O       2.92    2.39    114.04      85.41
+210    B        ASN    N       208    B        ASP    O       2.7     2.2     109.86      82.43
+211    B        THR    N       208    B        ASP    O       3.06    2.38    126.23      118.37
+212    B        PHE    N       208    B        ASP    O       2.53    1.66    146.48      154.49
+213    B        ARG    N       211    B        THR    O       3.01    3.14    73.24       75.54
+215    B        SER    N       206    B        LEU    O       3.06    2.17    149.46      161.27
+215    B        SER    N       213    B        ARG    O       3.4     3.07    101.05      94.11
+216    B        VAL    N       159    B        ALA    O       3.04    2.19    143.95      144.49
+217    B        VAL    N       204    B        GLU    O       2.7     1.75    161.02      158.12
+218    B        VAL    N       157    B        VAL    O       3       2.17    140.29      151.32
+220    B        TYR    N       155    B        THR    O       3.41    2.71    128.63      153.62
+227    B        SER    N       225    B        VAL    O       3.31    2.48    140.46      82.24
+232    B        ILE    N       143    B        VAL    O       2.77    2.04    129.51      165.91
+234    B        PHE    N       141    B        VAL    O       2.86    1.91    158.17      145.84
+235    B        LYS    N       196    B        ARG    O       2.79    1.9     147.53      148.24
+237    B        MET    N       194    B        LEU    O       3.11    2.17    158.31      157.66
+279    B        GLY    N       277    B        CYS    O       2.76    2.72    82.33       89.25
+280    B        ARG    N       277    B        CYS    O       2.55    1.99    113.16      142.2
+281    B        ASP    N       277    B        CYS    O       3.19    2.34    144.32      153.57
+282    B        ARG    N       279    B        GLY    O       3.1     2.48    120.21      118.32
+282    B        ARG    N       280    B        ARG    O       2.44    1.53    150.19      91.97
+283    B        ARG    N       279    B        GLY    O       2.77    2.03    130.53      165.61
+283    B        ARG    N       280    B        ARG    O       2.71    1.92    135.82      131.47
+284    B        THR    N       280    B        ARG    O       2.79    1.82    168.04      172.32
+286    B        GLU    N       284    B        THR    O       2.97    2.41    115.93      74.17
+287    B        GLU    N       283    B        ARG    O       3.43    2.58    145         135.65
+288    B        ASN    N       286    B        GLU    O       3.01    2.91    86.11       76.34
+289    B        LEU    N       286    B        GLU    O       2.78    1.91    144         128.15
+289    B        LEU    N       287    B        GLU    O       2.82    2.41    104.27      77.73
+290    B        ARG    N       287    B        GLU    O       2.81    2.31    109.64      119.87
+321    B        LYS    N       291    B        LYS    O       3.45    3.33    88.22       69.57
+328    B        PHE    N       332    D        ILE    O       3.35    2.97    103.87      97.9
+330    B        LEU    N       330    D        LEU    O       3.37    2.73    123.51      158.23
+332    B        ILE    N       328    D        PHE    O       2.76    1.8     164.67      174.54
+=====  =======  =====  ======  =====  =======  =====  ======  ======  ======  ==========  ==========
+
+Dd-a     =   Distance Between Donor and Acceptor
+Dh-a     =   Distance Between Hydrogen and Acceptor
+A(d-H-N) =   Angle Between Donor-H-N
+A(a-O=C) =   Angle Between Acceptor-O=C
+MO       =   Multiple Occupancy
+Note that angles that are undefined are written as 999.99
+
+
+
+                            Intraprotein Main Chain-Side Chain Hydrogen Bonds
+                            
+             DONOR                         ACCEPTOR                             PARAMETERS                
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+POS    CHAIN    RES    ATOM    POS    CHAIN    RES    ATOM    MO    Dd-a    Dh-h    A(d-H-N)    A(a-O=C)
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+175    A        ARG    NH1     191    A        PRO    O       1     2.86    1.82    176.19      131.36
+175    A        ARG    NH1     191    A        PRO    O       2     2.86    3.44    48.6        131.36
+175    A        ARG    NE      237    A        MET    O             2.76    1.92    138.6       126.2
+175    A        ARG    NH2     237    A        MET    O       1     2.97    2.15    133.33      131.56
+175    A        ARG    NH2     237    A        MET    O       2     2.97    3.84    26.76       131.56
+176    A        CYS    N       238    A        CYS    SG            3.14    2.27    148.45      999.99
+178    A        HIS    N       176    A        CYS    SG            3.61    3.12    112.65      999.99
+179    A        HIS    N       176    A        CYS    SG            3.23    2.28    157.92      999.99
+184    A        ASP    OD2     182    A        SER    O       1     3.36    3.41    78.68       95.73
+184    A        ASP    OD2     182    A        SER    O       2     3.36    2.9     106.64      95.73
+188    A        LEU    N       186    A        ASP    OD1           2.97    2.3     125         144.96
+189    A        ALA    N       186    A        ASP    OD1           3.06    2.35    129.2       161.72
+196    A        ARG    NH1     184    A        ASP    O       1     2.59    3.48    27.28       135.94
+249    A        ARG    NH2     245    A        GLY    O       1     3       2.26    125.86      130.19
+249    A        ARG    NH2     245    A        GLY    O       2     3       3.18    70.67       130.19
+249    A        ARG    NE      246    A        MET    O             2.48    1.57    147.3       143.24
+249    A        ARG    NH2     246    A        MET    O       1     3.2     2.51    123.24      97.69
+249    A        ARG    NH2     246    A        MET    O       2     3.2     4.16    17.82       97.69
+259    A        ASP    OD1     263    A        ASN    O       1     3.42    3.77    62.63       101.22
+259    A        ASP    OD1     263    A        ASN    O       2     3.42    3.13    96.39       101.22
+261    A        SER    N       259    A        ASP    OD1           3.11    2.57    114.82      97.76
+262    A        GLY    N       259    A        ASP    OD1           2.5     1.85    121.48      153.88
+263    A        ASN    N       259    A        ASP    OD1           2.52    1.9     118.22      135.81
+267    A        ARG    NE      101    A        LYS    O             2.65    1.71    154.67      138.4
+267    A        ARG    NH2     225    C        VAL    O       1     3.15    3.23    75.81       163.72
+267    A        ARG    NH2     225    C        VAL    O       2     3.15    2.36    133.25      163.72
+275    A        CYS    N       239    A        ASN    OD1           3.1     3.52    57.24       164.71
+275    A        CYS    SG      273    A        ARG    O             3.91    9.99    999.99      118.35
+282    A        ARG    NH2     126    A        TYR    O       1     3.37    3.75    61.13       123.3
+282    A        ARG    NH2     126    A        TYR    O       2     3.37    3.49    74.77       123.3
+284    A        THR    OG1     280    A        ARG    O             3.08    9.99    999.99      115.94
+116    C        SER    OG      124    C        CYS    O             3.23    9.99    999.99      119.96
+124    C        CYS    SG      140    C        THR    O             3.4     9.99    999.99      134.61
+125    C        THR    OG1     117    C        GLY    O             2.66    9.99    999.99      165.52
+126    C        TYR    N       133    C        MET    SD            3.98    4.31    64.23       999.99
+130    C        LEU    N       127    C        SER    OG            2.86    1.9     162.26      999.99
+136    C        GLN    NE2     276    C        ALA    O       1     3.46    3.45    81.69       85.81
+136    C        GLN    NE2     276    C        ALA    O       2     3.46    2.72    129.05      85.81
+155    C        THR    OG1     152    C        PRO    O             2.94    9.99    999.99      131.01
+213    C        ARG    N       211    C        THR    OG1           3.02    2.05    167.78      999.99
+230    C        THR    OG1     221    C        GLU    O             2.68    9.99    999.99      169.96
+239    C        ASN    N       242    C        CYS    SG            3.76    3.08    127.75      999.99
+239    C        ASN    OD1     275    C        CYS    O       1     2.97    2.59    99.9        121.56
+239    C        ASN    OD1     275    C        CYS    O       2     2.97    2.54    103.61      121.56
+282    C        ARG    NH1     126    C        TYR    O       1     2.97    3.31    62.29       141.77
+282    C        ARG    NH1     126    C        TYR    O       2     2.97    3.03    76.87       141.77
+288    C        ASN    ND2     284    C        THR    O       1     3.22    3.46    67.91       97.97
+288    C        ASN    ND2     284    C        THR    O       2     3.22    3.43    69.31       97.97
+324    C        ASP    N       327    C        TYR    OH            3.04    2.98    84.1        999.99
+325    C        GLY    N       327    C        TYR    OH            3.45    3.68    68.73       999.99
+333    C        ARG    NH1     325    A        GLY    O       1     3.5     3.71    70.13       108.56
+333    C        ARG    NH1     325    A        GLY    O       2     3.5     3.27    94.36       108.56
+337    C        ARG    NH2     333    C        ARG    O       1     2.91    2.67    92.6        130.64
+337    C        ARG    NH2     333    C        ARG    O       2     2.91    3.35    56.32       130.64
+123    D        THR    OG1     120    D        LYS    O             2.78    9.99    999.99      121.81
+124    D        CYS    SG      140    D        THR    O             3.81    9.99    999.99      128.27
+136    D        GLN    NE2     276    D        ALA    O       1     3.1     3.45    61.92       112.35
+136    D        GLN    NE2     276    D        ALA    O       2     3.1     2.14    153.72      112.35
+144    D        GLN    NE2     112    D        GLY    O       1     3.01    3.46    56.59       117.99
+144    D        GLN    NE2     112    D        GLY    O       2     3.01    2.28    126.78      117.99
+155    D        THR    OG1     152    D        PRO    O             2.54    9.99    999.99      139.64
+230    D        THR    OG1     221    D        GLU    O             2.57    9.99    999.99      151.63
+239    D        ASN    N       242    D        CYS    SG            2.8     2.11    125.68      999.99
+239    D        ASN    OD1     274    D        VAL    O       1     3.48    4       53.86       76.22
+239    D        ASN    OD1     274    D        VAL    O       2     3.48    2.42    174.78      76.22
+239    D        ASN    OD1     275    D        CYS    O       1     2.97    1.99    149.72      82.27
+239    D        ASN    OD1     275    D        CYS    O       2     2.97    3.21    67.37       82.27
+242    D        CYS    SG      239    D        ASN    O             3.01    9.99    999.99      110.76
+249    D        ARG    NH2     245    D        GLY    O       1     2.99    2.24    127.07      130.62
+249    D        ARG    NH2     245    D        GLY    O       2     2.99    3.17    70.57       130.62
+249    D        ARG    NE      246    D        MET    O             2.47    1.55    147.96      143.79
+249    D        ARG    NH2     246    D        MET    O       1     3.19    2.49    123.31      98.09
+249    D        ARG    NH2     246    D        MET    O       2     3.19    4.15    17.71       98.09
+101    B        LYS    N       99     B        SER    OG            3.08    2.35    130.71      999.99
+124    B        CYS    SG      140    B        THR    O             3.04    9.99    999.99      145.3
+129    B        ALA    N       346    B        GLU    OE2           3.49    3.07    107.07      100.23
+130    B        LEU    N       127    B        SER    OG            2.8     2.32    108.67      999.99
+131    B        ASN    N       127    B        SER    OG            3.31    3.11    93.61       999.99
+131    B        ASN    ND2     269    B        SER    O       1     3.06    2.09    152.37      110.12
+211    B        THR    N       208    B        ASP    OD2           3.26    2.62    123.1       107.28
+214    B        HIS    ND1     192    B        GLN    O             3.34    3.01    103.36      100.4
+215    B        SER    OG      206    B        LEU    O             3.02    9.99    999.99      137.18
+275    B        CYS    SG      273    B        ARG    O             3.49    9.99    999.99      144.29
+283    B        ARG    NE      118    B        THR    O             3.44    3.08    102.53      110.68
+284    B        THR    OG1     280    B        ARG    O             3.47    9.99    999.99      121.68
+287    B        GLU    OE2     290    B        ARG    O       1     3.26    3.19    84.53       106.77
+287    B        GLU    OE2     290    B        ARG    O       2     3.26    2.51    127.11      106.77
+288    B        ASN    ND2     284    B        THR    O       1     2.7     2.6     83.79       133.31
+288    B        ASN    ND2     284    B        THR    O       2     2.7     2.81    73.2        133.31
+290    B        ARG    NH2     283    B        ARG    O       1     3.2     3.27    77.05       157.87
+290    B        ARG    NH2     283    B        ARG    O       2     3.2     2.44    130.87      157.87
+335    B        ARG    N       324    D        ASP    OD2           2.76    2.2     114.22      122.24
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+
+Dd-a     =   Distance Between Donor and Acceptor
+Dh-a     =   Distance Between Hydrogen and Acceptor
+A(d-H-N) =   Angle Between Donor-H-N
+A(a-O=C) =   Angle Between Acceptor-O=C
+MO       =   Multiple Occupancy
+Note that angles that are undefined are written as 999.99
+
+
+
+                            Intraprotein Side Chain-Side Chain Hydrogen Bonds
+                            
+             DONOR                         ACCEPTOR                             PARAMETERS                
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+POS    CHAIN    RES    ATOM    POS    CHAIN    RES    ATOM    MO    Dd-a    Dh-h    A(d-H-N)    A(a-O=C)
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+158    A        ARG    NE      258    A        GLU    OE1           2.79    1.81    162.44      999.99
+158    A        ARG    NH2     258    A        GLU    OE1     1     3.47    2.7     130.18      999.99
+158    A        ARG    NH2     258    A        GLU    OE1     2     3.47    4.42    19.58       999.99
+158    A        ARG    NH2     258    A        GLU    OE2     1     3.04    2.02    164.84      999.99
+158    A        ARG    NH2     258    A        GLU    OE2     2     3.04    3.63    48.29       999.99
+164    A        LYS    NZ      271    A        GLU    OE1           3.12    9.99    999.99      999.99
+165    A        GLN    OE1     168    A        HIS    ND1     1     3.22    3.48    67.21       999.99
+165    A        GLN    OE1     168    A        HIS    ND1     2     3.22    2.31    144.85      999.99
+167    A        GLN    NE2     123    C        THR    OG1     1     3.4     3.69    66.16       999.99
+167    A        GLN    NE2     123    C        THR    OG1     2     3.4     3.29    87.56       999.99
+168    A        HIS    ND1     165    A        GLN    OE1           3.22    2.6     125.62      999.99
+175    A        ARG    NH1     184    A        ASP    OD2     1     3.47    4.33    30.77       999.99
+175    A        ARG    NH1     184    A        ASP    OD2     2     3.47    2.59    143.28      999.99
+175    A        ARG    NH2     184    A        ASP    OD1     1     2.7     3.01    62.89       999.99
+175    A        ARG    NH2     184    A        ASP    OD1     2     2.7     1.9     133         999.99
+175    A        ARG    NH2     184    A        ASP    OD2     1     3.39    4.22    33.18       999.99
+175    A        ARG    NH2     184    A        ASP    OD2     2     3.39    2.5     145.86      999.99
+176    A        CYS    SG      179    A        HIS    ND1           3.53    9.99    999.99      999.99
+176    A        CYS    SG      238    A        CYS    SG            3.26    9.99    999.99      999.99
+178    A        HIS    ND1     243    B        MET    SD            3.52    2.75    141.86      999.99
+179    A        HIS    ND1     176    A        CYS    SG            3.53    3.61    77.33       999.99
+179    A        HIS    ND1     238    A        CYS    SG            3.14    2.39    137.85      999.99
+259    A        ASP    OD2     263    A        ASN    ND2     1     2.84    1.9     144.3       999.99
+259    A        ASP    OD2     263    A        ASN    ND2     2     2.84    3.37    52.12       999.99
+263    A        ASN    ND2     259    A        ASP    OD2     1     2.84    3.48    45.31       999.99
+263    A        ASN    ND2     259    A        ASP    OD2     2     2.84    2.02    135.01      999.99
+273    A        ARG    NE      275    A        CYS    SG            3.66    2.87    135.08      999.99
+273    A        ARG    NE      281    A        ASP    OD1           2.72    1.86    141.17      999.99
+273    A        ARG    NH2     281    A        ASP    OD1     1     3.11    2.3     132.8       999.99
+273    A        ARG    NH2     281    A        ASP    OD1     2     3.11    4.02    23.12       999.99
+275    A        CYS    SG      281    A        ASP    OD1           3.25    9.99    999.99      999.99
+280    A        ARG    NH2     277    A        CYS    SG      1     3.93    3.92    83.11       999.99
+280    A        ARG    NH2     277    A        CYS    SG      2     3.93    4.31    61.72       999.99
+282    A        ARG    NE      286    A        GLU    OE1           2.82    2.43    102.44      999.99
+115    C        HIS    ND1     343    C        GLU    OE1           2.55    1.85    130.69      999.99
+123    C        THR    OG1     167    A        GLN    NE2           3.4     9.99    999.99      999.99
+124    C        CYS    SG      133    C        MET    SD            3.75    9.99    999.99      999.99
+125    C        THR    OG1     116    C        SER    OG            3.35    9.99    999.99      999.99
+126    C        TYR    OH      131    C        ASN    OD1           2.94    9.99    999.99      999.99
+127    C        SER    OG      286    C        GLU    OE2           2.85    9.99    999.99      999.99
+131    C        ASN    OD1     126    C        TYR    OH      1     2.94    3.66    41.04       999.99
+131    C        ASN    OD1     126    C        TYR    OH      2     2.94    1.96    154.19      999.99
+132    C        LYS    NZ      271    C        GLU    OE2           2.58    9.99    999.99      999.99
+132    C        LYS    NZ      285    C        GLU    OE1           2.69    9.99    999.99      999.99
+139    C        LYS    NZ      136    C        GLN    OE1           2.82    9.99    999.99      999.99
+140    C        THR    OG1     198    C        GLU    OE2           2.48    9.99    999.99      999.99
+144    C        GLN    NE2     146    C        TYR    OH      1     2.73    2.1     116.04      999.99
+144    C        GLN    NE2     146    C        TYR    OH      2     2.73    2.78    76.48       999.99
+146    C        TYR    OH      144    C        GLN    NE2           2.73    9.99    999.99      999.99
+156    C        ARG    NH2     204    C        GLU    OE1     1     3.01    2.9     85.95       999.99
+214    C        HIS    ND1     193    C        HIS    ND1           3.07    2.99    86.2        999.99
+231    C        THR    OG1     233    C        TYR    OH            2.91    9.99    999.99      999.99
+238    C        CYS    SG      179    C        HIS    ND1           3.73    9.99    999.99      999.99
+238    C        CYS    SG      242    C        CYS    SG            3.1     9.99    999.99      999.99
+240    C        SER    OG      246    C        MET    SD            3.76    9.99    999.99      999.99
+242    C        CYS    SG      176    C        CYS    SG            3.83    9.99    999.99      999.99
+242    C        CYS    SG      179    C        HIS    ND1           3.23    9.99    999.99      999.99
+242    C        CYS    SG      238    C        CYS    SG            3.1     9.99    999.99      999.99
+280    C        ARG    NH2     277    C        CYS    SG      1     3.43    3.2     93.65       999.99
+280    C        ARG    NH2     277    C        CYS    SG      2     3.43    3.93    53.69       999.99
+282    C        ARG    NE      286    C        GLU    OE1           3.05    2.35    125.4       999.99
+282    C        ARG    NE      286    C        GLU    OE2           3.12    2.27    140.9       999.99
+282    C        ARG    NH2     286    C        GLU    OE1     1     3.43    2.73    124.4       999.99
+282    C        ARG    NH2     286    C        GLU    OE1     2     3.43    4.29    29.33       999.99
+282    C        ARG    NH2     286    C        GLU    OE2     1     3.13    2.22    144.5       999.99
+282    C        ARG    NH2     286    C        GLU    OE2     2     3.13    3.96    31.39       999.99
+282    C        ARG    NH2     343    C        GLU    OE2     1     2.94    3.56    46.19       999.99
+282    C        ARG    NH2     343    C        GLU    OE2     2     2.94    1.91    178.43      999.99
+290    C        ARG    NH1     346    C        GLU    OE2     1     3.3     2.33    152.94      999.99
+290    C        ARG    NH1     346    C        GLU    OE2     2     3.3     3.75    56.48       999.99
+329    C        THR    OG1     331    A        GLN    OE1           3.33    9.99    999.99      999.99
+333    C        ARG    NE      327    A        TYR    OH            3.06    2.61    106.88      999.99
+333    C        ARG    NH2     327    A        TYR    OH      1     2.67    1.97    121.69      999.99
+333    C        ARG    NH2     327    A        TYR    OH      2     2.67    3.38    39.41       999.99
+335    C        ARG    NH1     339    C        GLU    OE1     1     2.72    1.79    146.26      999.99
+335    C        ARG    NH1     339    C        GLU    OE1     2     2.72    3.06    61.13       999.99
+337    C        ARG    NH1     352    A        ASP    OD2     1     2.91    3.19    65.09       999.99
+337    C        ARG    NH1     352    A        ASP    OD2     2     2.91    2.01    146.01      999.99
+124    D        CYS    SG      133    D        MET    SD            3.95    9.99    999.99      999.99
+125    D        THR    OG1     116    D        SER    OG            2.71    9.99    999.99      999.99
+126    D        TYR    OH      131    D        ASN    OD1           2.94    9.99    999.99      999.99
+127    D        SER    OG      286    D        GLU    OE1           3.49    9.99    999.99      999.99
+127    D        SER    OG      286    D        GLU    OE2           2.66    9.99    999.99      999.99
+131    D        ASN    OD1     126    D        TYR    OH      1     2.94    3.46    52.91       999.99
+131    D        ASN    OD1     126    D        TYR    OH      2     2.94    1.93    159.18      999.99
+132    D        LYS    NZ      271    D        GLU    OE2           2.73    9.99    999.99      999.99
+132    D        LYS    NZ      285    D        GLU    OE1           3.01    9.99    999.99      999.99
+140    D        THR    OG1     198    D        GLU    OE1           2.6     9.99    999.99      999.99
+140    D        THR    OG1     198    D        GLU    OE2           2.54    9.99    999.99      999.99
+156    D        ARG    NH2     204    D        GLU    OE2     1     3.31    3.67    61.79       999.99
+156    D        ARG    NH2     204    D        GLU    OE2     2     3.31    2.39    148.38      999.99
+158    D        ARG    NE      258    D        GLU    OE1           2.77    1.8     162.33      999.99
+158    D        ARG    NH2     258    D        GLU    OE1     1     3.46    2.69    129.97      999.99
+158    D        ARG    NH2     258    D        GLU    OE1     2     3.46    4.41    19.46       999.99
+158    D        ARG    NH2     258    D        GLU    OE2     1     3.04    2.02    163.99      999.99
+158    D        ARG    NH2     258    D        GLU    OE2     2     3.04    3.62    48.33       999.99
+164    D        LYS    NZ      271    D        GLU    OE1           3.11    9.99    999.99      999.99
+165    D        GLN    OE1     168    D        HIS    ND1     1     3.22    3.48    67.35       999.99
+165    D        GLN    OE1     168    D        HIS    ND1     2     3.22    2.31    144.56      999.99
+227    D        SER    OG      229    D        TYR    OH            3       9.99    999.99      999.99
+231    D        THR    OG1     233    D        TYR    OH            3.3     9.99    999.99      999.99
+238    D        CYS    SG      176    D        CYS    SG            3.25    9.99    999.99      999.99
+238    D        CYS    SG      179    D        HIS    ND1           3.13    9.99    999.99      999.99
+238    D        CYS    SG      242    D        CYS    SG            3.68    9.99    999.99      999.99
+240    D        SER    OG      246    D        MET    SD            3.95    9.99    999.99      999.99
+242    D        CYS    SG      238    D        CYS    SG            3.68    9.99    999.99      999.99
+249    D        ARG    NH2     163    D        TYR    OH      1     2.93    2.48    104.42      999.99
+249    D        ARG    NH2     163    D        TYR    OH      2     2.93    3.32    59.06       999.99
+249    D        ARG    NH1     171    D        GLU    OE1     1     2.53    2.72    68.21       999.99
+249    D        ARG    NH1     171    D        GLU    OE1     2     2.53    1.82    123.66      999.99
+249    D        ARG    NH1     171    D        GLU    OE2     1     2.89    3.72    32.75       999.99
+249    D        ARG    NH1     171    D        GLU    OE2     2     2.89    2.06    137.05      999.99
+249    D        ARG    NH2     171    D        GLU    OE2     1     3.09    3.98    27          999.99
+249    D        ARG    NH2     171    D        GLU    OE2     2     3.09    2.31    131.08      999.99
+346    D        GLU    OE2     343    D        GLU    OE2     1     2.81    2.26    109.81      999.99
+346    D        GLU    OE2     343    D        GLU    OE2     2     2.81    2.66    86.78       999.99
+118    B        THR    OG1     339    B        GLU    OE1           3.34    9.99    999.99      999.99
+126    B        TYR    OH      131    B        ASN    OD1           2.76    9.99    999.99      999.99
+131    B        ASN    OD1     126    B        TYR    OH      1     2.76    3.44    42.99       999.99
+131    B        ASN    OD1     126    B        TYR    OH      2     2.76    1.82    145.88      999.99
+207    B        ASP    OD1     193    B        HIS    NE2     2     3.35    4       45.85       999.99
+207    B        ASP    OD2     214    B        HIS    NE2     1     3.29    3.16    87.31       999.99
+207    B        ASP    OD2     214    B        HIS    NE2     2     3.29    2.57    124.21      999.99
+208    B        ASP    OD1     210    B        ASN    ND2     1     2.78    1.98    128.31      999.99
+208    B        ASP    OD1     210    B        ASN    ND2     2     2.78    3.57    35.39       999.99
+208    B        ASP    OD2     210    B        ASN    ND2     1     2.89    2.15    124.86      999.99
+208    B        ASP    OD2     210    B        ASN    ND2     2     2.89    3.75    31.01       999.99
+210    B        ASN    ND2     208    B        ASP    OD1     1     2.78    2.95    70.3        999.99
+210    B        ASN    ND2     208    B        ASP    OD1     2     2.78    2.41    99.62       999.99
+210    B        ASN    ND2     208    B        ASP    OD2     1     2.89    3.68    35.94       999.99
+210    B        ASN    ND2     208    B        ASP    OD2     2     2.89    2.12    130.8       999.99
+211    B        THR    OG1     208    B        ASP    OD2           3.17    9.99    999.99      999.99
+214    B        HIS    NE2     207    B        ASP    OD2           3.29    3.17    89.13       999.99
+231    B        THR    OG1     233    B        TYR    OH            3.47    9.99    999.99      999.99
+233    B        TYR    OH      169    D        MET    SD            3.93    9.99    999.99      999.99
+238    B        CYS    SG      242    B        CYS    SG            3.39    9.99    999.99      999.99
+282    B        ARG    NE      286    B        GLU    OE2           3.11    3.41    64.44       999.99
+282    B        ARG    NH1     286    B        GLU    OE1     1     3       3.05    77.13       999.99
+282    B        ARG    NH1     286    B        GLU    OE1     2     3       3.15    71.95       999.99
+282    B        ARG    NH1     286    B        GLU    OE2     1     3.48    3.84    61.96       999.99
+282    B        ARG    NH1     286    B        GLU    OE2     2     3.48    3.91    57.66       999.99
+282    B        ARG    NH2     286    B        GLU    OE2     1     3.23    3.44    69.91       999.99
+282    B        ARG    NH2     286    B        GLU    OE2     2     3.23    3.71    54.65       999.99
+282    B        ARG    NH1     343    B        GLU    OE2     1     2.68    3.53    30.55       999.99
+282    B        ARG    NH1     343    B        GLU    OE2     2     2.68    2.11    113.55      999.99
+282    B        ARG    NH2     343    B        GLU    OE2     1     2.66    3.5     31.19       999.99
+282    B        ARG    NH2     343    B        GLU    OE2     2     2.66    2.05    115.52      999.99
+283    B        ARG    NE      339    B        GLU    OE1           2.76    2.45    96.54       999.99
+283    B        ARG    NH2     339    B        GLU    OE1     1     2.79    2.35    103.3       999.99
+283    B        ARG    NH2     339    B        GLU    OE1     2     2.79    3.54    36.76       999.99
+290    B        ARG    NE      287    B        GLU    OE1           3.14    2.36    134.15      999.99
+290    B        ARG    NE      287    B        GLU    OE2           3.09    2.1     166.92      999.99
+290    B        ARG    NH2     287    B        GLU    OE1     1     3.18    2.35    134.63      999.99
+290    B        ARG    NH2     287    B        GLU    OE1     2     3.18    3.98    33.31       999.99
+333    B        ARG    NH2     327    D        TYR    OH      1     2.74    1.96    128.89      999.99
+333    B        ARG    NH2     327    D        TYR    OH      2     2.74    3.28    50.41       999.99
+=====  =======  =====  ======  =====  =======  =====  ======  ====  ======  ======  ==========  ==========
+
+Dd-a     =   Distance Between Donor and Acceptor
+Dh-a     =   Distance Between Hydrogen and Acceptor
+A(d-H-N) =   Angle Between Donor-H-N
+A(a-O=C) =   Angle Between Acceptor-O=C
+MO       =   Multiple Occupancy
+Note that angles that are undefined are written as 999.99
+
+
+
+                                     Intraprotein Ionic Interactions
+                                     
+Ionic Interactions within 6 Angstroms
+==========  =========  =======  ==========  =========  =======
+Position    Residue    Chain    Position    Residue    Chain
+==========  =========  =======  ==========  =========  =======
+101         LYS        A        228         ASP        C
+181         ARG        A        180         GLU        B
+267         ARG        A        224         GLU        C
+292         LYS        A        336         GLU        C
+326         GLU        A        335         ARG        C
+337         ARG        A        349         GLU        C
+337         ARG        A        352         ASP        C
+349         GLU        A        337         ARG        C
+352         ASP        A        337         ARG        C
+180         GLU        C        181         ARG        D
+101         LYS        D        228         ASP        B
+267         ARG        D        224         GLU        B
+292         LYS        D        336         GLU        B
+324         ASP        D        337         ARG        B
+326         GLU        D        335         ARG        B
+333         ARG        D        352         ASP        B
+337         ARG        D        349         GLU        B
+337         ARG        D        352         ASP        B
+349         GLU        D        333         ARG        B
+352         ASP        D        333         ARG        B
+352         ASP        D        337         ARG        B
+==========  =========  =======  ==========  =========  ======= 
+
+
+
+                               Intraprotein Aromatic-Aromatic Interactions
+                               
+Aromatic-Aromatic Interactions within 4.5 and 7 Angstroms
+==========  =========  =======  ==========  =========  =======  ======================
+Position    Residue    Chain    Position    Residue    Chain    D(centroid-centroid)
+==========  =========  =======  ==========  =========  =======  ======================
+328         PHE        A        338         PHE        C        5.24
+338         PHE        A        328         PHE        C        4.96
+341         PHE        A        341         PHE        C        5.86
+338         PHE        D        328         PHE        B        5.06
+328         PHE        D        338         PHE        B        5.15
+341         PHE        D        341         PHE        B        6.09
+==========  =========  =======  ==========  =========  =======  ====================== 
+
+
+
+                               Intraprotein Aromatic-Sulphur Interactions
+                                
+Aromatic-Sulphur Interactions within 5.3 Angstroms
+
+                          NO INTRAPROTEIN AROMATIC-SULPHUR INTERACTIONS FOUND
+
+
+                          
+                                   Intraprotein Cation-Pi Interactions
+                                   
+Cation-Pi Interactions within 6 Angstroms
+==========  =========  =======  ==========  =========  =======  ==============
+Position    Residue    Chain    Position    Residue    Chain    D(cation-Pi)
+==========  =========  =======  ==========  =========  =======  ==============
+327         TYR        A        333         ARG        C        4.66
+328         PHE        A        335         ARG        C        4.39
+341         PHE        A        344         ARG        C        4.63
+344         ARG        A        341         PHE        C        5.53
+327         TYR        D        333         ARG        B        5.65
+328         PHE        D        335         ARG        B        4.93
+==========  =========  =======  ==========  =========  =======  ============== 
+
