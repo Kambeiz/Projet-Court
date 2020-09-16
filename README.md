@@ -93,3 +93,6 @@ Which in practice, give you something like :
 ```bash
 python3 src/PIC.py -p data/1BTA.pdb -hydro 6 -ion 5 -AA 5 7 -AS 6 -AC 7 -intra
 ```
+
+The script will then print the results in your shell. If you want to save the results, don't forget to redirect the command output.
+If the script is launched without an internet connection, there will be no results for *Hydrogen Bonds* calculation, and if the script take unusual time to run, PIC might be down and this script can not get the HBOND output file. Please wait, the script will still perform the  remaining calculations.
