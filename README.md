@@ -56,12 +56,12 @@ Then, once in the `Projet-Court` directory, you can install the requierd package
 conda env create -f env.yml
 conda activate shortproject
 ```
-Finally, you can launch the script with the following command line: 
+Finally, you can launch the script with the following command line to calculate intra- and inter-chain interactions: 
 
 ```bash
-python3 src/PIC.py -p data/1BTA.pdb
+python3 src/PIC.py -pdb data/1BTA.pdb
 ```
-Several options exists, from a help commands to cut-off choice (in Angstrum) for each interaction calculated:
+You can also use the help option (-h) to display every command line options. With these options, you can select the type of interaction (intra- or inter-chain calculation) and set your own thresholds, just like the PIC webserver.
 
 ```bash
 usage: PIC.py [-h] -pdb PDBFILE [-intra | -inter] [-hydro HYDROPHOBIC]
