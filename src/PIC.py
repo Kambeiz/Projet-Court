@@ -143,57 +143,6 @@ def parse_pdb(pdb_file):
 
     return arr_coors, rows
 
-'''
-def get_angle(coor1, coor2, coor3):
-    """
-    Angle calculation.
-    
-    Arguments
-    ----------
-    coor* (Numpy array): 3D coordinate of one atom
-
-    Returns
-    -------
-    angle_deg (float): Angle between three atoms
-    """
-    vec2_1 = coor1 - coor2
-    vec2_3 = coor3 - coor2 
-
-    dot = np.dot(vec2_1, vec2_3)/(np.linalg.norm(vec2_1)*np.linalg.norm(vec2_3))
-    angle = np.arccos(dot)
-    angle_deg= np.degrees(angle)
-
-    return angle_deg
-
-
-def get_dihedral(coor1, coor2, coor3, coor4):
-    """
-    Dihedral angle calculation.
-
-    Arguments
-    ---------
-    coors* (NumPy array): 3D Coordinate of an atom
-
-    Returns
-    -------
-    angle_deg (float): Dihedral angle of the plans
-    """
-    vec12 = coor1[0] - coor2[0], coor1[1] - coor2[1], coor1[2] - coor2[2]
-    vec23 = coor2[0] - coor3[0], coor2[1] - coor3[1], coor2[2] - coor3[2]
-    vec34 = coor3[0] - coor4[0], coor3[1] - coor4[1], coor3[2] - coor4[2]
-    
-    vec_norm1 = np.cross(vec12, vec23)
-    vec_norm2 = np.cross(vec23, vec34)
-     
-    angle_rad = math.acos(np.dot(vec_norm1, vec_norm2) / (np.linalg.norm(vec_norm1) * np.linalg.norm(vec_norm2)))
-    angle_deg = angle_rad * 180 / math.pi
-
-    #Calculate the dot product to determine the right sign
-    if np.dot(vec12, vec_norm2) < 0:
-        return angle_deg
-    else:
-        return -angle_deg
-'''
 
 def launching_HBONDS(pdbfile):
     """
