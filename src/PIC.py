@@ -177,7 +177,6 @@ def launching_HBONDS(pdbfile):
     # Handling exception if the page is not loaded correctly
     try:
         driver.get(url)
-        print(url)
     # Return a empty file, and close the browser
     except:
         print("Unable to extract HBOND output file.\n(PIC might be on heavy load, please try later. Are you connected to internet?)\n\n".center(106))
@@ -190,7 +189,6 @@ def launching_HBONDS(pdbfile):
     # Search the button for sendig our PDB file
     try:
         upload = driver.find_element_by_name("pdbname")
-        print(upload)
         # Get absolute the path of our PDB file
         absolute_path = os.path.abspath(pdbfile)
         
@@ -238,7 +236,6 @@ def body_to_list(body):
         return df_hbond
 
     else:
-        print(body)
         # Creating a list that will contain our information sorted
         list_hbond = []
                        
