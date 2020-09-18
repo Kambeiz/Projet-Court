@@ -177,6 +177,7 @@ def launching_HBONDS(pdbfile):
     # Handling exception if the page is not loaded correctly
     try:
         driver.get(url)
+        print(url)
     # Return a empty file, and close the browser
     except:
         print("Unable to extract HBOND output file.\n(PIC might be on heavy load, please try later. Are you connected to internet?)\n\n".center(106))
@@ -187,27 +188,33 @@ def launching_HBONDS(pdbfile):
 
     
     # Search the button for sendig our PDB file
-    upload = driver.find_element_by_name("pdbname")
+    try:
+        upload = driver.find_element_by_name("pdbname")
+        print(upload)
+        # Get absolute the path of our PDB file
+        absolute_path = os.path.abspath(pdbfile)
+        
+        # Send the path of the file into the right form
+        upload.send_keys(absolute_path)
+        
+        # Choose our interactions
+        for elem in list_elements:
+            click_elem = driver.find_element_by_name(elem)
+            click_elem.click()
+        
+        # Move to the result page
+        driver.get(url_hbd)
+        
+        # Extract the body text and split it in a list of line
+        body = (driver.find_element_by_xpath("//body").text).split("\n")
+        
+        # Close the browser
+        driver.close()
     
-    # Get absolute the path of our PDB file
-    absolute_path = os.path.abspath(pdbfile)
+    except:
+        body = ""
+        return body
     
-    # Send the path of the file into the right form
-    upload.send_keys(absolute_path)
-    
-    # Choose our interactions
-    for elem in list_elements:
-        click_elem = driver.find_element_by_name(elem)
-        click_elem.click()
-    
-    # Move to the result page
-    driver.get(url_hbd)
-    
-    # Extract the body text and split it in a list of line
-    body = (driver.find_element_by_xpath("//body").text).split("\n")
-    
-    # Close the browser
-    driver.close()
 
     return body
 
@@ -231,6 +238,7 @@ def body_to_list(body):
         return df_hbond
 
     else:
+        print(body)
         # Creating a list that will contain our information sorted
         list_hbond = []
                        
